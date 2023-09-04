@@ -47,4 +47,9 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+*.secret
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.terraform*
 
