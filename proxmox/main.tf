@@ -3,7 +3,7 @@ terraform {
   required_providers {
     proxmox = {
       source = "telmate/proxmox"
-      version = "2.9.10"
+      version = "2.9.14"
     }
   }
 }
@@ -23,11 +23,13 @@ provider "proxmox" {
   }
 }
 
-resource "proxmox_vm_qemu" "k8s-master" {
-  name = "k8s-master"
+resource "proxmox_vm_qemu" "talos-controlpane" {
+  name = "talos-cp-1"
   target_node = var.proxmox_target_node
   iso = "local:iso/${var.k8s_iso}"
+  onboot = true
   oncreate = true
+  qemu_os = "other"
   scsihw = "virtio-scsi-pci"
   cpu = "host"
   cores = var.k8s_master_cpu
@@ -36,22 +38,25 @@ resource "proxmox_vm_qemu" "k8s-master" {
   disk {
     type = "scsi"
     storage = "local-lvm"
-    size = "32G"
+    size = "20G"
   }
 
   network {
     model = "virtio"
     bridge = "vmbr0"
     firewall = false
+    macaddr = var.k8s_master_MAC
   }
 }
 
 resource "proxmox_vm_qemu" "k8s-workers" {
   count = var.k8s_worker_count
-  name = "k8s-worker-${count.index}"
+  name = "talos-worker-${count.index}"
   target_node = var.proxmox_target_node
   iso = "local:iso/${var.k8s_iso}"
-  oncreate = false
+  onboot = true
+  oncreate = true
+  qemu_os = "other"
   scsihw = "virtio-scsi-pci"
   cpu = "host"
   cores = var.k8s_worker_cpu
@@ -60,12 +65,13 @@ resource "proxmox_vm_qemu" "k8s-workers" {
   disk {
     type = "scsi"
     storage = "local-lvm"
-    size = "32G"
+    size = "20G"
   }
 
   network {
     model = "virtio"
     bridge = "vmbr0"
     firewall = false
+    macaddr = var.k8s_worker_MAC_addresses[count.index]
   }
 }
