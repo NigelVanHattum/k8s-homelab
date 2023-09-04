@@ -4,22 +4,26 @@ set -eo pipefail
 read -rp "Control plane IP address = " control_plane_ip
 
 echo 'Generating configurations'
-talosctl gen config talos-vbox-cluster "https://${control_plane_ip}:6443" --output-dir .out
+talosctl gen config nigel-talos-homelab "https://${control_plane_ip}:6443" --output-dir .out
 
 echo 'Creating control plane node'
 talosctl apply-config --insecure --nodes ${control_plane_ip} --file .out/controlplane.yaml
 
 echo 'Startup the worker nodes and wait for the master to be ready to accept workers'
 read -rp "Worker node(s) IP address(es) = " worker_ips
+echo 'Waiting for 3 minutes to let the controlplane get ready'
+sleep 180
 
 echo 'Creating worker node(s)'
 ifs=$IFS
 IFS=,
 for worker in ${worker_ips}; do
   echo "Creating worker node [${worker}]"
-  talosctl apply-config --insecure --nodes ${worker} --file .out/worker_${worker}.yaml
+  talosctl apply-config --insecure --nodes ${worker} --file .out/worker.yaml
 done
 IFS=$ifs
+echo 'Waiting for another 3 minutes'
+sleep 180
 echo 'Starting bootstrapping process'
 export TALOSCONFIG='.out/talosconfig'
 talosctl config endpoint ${control_plane_ip}
@@ -33,7 +37,7 @@ talosctl bootstrap
 i=0
 while [ $i -le 5 ]; do
   echo "Checking cluster health try nr. ${i}"
-  talosctl health --wait-timeout 30s
+  talosctl health --wait-timeout 90s
   ((i++))
 done
 
