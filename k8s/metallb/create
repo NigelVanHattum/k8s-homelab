@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eo pipefail
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
+
+kubectl config set-context --current --namespace=metallb-system
+kubectl wait pods --all --timeout=60s --for condition=Ready
+kubectl apply -f addresspool.yaml
+kubectl apply -f advertisement.yaml
