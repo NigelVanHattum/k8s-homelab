@@ -1,8 +1,8 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: ip-pool
-  namespace: metallb-system
+  name: extra-ip-pool
+  namespace: metal-lb
 spec:
   addresses:
-    - 10.0.49.80-10.0.49.100
+    - 10.0.49.40-10.0.49.55

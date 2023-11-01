@@ -1,0 +1,3 @@
+#!/bin/bash
+
+helm install --namespace=traefik -f values.yaml traefik traefik/traefik

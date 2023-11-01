@@ -1,0 +1,50 @@
+image:
+  tag: "3.0"
+
+ports:
+  internet:
+    ## -- Enable this entrypoint as a default entrypoint. When a service doesn't explicitly set an entrypoint it will only use this entrypoint.
+    # asDefault: true
+    port: 8444
+    expose: true
+    exposedPort: 6443
+    protocol: TCP
+    http3:
+      enabled: true
+    tls:
+      enabled: true
+      # this is the name of a TLSOption definition
+      options: ""
+      certResolver: ""
+      domains: []
+    middlewares: []
+  websecure:
+    http3:
+      enabled: true
+
+service:
+  enabled: true
+  ## -- Single service is using `MixedProtocolLBService` feature gate.
+  ## -- When set to false, it will create two Service, one for TCP and one for UDP.
+  single: true
+  # -- Additional annotations applied to both TCP and UDP services (e.g. for cloud provider specific config)
+  annotations: {
+    metallb.universe.tf/address-pool: traefik-ip-pool
+  }
+
+ingressRoute:
+  dashboard:
+    # -- Create an IngressRoute for the dashboard
+    enabled: true
+    # -- Additional ingressRoute annotations (e.g. for kubernetes.io/ingress.class)
+    annotations: {}
+    # -- Additional ingressRoute labels (e.g. for filtering IngressRoute by custom labels)
+    labels: {}
+    # -- The router match rule used for the dashboard ingressRoute
+    matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+    # -- Specify the allowed entrypoints to use for the dashboard ingress route, (e.g. traefik, web, websecure).
+    # By default, it's using traefik entrypoint, which is not exposed.
+    # /!\ Do not expose your dashboard without any protection over the internet /!\
+    entryPoints: ["web"]
+    # -- Additional ingressRoute middlewares (e.g. for authentication)
+    middlewares: []

@@ -2,7 +2,8 @@ apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
   name: advertisement
-  namespace: metallb-system
+  namespace: metal-lb
 spec:
   ipAddressPools:
-    - ip-pool
+    - traefik-ip-pool
+    - extra-ip-pool

@@ -14,12 +14,12 @@ variable "proxmox_tls_insecure" {
 variable "proxmox_api_key_id" {
   type = string
   description = "The id of the API key used for proxmox authentication"
-  default = "Terraform@pve!bitbucket-ID"
+  default = "Terraform@pve!october2023"
 }
 
 variable "proxmox_api_key_secret" {
   type = string
-  description = "The secret value of the API key used"
+  description = "The secret value of the API key used: 1de201c6-e7b7-4a56-9915-81104f1d512c"
   sensitive = true
 }
 
