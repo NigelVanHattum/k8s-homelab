@@ -25,6 +25,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "traefik"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "linkerd"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"

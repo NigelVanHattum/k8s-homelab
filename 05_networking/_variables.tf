@@ -15,3 +15,9 @@ variable "traefik_chart_version" {
   description = "Traefik chart version (not traefik version)"
   default = "25.0.0"
 }
+
+variable "linkerd_chart_version" {
+  type = string
+  description = "linkerd chart version"
+  default = "1.16.3"
+}

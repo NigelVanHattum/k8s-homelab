@@ -17,5 +17,9 @@ terraform {
       source = "oboukili/argocd"
       version = ">= 6.0.3, < 7.0.0"
     }
+    tls = {
+      source = "hashicorp/tls"
+      version = ">= 4.0.4, < 5.0.0"
+    }
   }
 }
