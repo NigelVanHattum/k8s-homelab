@@ -31,6 +31,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "linkerd"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "postgresql"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"
