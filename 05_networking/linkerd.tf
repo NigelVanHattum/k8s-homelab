@@ -1,5 +1,8 @@
 resource "kubernetes_namespace" "linkerd" {
   metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
     name   = "linkerd"
     labels = {
       "pod-security.kubernetes.io/audit"   = "privileged"

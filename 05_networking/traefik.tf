@@ -1,5 +1,8 @@
 resource "kubernetes_namespace" "traefik" {
   metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
     name   = "traefik"
   }
 }

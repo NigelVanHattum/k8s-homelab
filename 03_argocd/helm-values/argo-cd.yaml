@@ -1,12 +1,12 @@
 server:
   ingress:
     enabled: true
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: internet
-    hosts:
-      - argo.nigelvanhattum.nl
-      - argo.local.nigelvanhattum.nl
-      - hallo.local.nigelvanhattum.nl
+    # annotations:
+    #   traefik.ingress.kubernetes.io/router.entrypoints: internet
+    # hosts:
+    #   - argo.nigelvanhattum.nl
+    #   - argo.local.nigelvanhattum.nl
+    #   - hallo.local.nigelvanhattum.nl
 
 configs:
   params:

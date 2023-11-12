@@ -1,5 +1,8 @@
 resource "kubernetes_namespace" "nfs-csi-driver" {
   metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
     name   = "nfs-csi-driver"
     labels = {
       "pod-security.kubernetes.io/audit"   = "privileged"
