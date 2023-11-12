@@ -1,4 +1,3 @@
-
 variable "proxmox_url" {
   type = string
   description = "The API URL of the Proxmox server"
@@ -14,7 +13,7 @@ variable "proxmox_tls_insecure" {
 variable "proxmox_api_key_id" {
   type = string
   description = "The id of the API key used for proxmox authentication"
-  default = "Terraform@pve!october2023"
+  default = "Terraform@pve!november2023"
 }
 
 variable "proxmox_api_key_secret" {
