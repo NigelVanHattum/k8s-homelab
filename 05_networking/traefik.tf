@@ -7,6 +7,19 @@ resource "kubernetes_namespace" "traefik" {
   }
 }
 
+resource "kubernetes_secret" "cloudflare_api_token" {
+  metadata {
+    name = "cloudflare-token"
+    namespace = kubernetes_namespace.traefik.metadata.0.name
+  }
+
+  immutable = true
+
+  data = {
+    "token" = var.cloudlfare_dns_api_token
+  }
+}
+
 resource "argocd_repository" "traefik" {
   repo = "https://traefik.github.io/charts"
   name = "traefik"

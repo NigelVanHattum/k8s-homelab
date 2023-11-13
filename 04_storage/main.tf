@@ -56,8 +56,18 @@ resource "argocd_application" "nfs-csi-driver" {
   }
 }
 
-resource "kubectl_manifest" "nfs-storage-class" {
-  yaml_body          = file("manifests/nfs-storageClass.yaml")
+resource "kubectl_manifest" "nfs-storage-class-postgresql" {
+  yaml_body          = file("manifests/nfs-storageClass-postgresql.yaml")
+  override_namespace = kubernetes_namespace.nfs-csi-driver.metadata.0.name
+
+  depends_on = [
+    kubernetes_namespace.nfs-csi-driver,
+    argocd_application.nfs-csi-driver,
+  ]
+}
+
+resource "kubectl_manifest" "nfs-storage-class-traefik" {
+  yaml_body          = file("manifests/nfs-storageClass-traefik.yaml")
   override_namespace = kubernetes_namespace.nfs-csi-driver.metadata.0.name
 
   depends_on = [

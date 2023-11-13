@@ -16,6 +16,12 @@ variable "traefik_chart_version" {
   default = "25.0.0"
 }
 
+variable "cloudlfare_dns_api_token" {
+  type = string
+  description = "Token used for cloudflare DNS challenge"
+  sensitive = true
+}
+
 variable "linkerd_chart_version" {
   type = string
   description = "linkerd chart version"

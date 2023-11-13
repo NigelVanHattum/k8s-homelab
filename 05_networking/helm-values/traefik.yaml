@@ -32,6 +32,22 @@ service:
     metallb.universe.tf/address-pool: traefik-ip-pool
   }
 
+persistence:
+  enabled: true
+  storageClass: nfs-csi-traefik
+
+certResolvers:
+  letsencrypt:
+    dnsChallenge:
+      provider: cloudflare
+    storage: /data/acme.json
+env:
+  - name: CF_DNS_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-token
+        key: token
+
 ingressRoute:
   dashboard:
     # -- Create an IngressRoute for the dashboard
@@ -48,3 +64,21 @@ ingressRoute:
     entryPoints: ["web"]
     # -- Additional ingressRoute middlewares (e.g. for authentication)
     middlewares: []
+
+deployment:
+ initContainers:
+    - name: volume-permissions
+      image: busybox:latest
+      command:
+        [
+          "sh",
+          "-c",
+          "touch /data/acme.json; chown 65532 /data/acme.json; chmod -v 600 /data/acme.json",
+        ]
+      securityContext:
+        runAsNonRoot: false
+        runAsGroup: 0
+        runAsUser: 0
+      volumeMounts:
+        - name: data
+          mountPath: /data

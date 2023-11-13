@@ -1,11 +1,11 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata: 
-  name: nfs-csi
+  name: nfs-csi-postgresql
 provisioner: nfs.csi.k8s.io
 parameters:
   server: 192.168.20.3
-  share: /volume1/k8s
+  share: /volume1/k8s/postgresql
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
 mountOptions:

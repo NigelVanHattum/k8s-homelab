@@ -48,7 +48,7 @@ resource "argocd_application" "postgresql" {
       helm {
         parameter {
             name = "global.storageClass"
-            value = "nfs-csi"
+            value = "nfs-csi-postgresql"
         }  
         parameter {
             name = "global.postgresql.existingSecret"
