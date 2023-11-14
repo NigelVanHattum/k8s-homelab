@@ -21,9 +21,3 @@ variable "cloudlfare_dns_api_token" {
   description = "Token used for cloudflare DNS challenge"
   sensitive = true
 }
-
-variable "linkerd_chart_version" {
-  type = string
-  description = "linkerd chart version"
-  default = "1.16.3"
-}

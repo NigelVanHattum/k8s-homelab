@@ -4,6 +4,11 @@ resource "kubernetes_namespace" "traefik" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "traefik"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
   }
 }
 

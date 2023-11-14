@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "Homelab"
-      name = "05_networking"
+      name = "07_01_management"
     }
   }
 }

@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "Homelab"
-      name = "03_argocd"
+      name = "03_linkerd"
     }
   }
 }

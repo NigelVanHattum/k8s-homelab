@@ -58,68 +58,32 @@ resource "tls_locally_signed_cert" "issuer" {
   ca_cert_pem           = tls_self_signed_cert.ca.cert_pem
   is_ca_certificate     = true
   set_subject_key_id    = true
-  validity_period_hours = 87600
+  validity_period_hours = 2160
   allowed_uses = [
     "cert_signing",
     "crl_signing"
   ]
 }
 
-resource "argocd_repository" "linkerd" {
-  repo = "https://helm.linkerd.io/stable"
-  name = "linkerd-control-plane"
-  type = "helm"
-}
+resource "helm_release" "linkerd" {
+  name       = "linkerd"
+  repository = "https://helm.linkerd.io/stable"
+  chart      = "linkerd-control-plane"
+  version    = var.linkerd_chart_version
+  namespace   = kubernetes_namespace.linkerd.metadata.0.name
 
-resource "argocd_application" "linkerd" {
-  metadata {
-    name = "linkerd"
+  set {
+    name = "identityTrustAnchorsPEM"
+    value = tls_locally_signed_cert.issuer.ca_cert_pem
   }
-  wait = true
-  spec {
-    project = "system"
-    source {
-      repo_url        = argocd_repository.linkerd.repo
-      chart           = argocd_repository.linkerd.name
-      target_revision = var.linkerd_chart_version
 
-      helm {
-        parameter {
-            name = "identityTrustAnchorsPEM"
-            value = tls_locally_signed_cert.issuer.ca_cert_pem
-        }   
-        parameter {
-            name = "identity.issuer.tls.crtPEM"
-            value = tls_locally_signed_cert.issuer.cert_pem
-        }  
-        parameter {
-            name = "identity.issuer.tls.keyPEM"
-            value = tls_private_key.issuer.private_key_pem
-        }   
-      }
-    }
+  set {
+    name = "identity.issuer.tls.crtPEM"
+    value = tls_locally_signed_cert.issuer.cert_pem
+  }
 
-    sync_policy {
-      automated {
-        prune       = true
-        self_heal   = true
-        allow_empty = true
-      }
-      # Only available from ArgoCD 1.5.0 onwards
-      sync_options = ["Validate=false"]
-      retry {
-        limit = "5"
-        backoff {
-          duration     = "30s"
-          max_duration = "2m"
-          factor       = "2"
-        }
-      }
-    }
-
-    destination {
-      namespace = kubernetes_namespace.linkerd.metadata.0.name
-      name = "in-cluster"
-    }
+  set {
+    name = "identity.issuer.tls.keyPEM"
+    value = tls_private_key.issuer.private_key_pem
   }
 }

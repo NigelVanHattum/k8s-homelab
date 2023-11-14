@@ -74,13 +74,23 @@ $ ./03_bootstrap
 
 This will store all important files in the talos/.out/ folder. Keep these secure.
 
-## 03_ArgoCD
+## 03_linkerd
+Linkerd is used to enable secure traffic throughout the whole cluster. Linkerd should be the first thing you install, this will effect all deployments that come after. 
+
+```bash
+$ cd 03_linkerd
+$ terraform init
+$ terraform plan -out plan.tfplan
+$ terraform apply plan.tfplan 
+```
+
+## 04_ArgoCD
 Argo is deployed using Terraform. Follow the script that will deploy argoCD.   
 ```bash
-$ cd 03_argocd
+$ cd 04_argocd
 $ terraform init
-$ terraform plan -out argocd.tfplan
-$ terraform apply argocd.tfplan 
+$ terraform plan -out plan.tfplan
+$ terraform apply plan.tfplan 
 ```
 
 If you receive the following error: 
@@ -99,23 +109,23 @@ $ kubectl port-forward svc/argocd-server 8080:80
 $ echo "Login with admin:$(kubectl get secrets -n argo -o json argocd-initial-admin-secret | jq -r '.data.password' | base64 -d)"
 ```
 
-## 04_Storage
+## 05_Storage
 In order to have a seperate storage provider, I am using a NFS provider. Deployment of this chart is done through ArgoCD. 
 
 ```bash
-$ cd 04_storage
+$ cd 05_storage
 $ terraform init
-$ terraform plan -out storage.tfplan
-$ terraform apply storage.tfplan 
+$ terraform plan -out plan.tfplan
+$ terraform apply plan.tfplan 
 ```
 
-## 05_Networking
+## 06_Networking
 Below is some information about everything that is deploy with the following script:
 ```bash
-$ cd 05_networking
+$ cd 06_networking
 $ terraform init
-$ terraform plan -out networking.tfplan
-$ terraform apply networking.tfplan 
+$ terraform plan -out plan.tfplan
+$ terraform apply plan.tfplan 
 ```
 
 ### MetalLB
@@ -136,7 +146,14 @@ Traefik will be deployed as the reverse proxy for all services. This will have a
 | websecure     | True      | 443       | local network             |
 | internet      | True      | 6443      | public internet           |
 
-## 06_database
+Let's encrypt setup is done following the following example: 
+- https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#use-traefik-native-lets-encrypt-integration-without-cert-manager
+- https://go-acme.github.io/lego/dns/cloudflare/
+
+
+There were some permission issues, they are solve by introducting the init-container
+
+## 07_database
 
 ### PostgreSQL
 PostgreSQL is deployed via the Bitname postgresql-ha helm chart using ArgoCD. You will be asked to create a password for the postgres user. 
@@ -147,7 +164,7 @@ If you ever forget the password, here is how to retrieve it:
 kubectl get secret "postgres-admin-password" -o json -n postgresql | jq -r ".[\"data\"][\"password\"]" | base64 -d 
 ```
 
-### 06_database_06_01_management
+### 07_01_management
 The database is not exposed outside the cluster, to connect to the database you first need to port-forward the database port: 
 ```Bash
 kubectl port-forward service/postgresql-postgresql-ha-postgresql 5432:5432 -n postgresql

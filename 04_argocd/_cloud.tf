@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "Homelab"
-      name = "03_argocd-system-project"
+      name = "04_argocd"
     }
   }
 }

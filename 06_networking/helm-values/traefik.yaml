@@ -1,6 +1,18 @@
 image:
   tag: "3.0"
 
+certResolvers:
+  letsencrypt:
+    dnsChallenge:
+      provider: cloudflare
+    storage: /data/acme.json
+env:
+  - name: CF_DNS_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-token
+        key: token
+
 ports:
   internet:
     ## -- Enable this entrypoint as a default entrypoint. When a service doesn't explicitly set an entrypoint it will only use this entrypoint.
@@ -13,14 +25,23 @@ ports:
       enabled: true
     tls:
       enabled: true
-      # this is the name of a TLSOption definition
       options: ""
-      certResolver: ""
-      domains: []
+      certResolver: "letsencrypt"
+      domains:
+        - main: "*.nigelvanhattum.nl"
     middlewares: []
   websecure:
+    expose: true
+    exposedPort: 443
     http3:
       enabled: true
+    tls:
+      enabled: true
+      options: ""
+      certResolver: "letsencrypt"
+      domains:
+        - main: "*.nigelvanhattum.nl"
+    middlewares: []
 
 service:
   enabled: true
@@ -35,18 +56,6 @@ service:
 persistence:
   enabled: true
   storageClass: nfs-csi-traefik
-
-certResolvers:
-  letsencrypt:
-    dnsChallenge:
-      provider: cloudflare
-    storage: /data/acme.json
-env:
-  - name: CF_DNS_API_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: cloudflare-token
-        key: token
 
 ingressRoute:
   dashboard:
@@ -64,6 +73,12 @@ ingressRoute:
     entryPoints: ["web"]
     # -- Additional ingressRoute middlewares (e.g. for authentication)
     middlewares: []
+
+podSecurityContext:
+  # /!\ When setting fsGroup, Kubernetes will recursively change ownership and
+  # permissions for the contents of each volume to match the fsGroup. This can
+  # be an issue when storing sensitive content like TLS Certificates /!\
+  fsGroup: 65532
 
 deployment:
  initContainers:
