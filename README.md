@@ -105,7 +105,7 @@ $ export KUBE_CONFIG_PATH=/path/to/.kube/config
 
 After ArgoCD is up and running, you are able to reach it by port-forwarding the deployment and after that exporting the secret, created by the deployment.
 ```bash
-$ kubectl port-forward svc/argocd-server 8080:80
+$ kubectl port-forward svc/argocd-server 8080:80 -n argo
 $ echo "Login with admin:$(kubectl get secrets -n argo -o json argocd-initial-admin-secret | jq -r '.data.password' | base64 -d)"
 ```
 
@@ -168,4 +168,12 @@ kubectl get secret "postgres-admin-password" -o json -n postgresql | jq -r ".[\"
 The database is not exposed outside the cluster, to connect to the database you first need to port-forward the database port: 
 ```Bash
 kubectl port-forward service/postgresql-postgresql-ha-postgresql 5432:5432 -n postgresql
+```
+
+After port forwarding you are able to directly connect to your database. This will allow you to create your users/ databases. 
+```bash
+$ cd 07_01_management
+$ terraform init
+$ terraform plan -out plan.tfplan
+$ terraform apply plan.tfplan 
 ```
