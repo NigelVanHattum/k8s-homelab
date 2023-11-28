@@ -40,7 +40,7 @@ ports:
       options: ""
       certResolver: "letsencrypt"
       domains:
-        - main: "*.nigelvanhattum.nl"
+        - main: "*.local.nigelvanhattum.nl"
     middlewares: []
 
 service:
