@@ -21,6 +21,15 @@ resource "helm_release" "linkerd-crd" {
   name             = "linkerd-crds"
 }
 
+# resource "helm_release" "linkerd-cni" {
+#   repository = "https://helm.linkerd.io/stable"
+#   chart      = "linkerd2-cni"
+
+#   namespace        = "linkerd"
+#   create_namespace = false
+#   name             = "linkerd-cni"
+# }
+
 resource "tls_private_key" "ca" {
   algorithm   = "ECDSA"
   ecdsa_curve = "P384"
@@ -67,10 +76,15 @@ resource "tls_locally_signed_cert" "issuer" {
 
 resource "helm_release" "linkerd" {
   name       = "linkerd"
-  repository = "https://helm.linkerd.io/stable"
+  repository = helm_release.linkerd-crd.repository
   chart      = "linkerd-control-plane"
   version    = var.linkerd_chart_version
   namespace   = kubernetes_namespace.linkerd.metadata.0.name
+
+  # set {
+  #   name = "cniEnabled"
+  #   value = true
+  # }
 
   set {
     name = "identityTrustAnchorsPEM"
