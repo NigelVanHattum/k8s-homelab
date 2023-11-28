@@ -12,6 +12,20 @@ resource "kubernetes_namespace" "postgresql" {
   }
 }
 
+resource "kubernetes_secret" "pgpool_users" {
+  metadata {
+    name = var.pgpool_customUsersSecret
+    namespace = "postgresql"
+  }
+
+  immutable = false
+
+  data = {
+    usernames = "postgres"
+    passwords = "${var.postgresql_admin_password}"
+  }
+}
+
 resource "kubernetes_secret" "postgres_admin_password" {
   metadata {
     name = "postgres-admin-password"
@@ -53,7 +67,11 @@ resource "argocd_application" "postgresql" {
         parameter {
             name = "global.postgresql.existingSecret"
             value = kubernetes_secret.postgres_admin_password.metadata.0.name
-        }  
+        }
+        parameter {
+            name = "pgpool.customUsersSecret"
+            value = kubernetes_secret.pgpool_users.metadata.0.name
+        }
       }
     }
 

@@ -14,3 +14,7 @@ variable "postgresql_admin_password" {
   sensitive = true
 }
 
+variable "pgpool_customUsersSecret" {
+  type = string
+  default = "postgres-users"
+}
