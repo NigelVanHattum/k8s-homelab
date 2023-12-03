@@ -60,10 +60,7 @@ resource "argocd_application" "postgresql" {
       target_revision = var.postgresql_chart_version
 
       helm {
-        parameter {
-            name = "global.storageClass"
-            value = "nfs-csi-postgresql"
-        }  
+        values = file("helm-values/postgresql-ha.yaml")
         parameter {
             name = "global.postgresql.existingSecret"
             value = kubernetes_secret.postgres_admin_password.metadata.0.name
