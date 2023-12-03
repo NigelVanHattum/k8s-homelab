@@ -37,6 +37,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "postgresql"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "authentik"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"

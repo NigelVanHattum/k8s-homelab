@@ -75,3 +75,13 @@ resource "kubectl_manifest" "nfs-storage-class-traefik" {
     argocd_application.nfs-csi-driver,
   ]
 }
+
+resource "kubectl_manifest" "nfs-storage-class-authentik" {
+  yaml_body          = file("manifests/nfs-storageClass-authentik.yaml")
+  override_namespace = kubernetes_namespace.nfs-csi-driver.metadata.0.name
+
+  depends_on = [
+    kubernetes_namespace.nfs-csi-driver,
+    argocd_application.nfs-csi-driver,
+  ]
+}

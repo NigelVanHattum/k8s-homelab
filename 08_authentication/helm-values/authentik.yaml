@@ -1,0 +1,32 @@
+authentik:
+    error_reporting:
+        enabled: true
+    postgresql:
+        use_pgpool: true
+        host: postgresql-postgresql-ha-pgpool.postgresql.svc.cluster.local
+    log_level: debug
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: internet
+  hosts:
+    - host: "authentik.nigelvanhattum.nl"
+      paths:
+        - path: "/"
+          pathType: Prefix
+
+
+geoip:
+  enabled: false
+  updateInterval: 8
+
+autoscaling:
+  server:
+    enabled: true
+
+redis:
+  enabled: true
+  global:
+    storageClass: "nfs-csi-authentik"
