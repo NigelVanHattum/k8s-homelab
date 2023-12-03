@@ -22,7 +22,12 @@ resource "helm_release" "argo-cd" {
   version          = var.argo_cd_version
 
   values = [
-    file("helm-values/argo-cd.yaml")
+    templatefile("helm-values/argo-cd-template.yaml", {
+      tenant_id = var.azure_tenant_id
+      client_id = var.azure_client_id
+      client_secret = var.azure_client_secret
+      entra_admin_group_id = var.entra_admin_group_id
+    })
   ]
 }
 

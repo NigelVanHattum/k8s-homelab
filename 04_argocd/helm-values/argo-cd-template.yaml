@@ -1,0 +1,45 @@
+server:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: internet, websecure
+    hosts:
+      - argo.nigelvanhattum.nl
+      - argo.local.nigelvanhattum.nl
+  autoscaling: 
+    enabled: true
+    minReplicas: 1
+
+configs:
+  params:
+    server.insecure: true
+  cm:
+    create: true
+    url: https://argo.nigelvanhattum.nl
+    oidc.config: |
+      name: Azure
+      issuer: https://login.microsoftonline.com/${tenant_id}/v2.0
+      clientID: ${client_id}
+      clientSecret: $oidc.azure.clientSecret
+      requestedIDTokenClaims:
+        groups:
+            essential: true
+      requestedScopes:
+        - openid
+        - profile
+        - email
+  rbac:
+    policy.csv: |
+      p, role:org-admin, applications, *, */*, allow
+      p, role:org-admin, clusters, get, *, allow
+      p, role:org-admin, repositories, *, *, allow
+      p, role:org-admin, logs, get, *, allow
+      p, role:org-admin, exec, create, */*, allow
+      g, ${entra_admin_group_id}, role:admin
+    policy.default: role:readonly
+  secret:
+    extra: 
+      oidc.azure.clientSecret: ${client_secret}
+
+logging:
+  format: json
