@@ -85,7 +85,8 @@ $ terraform apply plan.tfplan
 ```
 
 ## 04_ArgoCD
-Argo is deployed using Terraform. Follow the script that will deploy argoCD.   
+Argo is deployed using Terraform. Follow the script that will deploy argoCD. ArgoCD also tries to allow OIDC connections, follow [this guide](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/microsoft/#azure-ad-app-registration-auth-using-oidc). 
+
 ```bash
 $ cd 04_argocd
 $ terraform init
@@ -167,7 +168,7 @@ kubectl get secret "postgres-admin-password" -o json -n postgresql | jq -r ".[\"
 ### 07_01_management
 The database is not exposed outside the cluster, to connect to the database you first need to port-forward the database port: 
 ```Bash
-kubectl port-forward service/postgresql-postgresql-ha-postgresql 5432:5432 -n postgresql
+kubectl port-forward service/postgresql-postgresql-ha-pgpool 5432:5432 -n postgresql
 ```
 
 After port forwarding you are able to directly connect to your database. This will allow you to create your users/ databases. 
@@ -177,3 +178,14 @@ $ terraform init
 $ terraform plan -out plan.tfplan
 $ terraform apply plan.tfplan 
 ```
+
+The postgres-ha helm chart does not auto update the pgpool secret pods whenever the secret changes. Make sure to restart your pgpool pod, in order to allow new users to connect. 
+
+## 08_authentication
+For system wide authentication I've choosen to go with Authentik. 
+
+### GeoIP acces
+To allow some geo data with your acces log you can enable GeoIP logging. To enable this, follow this guide: https://goauthentik.io/docs/core/geoip. The setup is present in de default helm-values.
+
+### Azure - Entra ID
+In order to add your Azure Entra ID, following [this guide](https://goauthentik.io/integrations/sources/azure-ad/) and use the variables.
