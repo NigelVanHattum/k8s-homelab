@@ -99,3 +99,11 @@ deployment:
       volumeMounts:
         - name: data
           mountPath: /data
+
+providers:
+  kubernetesIngress:
+    publishedService:
+      enabled: true
+      # Published Kubernetes Service to copy status from. Format: namespace/servicename
+      # By default this Traefik service
+      # pathOverride: ""
