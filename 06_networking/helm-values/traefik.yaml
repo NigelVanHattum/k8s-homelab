@@ -107,3 +107,8 @@ providers:
       # Published Kubernetes Service to copy status from. Format: namespace/servicename
       # By default this Traefik service
       # pathOverride: ""
+  kubernetesCRD:
+    # -- Load Kubernetes IngressRoute provider
+    enabled: true
+    # -- Allows IngressRoute to reference resources in namespace other than theirs
+    allowCrossNamespace: true
