@@ -13,13 +13,13 @@ kubectl get svc -A|egrep -v 'CLUSTER-IP|None'|awk '{print $4}'|sort -V > ips
 kubectl cp ips ubuntu:/
 
 echo =========== Installing dig tool into the pod ===============
-kubectl exec -it ubuntu -- apt-get update
-kubectl exec -it ubuntu -- apt install -y dnsutils
+kubectl exec -it ubuntu -c "ubuntu" -- apt-get update
+kubectl exec -it ubuntu -c "ubuntu" -- apt install -y dnsutils
 
 # Print 7 blank lines
 yes '' | sed 7q
 echo =========== Print all k8s SVC DNS records ====================
-for ip in $(cat ips); do echo -n "$ip "; kubectl exec -it ubuntu -- dig -x $ip +short; done
+for ip in $(cat ips); do echo -n "$ip "; kubectl exec -it ubuntu -c "ubuntu" -- dig -x $ip +short; done
 echo ====== End of list =====================
 
 echo ========= Cleanup  ===============
