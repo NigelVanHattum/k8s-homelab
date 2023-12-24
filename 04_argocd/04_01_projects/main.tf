@@ -53,3 +53,28 @@ resource "argocd_project" "argo-cd-system-project" {
     }
   }
 }
+
+resource "argocd_project" "argo-cd-apps-project" {
+  metadata {
+    name      = "apps"
+  }
+
+  spec {
+    description = "project for system applications"
+    source_repos      = ["*"]
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "mediaserver"
+    }
+    cluster_resource_whitelist {
+      group = "*"
+      kind  = "*"
+    }
+
+    orphaned_resources {
+      warn = true
+    }
+  }
+}
