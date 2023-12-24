@@ -72,3 +72,12 @@ resource "argocd_application" "traefik" {
     }
   }
 }
+
+resource "kubectl_manifest" "authentik-middleware" {
+  yaml_body          = file("manifests/authentik-middleware.yaml")
+  override_namespace = kubernetes_namespace.traefik.metadata.0.name
+
+  depends_on = [
+    kubernetes_namespace.traefik
+  ]
+}
