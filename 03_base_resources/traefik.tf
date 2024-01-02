@@ -1,17 +1,3 @@
-resource "kubernetes_namespace" "traefik" {
-  metadata {
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-    name   = "traefik"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
-  }
-}
-
 resource "kubernetes_secret" "cloudflare_api_token" {
   metadata {
     name = "cloudflare-token"
@@ -73,11 +59,12 @@ resource "argocd_application" "traefik" {
   }
 }
 
-resource "kubectl_manifest" "authentik-middleware" {
-  yaml_body          = file("manifests/authentik-middleware.yaml")
+resource "kubectl_manifest" "authentik_middleware" {
+  yaml_body          = file("manifests/networking/authentik-middleware.yaml")
   override_namespace = kubernetes_namespace.traefik.metadata.0.name
 
   depends_on = [
     kubernetes_namespace.traefik
   ]
 }
+

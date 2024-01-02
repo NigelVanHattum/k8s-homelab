@@ -36,8 +36,9 @@ configs:
       p, role:org-admin, logs, get, *, allow
       p, role:org-admin, exec, create, */*, allow
       g, ${entra_admin_group_id}, role:admin
-    policy.default: role:readonly
+    policy.default: role:admin
   secret:
+    argocdServerAdminPassword: ${argocd_admin_password}
     extra: 
       oidc.azure.clientSecret: ${client_secret}
 

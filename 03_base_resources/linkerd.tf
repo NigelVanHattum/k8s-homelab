@@ -1,17 +1,3 @@
-resource "kubernetes_namespace" "linkerd" {
-  metadata {
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-    name   = "linkerd"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
-  }
-}
-
 resource "helm_release" "linkerd-crd" {
   repository = "https://helm.linkerd.io/stable"
   chart      = "linkerd-crds"

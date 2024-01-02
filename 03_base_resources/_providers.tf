@@ -12,5 +12,5 @@ provider "argocd" {
   plain_text = true
   port_forward_with_namespace = "argo"
   username = "admin"
-  password = var.argocd_admin_password
+  password = random_password.argocd_admin_password.result
 }

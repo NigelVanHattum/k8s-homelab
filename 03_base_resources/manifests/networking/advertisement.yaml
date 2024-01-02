@@ -6,4 +6,5 @@ metadata:
 spec:
   ipAddressPools:
     - traefik-ip-pool
+    - adguard-ip-pool
     - extra-ip-pool
