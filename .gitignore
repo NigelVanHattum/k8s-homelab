@@ -54,3 +54,4 @@ Thumbs.db
 *.tfplan
 *.terraform*
 
+*/terraform.tfvars
