@@ -1,7 +1,7 @@
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2023.10.4"
+  default = "2023.10.5"
 }
 
 variable "argocd_admin_password" {

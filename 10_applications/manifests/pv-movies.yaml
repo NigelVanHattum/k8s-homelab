@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-media
+spec:
+  capacity:
+    storage: 12Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.20.3
+    path: "/volume1/Plex-Media/"
+  mountOptions:
+    - hard
+    - nfsvers=4.2

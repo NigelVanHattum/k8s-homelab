@@ -3,6 +3,8 @@ server:
     enabled: true
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: internet, websecure
+      # traefik.ingress.kubernetes.io/router.middlewares: traefik-authentik@kubernetescrd
+      # traefik.http.middlewares.test-auth.forwardauth.address: "https://authentik.nigelvanhattum.nl/outpost.goauthentik.io/auth/traefik"
     hosts:
       - argo.nigelvanhattum.nl
       - argo.local.nigelvanhattum.nl
