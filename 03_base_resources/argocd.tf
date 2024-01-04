@@ -6,7 +6,6 @@ resource "helm_release" "argocd" {
   create_namespace = false
   name             = "argocd"
   version          = var.argocd_chart_version
-  wait = true
 
   values = [
     templatefile("helm-values/argocd.yaml", {
@@ -25,7 +24,7 @@ resource "argocd_project" "argo-cd-system-project" {
     name      = "system"
   }
 
-  depends_on = [time_sleep.wait_for_argo_startup]
+  depends_on = [time_sleep.wait_for_argo]
 
   spec {
     description = "project for system applications"
@@ -83,7 +82,7 @@ resource "argocd_project" "argo_cd_apps_project" {
     name      = "apps"
   }
 
-  depends_on = [time_sleep.wait_for_argo_startup]
+  depends_on = [time_sleep.wait_for_argo]
 
   spec {
     description = "project for system applications"
@@ -105,9 +104,8 @@ resource "argocd_project" "argo_cd_apps_project" {
   }
 }
 
-resource "time_sleep" "wait_for_argo_startup" {
+resource "time_sleep" "wait_for_argo" {
   depends_on = [helm_release.argocd]
 
   create_duration = "10s"
 }
-

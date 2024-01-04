@@ -2,6 +2,8 @@ resource "argocd_repository" "metallb" {
   repo = "https://metallb.github.io/metallb"
   name = "metallb"
   type = "helm"
+
+  depends_on = [argocd_project.argo-cd-system-project]
 }
 
 resource "argocd_application" "metallb" {

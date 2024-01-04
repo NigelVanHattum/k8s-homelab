@@ -2,27 +2,27 @@
 variable "azure_tenant_id" {
   type    = string
   sensitive = true
-}
+  }
 variable "azure_client_id" {
   type    = string
   sensitive = true
-}
+  }
 variable "azure_client_secret" {
   type    = string
   sensitive = true
-}
+  }
 variable "entra_admin_group_id" {
   type    = string
   # sensitive = true
   default   = "TODO"
-}
+  }
 
 ### Networking
 variable "cloudlfare_dns_api_token" {
   type = string
   description = "Token used for cloudflare DNS challenge"
   sensitive = true
-}
+  }
 
 ### Databases
 variable "pgpool_customUsersSecret" {
@@ -32,7 +32,15 @@ variable "pgpool_customUsersSecret" {
 variable "postgresql_admin_password" {
   type = string
   sensitive = true
-}
+  }
+variable "postgresql_authentik_password" {
+  type = string
+  sensitive = true
+  }
+variable "postgresql_authentik_username" {
+  type = string
+  default = "authentik"
+  }
 
 
 ### Authentik

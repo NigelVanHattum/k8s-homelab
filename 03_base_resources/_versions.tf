@@ -21,5 +21,9 @@ terraform {
       source = "hashicorp/tls"
       version = ">= 4.0.4, < 5.0.0"
     }
+    postgresql = {
+      source = "cyrilgdn/postgresql"
+      version = ">= 1.21.0, < 2.0.0"
+    }
   }
 }

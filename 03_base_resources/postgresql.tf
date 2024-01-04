@@ -3,6 +3,8 @@ resource "argocd_repository" "postgresql" {
   name = "bitnamicharts/postgresql-ha"
   enable_oci = true
   type = "helm"
+
+  depends_on = [argocd_project.argo-cd-system-project]
 }
 
 resource "argocd_application" "postgresql" {
@@ -61,5 +63,5 @@ resource "kubernetes_manifest" "postgres_ingress" {
   # wait {
   #   rollout = true
   # }
-  depends_on = [argocd_application.postgresql]
+  depends_on = [kubernetes_namespace.postgresql]
 }

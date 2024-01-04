@@ -38,7 +38,6 @@ resource "kubernetes_namespace" "nfs_csi_driver" {
       "pod-security.kubernetes.io/warn"    = "privileged"
     }
   }
-  depends_on = [time_sleep.wait_for_argo_startup]
 }
 
 resource "kubernetes_namespace" "metallb" {
@@ -53,7 +52,6 @@ resource "kubernetes_namespace" "metallb" {
       "pod-security.kubernetes.io/warn"    = "privileged"
     }
   }
-  depends_on = [time_sleep.wait_for_argo_startup]
 }
 
 resource "kubernetes_namespace" "traefik" {
@@ -68,7 +66,6 @@ resource "kubernetes_namespace" "traefik" {
       "pod-security.kubernetes.io/warn"    = "privileged"
     }
   }
-  depends_on = [time_sleep.wait_for_argo_startup]
 }
 
 resource "kubernetes_namespace" "postgresql" {
@@ -83,5 +80,4 @@ resource "kubernetes_namespace" "postgresql" {
       "pod-security.kubernetes.io/warn"    = "privileged"
     }
   }
-  depends_on = [time_sleep.wait_for_argo_startup]
 }
