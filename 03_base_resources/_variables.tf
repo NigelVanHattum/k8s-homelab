@@ -41,7 +41,28 @@ variable "postgresql_authentik_username" {
   type = string
   default = "authentik"
   }
+variable "postgresql_hass_password" {
+  type = string
+  sensitive = true
+  }
+variable "postgresql_hass_username" {
+  type = string
+  default = "homeassistant"
+  }
 
+### InfluxDB
+variable "influxdb_secret_name" {
+  type = string
+  default = "influxdb_admin_user"
+  }
+variable "influxdb_admin_username" {
+  type = string
+  default = "admin"
+  }
+variable "influxdb_admin_password" {
+  type = string
+  sensitive = true
+  }
 
 ### Authentik
 # variable "postgresql_password" {

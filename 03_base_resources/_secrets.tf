@@ -35,8 +35,8 @@ resource "kubernetes_secret" "pgpool_users" {
   immutable = false
 
   data = {
-    usernames = "postgres,${var.postgresql_authentik_username}"
-    passwords = "${var.postgresql_admin_password},${var.postgresql_authentik_password}"
+    usernames = "postgres,${var.postgresql_authentik_username},${var.postgresql_hass_username}"
+    passwords = "${var.postgresql_admin_password},${var.postgresql_authentik_password},${var.postgresql_hass_password}"
   }
 }
 
@@ -51,5 +51,19 @@ resource "kubernetes_secret" "postgres_admin_password" {
   data = {
     repmgr-password = var.postgresql_admin_password
     password = var.postgresql_admin_password
+  }
+}
+
+resource "kubernetes_secret" "influxdb_admin" {
+  metadata {
+    name = var.influxdb_secret_name
+    namespace = kubernetes_namespace.influxdb.metadata.0.name
+  }
+
+  immutable = false
+
+  data = {
+    usernames = "postgres,${var.postgresql_authentik_username},${var.postgresql_hass_username}"
+    passwords = "${var.postgresql_admin_password},${var.postgresql_authentik_password},${var.postgresql_hass_password}"
   }
 }
