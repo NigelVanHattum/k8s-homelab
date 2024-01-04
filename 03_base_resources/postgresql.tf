@@ -54,3 +54,12 @@ resource "argocd_application" "postgresql" {
     }
   }
 }
+
+resource "kubernetes_manifest" "postgres_ingress" {
+  manifest = yamldecode(file("${path.module}/manifests/ingress/postgresql.yaml"))
+  ## wait does not work, there is no status viewer for it
+  # wait {
+  #   rollout = true
+  # }
+  depends_on = [argocd_application.postgresql]
+}

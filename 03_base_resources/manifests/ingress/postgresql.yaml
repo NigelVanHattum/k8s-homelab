@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: postgresql
+  name: postgresql-pgpool-ingress
+  namespace: postgresql
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: HostSNI(postgresql.local.nigelvanhattum.nl)
+      # tls:
+      #   paths:
+      #     - backend:
+      #         service:
+      #           name: postgresql-postgresql-ha-pgpool
+      #           port:
+      #             name: postgresql
+      #       path: /
+      #       pathType: Prefix
