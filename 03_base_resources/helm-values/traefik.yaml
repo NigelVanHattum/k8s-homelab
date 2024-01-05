@@ -31,6 +31,7 @@ ports:
         - main: "*.nigelvanhattum.nl"
     middlewares: []
   websecure:
+    port: 8443
     expose: true
     exposedPort: 443
     http3:
@@ -42,6 +43,15 @@ ports:
       domains:
         - main: "*.local.nigelvanhattum.nl"
     middlewares: []
+  postgresql:
+    port: 5432
+    expose: true
+    exposedPort: 5432
+    tls:
+      enabled: false
+      options:
+        default:
+          sniStrict: true
 
 service:
   enabled: true
@@ -102,6 +112,7 @@ deployment:
 
 providers:
   kubernetesIngress:
+    enabled: true
     publishedService:
       enabled: true
       # Published Kubernetes Service to copy status from. Format: namespace/servicename

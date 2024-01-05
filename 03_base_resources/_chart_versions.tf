@@ -37,3 +37,8 @@ variable "postgresql_chart_version" {
   type    = string
   default = "12.3.7"
 }
+
+variable "influxdb_chart_version" {
+  type    = string
+  default = "2.1.2"
+}

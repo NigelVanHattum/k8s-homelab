@@ -2,6 +2,8 @@ resource "argocd_repository" "nfs_csi_driver" {
   repo = "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts"
   name = "csi-driver-nfs"
   type = "helm"
+
+  depends_on = [argocd_project.argo-cd-system-project]
 }
 
 resource "argocd_application" "nfs_csi_driver" {
@@ -71,6 +73,15 @@ resource "kubectl_manifest" "nfs_storage_class_authentik" {
 
 resource "kubectl_manifest" "nfs_storage_class_applications" {
   yaml_body          = file("manifests/nfs-csi/nfs-storageClass-applications.yaml")
+  override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
+
+  depends_on = [
+    argocd_application.nfs_csi_driver
+  ]
+}
+
+resource "kubectl_manifest" "nfs_storage_class_influxdb" {
+  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-influxdb.yaml")
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [

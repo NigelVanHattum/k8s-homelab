@@ -3,6 +3,8 @@ resource "argocd_repository" "postgresql" {
   name = "bitnamicharts/postgresql-ha"
   enable_oci = true
   type = "helm"
+
+  depends_on = [argocd_project.argo-cd-system-project]
 }
 
 resource "argocd_application" "postgresql" {
@@ -53,4 +55,13 @@ resource "argocd_application" "postgresql" {
       name = "in-cluster"
     }
   }
+}
+
+resource "kubernetes_manifest" "postgres_ingress" {
+  manifest = yamldecode(file("${path.module}/manifests/ingress/postgresql.yaml"))
+  ## wait does not work, there is no status viewer for it
+  # wait {
+  #   rollout = true
+  # }
+  depends_on = [kubernetes_namespace.postgresql]
 }

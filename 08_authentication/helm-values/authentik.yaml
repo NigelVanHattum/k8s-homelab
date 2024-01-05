@@ -4,7 +4,7 @@ authentik:
     postgresql:
         use_pgpool: true
         host: postgresql-postgresql-ha-pgpool.postgresql.svc.cluster.local
-    log_level: debug
+    log_level: info
 
 ingress:
   enabled: true

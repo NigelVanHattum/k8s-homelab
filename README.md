@@ -107,7 +107,7 @@ $ export KUBE_CONFIG_PATH=/path/to/.kube/config
 After ArgoCD is up and running, you are able to reach it by port-forwarding the deployment and after that exporting the secret, created by the deployment.
 ```bash
 $ kubectl port-forward svc/argocd-server 8080:80 -n argo
-$ echo "Login with admin:$(kubectl get secrets -n argo -o json argocd-initial-admin-secret | jq -r '.data.password' | base64 -d)"
+$ echo "Login with admin:$(kubectl get secrets -n argo -o json argocd-admin-password | jq -r '.data.password' | base64 -d)"
 ```
 
 ## 05_Storage

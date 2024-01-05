@@ -152,7 +152,7 @@ pgpool:
 ##
 service:
   annotations: {
-    traefik.ingress.kubernetes.io/router.entrypoints: internet,
-    traefik.ingress.kubernetes.io/router.tls.domains.0.main: postgresql.nigelvanhattum.nl
+    # traefik.ingress.kubernetes.io/router.entrypoints: internet,
+    # traefik.ingress.kubernetes.io/router.tls.domains.0.main: postgresql.nigelvanhattum.nl
   }
   
