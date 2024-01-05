@@ -66,6 +66,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "authentik"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "influxdb"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"

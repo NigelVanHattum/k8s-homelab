@@ -53,11 +53,11 @@ variable "postgresql_hass_username" {
 ### InfluxDB
 variable "influxdb_secret_name" {
   type = string
-  default = "influxdb_admin_user"
+  default = "influxdb-admin-user"
   }
-variable "influxdb_admin_username" {
+variable "influxdb_admin_token" {
   type = string
-  default = "admin"
+  sensitive = true
   }
 variable "influxdb_admin_password" {
   type = string

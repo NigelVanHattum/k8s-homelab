@@ -81,3 +81,17 @@ resource "kubernetes_namespace" "postgresql" {
     }
   }
 }
+
+resource "kubernetes_namespace" "influxdb" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "influxdb"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}

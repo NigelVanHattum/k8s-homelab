@@ -63,7 +63,7 @@ resource "kubernetes_secret" "influxdb_admin" {
   immutable = false
 
   data = {
-    usernames = "postgres,${var.postgresql_authentik_username},${var.postgresql_hass_username}"
-    passwords = "${var.postgresql_admin_password},${var.postgresql_authentik_password},${var.postgresql_hass_password}"
+    admin-password = "${var.influxdb_admin_password}"
+    admin-token = "${var.influxdb_admin_token}"
   }
 }

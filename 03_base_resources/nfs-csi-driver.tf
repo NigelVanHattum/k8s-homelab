@@ -79,3 +79,12 @@ resource "kubectl_manifest" "nfs_storage_class_applications" {
     argocd_application.nfs_csi_driver
   ]
 }
+
+resource "kubectl_manifest" "nfs_storage_class_influxdb" {
+  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-influxdb.yaml")
+  override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
+
+  depends_on = [
+    argocd_application.nfs_csi_driver
+  ]
+}
