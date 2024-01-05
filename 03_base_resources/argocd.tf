@@ -72,6 +72,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "influxdb"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "skooner"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"
