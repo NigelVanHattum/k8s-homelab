@@ -4,9 +4,9 @@ It consists of a [Proxmox VE](https://www.proxmox.com/en/proxmox-ve) node, in wh
 
 # Requirements
 In order to execute everything in this playbook, you will need to install a couple of tools
-- [talosctl](https://www.talos.dev/v1.1/introduction/getting-started/#talosctl)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-- [kustomize](https://github.com/kubernetes-sigs/kustomize)
+- [Talosctl](https://www.talos.dev/v1.1/introduction/getting-started/#talosctl)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [Terraform](https://developer.hashicorp.com/terraform/install)
 
 # Installation
 ## 01_Proxmox
@@ -74,7 +74,24 @@ $ ./03_bootstrap
 
 This will store all important files in the talos/.out/ folder. Keep these secure.
 
-## 03_linkerd
+## 03_base_resources
+Running the following commands will depliy all base resources mentioned here (TODO). During the terraform plan phase it will request you to enter some sensitive values. Guides to all these sensitive values can be found below the commands.
+
+```bash
+$ cd 03_base_resources
+$ terraform init
+$ terraform plan -out plan.tfplan
+$ terraform apply plan.tfplan 
+```
+
+- **azure_tenant_id, azure_client_id & azure_client_secret**: ArgoCD uses this as authentication, follow [their guide] (https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/microsoft/) **TODO: automate this**
+- **cloudlfare_dns_api_token**: I use Cloudflare as my DNS provider, follow [this guide](https://go-acme.github.io/lego/dns/cloudflare/) to get your DNS API key.
+- **passwords and tokens**: feel free to create your own secret. But store them somewhere in a password manager, in case you need a recovery. 
+
+
+
+
+# Old docs, need updates
 Linkerd is used to enable secure traffic throughout the whole cluster. Linkerd should be the first thing you install, this will effect all deployments that come after. 
 
 ```bash
