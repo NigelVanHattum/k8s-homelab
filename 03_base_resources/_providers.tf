@@ -24,3 +24,8 @@ provider "postgresql" {
   sslmode         = "disable"
   connect_timeout = 15
 }
+
+provider "authentik" {
+  url   = "https://authentik.nigelvanhattum.nl"
+  token = random_password.authentik_admin_token.result
+}

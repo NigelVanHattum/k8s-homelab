@@ -109,3 +109,17 @@ resource "kubernetes_namespace" "skooner" {
     }
   }
 }
+
+resource "kubernetes_namespace" "authentik" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "authentik"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}

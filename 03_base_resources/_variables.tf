@@ -1,8 +1,10 @@
-#### ArgoCD
+### Azure
 variable "azure_tenant_id" {
   type    = string
   sensitive = true
   }
+
+#### ArgoCD
 variable "azure_client_id" {
   type    = string
   sensitive = true
@@ -65,22 +67,37 @@ variable "influxdb_admin_password" {
   }
 
 ### Authentik
-# variable "postgresql_password" {
-#   type = string
-#   sensitive = true
-# }
+variable "authentik_secret_key" {
+  type = string
+  sensitive = true
+}
 
-# variable "authentik_secret_key" {
-#   type = string
-#   sensitive = true
-# }
+variable "auhtentik_email" {
+  type = string
+  sensitive = true
+}
 
-# variable "geoIP_accountId" {
-#   type = string
-#   sensitive = true
-# }
+variable "authentik_admin_password" {
+  type = string
+  sensitive = true
+}
 
-# variable "geoIP_licenseKey" {
-#   type = string
-#   sensitive = true
-# }
+variable "geoIP_accountId" {
+  type = string
+  sensitive = true
+}
+
+variable "geoIP_licenseKey" {
+  type = string
+  sensitive = true
+}
+
+variable "authentik_azure_client_id" {
+  type    = string
+  sensitive = true
+}
+
+variable "authentik_azure_client_secret" {
+  type    = string
+  sensitive = true
+}

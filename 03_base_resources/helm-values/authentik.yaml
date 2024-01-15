@@ -1,9 +1,11 @@
 authentik:
     error_reporting:
         enabled: true
+    secret_key: ${authentik_secret_key}
     postgresql:
         use_pgpool: true
         host: postgresql-postgresql-ha-pgpool.postgresql.svc.cluster.local
+        password: ${authentik_postgresql_password}
     log_level: info
 
 ingress:
@@ -17,6 +19,20 @@ ingress:
         - path: "/"
           pathType: Prefix
 
+### https://goauthentik.io/docs/installation/automated-install
+envValueFrom: 
+  AUTHENTIK_BOOTSTRAP_TOKEN:
+    secretKeyRef:
+      key: token
+      name: ${secret_name}
+  AUTHENTIK_BOOTSTRAP_EMAIL:
+    secretKeyRef:
+      key: email
+      name: ${secret_name}
+  AUTHENTIK_BOOTSTRAP_PASSWORD:
+    secretKeyRef:
+      key: password
+      name: ${secret_name}
 
 geoip:
   enabled: false

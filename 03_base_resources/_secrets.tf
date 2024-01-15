@@ -1,7 +1,14 @@
+### Generated passwords/ tokens
 resource "random_password" "argocd_admin_password" {
   length           = 16
 }
 
+resource "random_password" "authentik_admin_token" {
+  length           = 32
+}
+
+
+### ArgoCD
 resource "kubernetes_secret" "argocd_secret" {
   metadata {
     name = "argocd-admin-password"
@@ -13,6 +20,7 @@ resource "kubernetes_secret" "argocd_secret" {
   }
 }
 
+### Traefik 
 resource "kubernetes_secret" "cloudflare_api_token" {
   metadata {
     name = "cloudflare-token"
@@ -26,6 +34,8 @@ resource "kubernetes_secret" "cloudflare_api_token" {
   }
 }
 
+
+### PostgreSQL
 resource "kubernetes_secret" "pgpool_users" {
   metadata {
     name = var.pgpool_customUsersSecret
@@ -54,6 +64,8 @@ resource "kubernetes_secret" "postgres_admin_password" {
   }
 }
 
+
+### InfluxDB
 resource "kubernetes_secret" "influxdb_admin" {
   metadata {
     name = var.influxdb_secret_name
@@ -65,5 +77,21 @@ resource "kubernetes_secret" "influxdb_admin" {
   data = {
     admin-password = "${var.influxdb_admin_password}"
     admin-token = "${var.influxdb_admin_token}"
+  }
+}
+
+### Authentik
+resource "kubernetes_secret" "authentik_initial_credentials" {
+  metadata {
+    name = "authentik-secret"
+    namespace = kubernetes_namespace.authentik.metadata.0.name
+  }
+
+  immutable = true
+
+  data = {
+    token = random_password.authentik_admin_token.result
+    password = var.authentik_admin_password
+    email = var.auhtentik_email
   }
 }

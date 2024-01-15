@@ -1,21 +1,9 @@
-resource "kubernetes_namespace" "authentik" {
-  metadata {
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-    name   = "authentik"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
-  }
-}
-
 resource "argocd_repository" "authentik" {
   repo = "https://charts.goauthentik.io"
   name = "authentik"
   type = "helm"
+
+  depends_on = [postgresql_database.authentik]
 }
 
 resource "argocd_application" "authentik" {
@@ -24,30 +12,20 @@ resource "argocd_application" "authentik" {
   }
   wait = true
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url        = argocd_repository.authentik.repo
       chart           = argocd_repository.authentik.name
       target_revision = var.authentik_chart_version
 
       helm {
-        values = file("helm-values/authentik.yaml")
-        parameter {
-            name = "authentik.secret_key"
-            value = var.authentik_secret_key
-        }
-        parameter {
-            name = "authentik.postgresql.password"
-            value = var.postgresql_password
-        }
-        parameter {
-            name = "geoip.accountId"
-            value = var.geoIP_accountId
-        } 
-        parameter {
-            name = "geoip.licenseKey"
-            value = var.geoIP_licenseKey
-        } 
+        values = templatefile("helm-values/authentik.yaml", {
+          authentik_secret_key = var.authentik_secret_key
+          authentik_postgresql_password = var.postgresql_authentik_password
+          authentik_geoip_account_id = var.geoIP_accountId
+          authentik_geoip_license_key = var.geoIP_licenseKey
+          secret_name = kubernetes_secret.authentik_initial_credentials.metadata.0.name
+        })
       }
     }
 
@@ -74,4 +52,5 @@ resource "argocd_application" "authentik" {
       name = "in-cluster"
     }
   }
+  depends_on = [kubectl_manifest.nfs_storage_class_authentik]
 }

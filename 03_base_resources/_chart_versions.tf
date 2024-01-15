@@ -10,12 +10,6 @@ variable "argocd_chart_version" {
   default = "5.52.0"
 }
 
-variable "authentik_chart_version" {
-  type = string
-  description = "authentik chart version"
-  default = "2023.10.4"
-}
-
 variable "nfs_csi_driver_chart_version" {
   type    = string
   default = "v4.5.0"
@@ -35,10 +29,16 @@ variable "traefik_chart_version" {
 
 variable "postgresql_chart_version" {
   type    = string
-  default = "12.3.7"
+  default = "12.4.2"
 }
 
 variable "influxdb_chart_version" {
   type    = string
   default = "2.1.2"
+}
+
+variable "authentik_chart_version" {
+  type = string
+  description = "authentik chart version"
+  default = "2023.10.5"
 }

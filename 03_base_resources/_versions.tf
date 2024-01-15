@@ -25,5 +25,9 @@ terraform {
       source = "cyrilgdn/postgresql"
       version = ">= 1.21.0, < 2.0.0"
     }
+    authentik = {
+      source = "goauthentik/authentik"
+      version = ">= 2023.10.0, < 2024.0.0"
+    }
   }
 }
