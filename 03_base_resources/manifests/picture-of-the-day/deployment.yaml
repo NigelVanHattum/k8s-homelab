@@ -21,7 +21,7 @@ spec:
         livenessProbe:
           httpGet:
             scheme: HTTP
-            path: /
+            path: /bing
             port: 8080
           initialDelaySeconds: 30
           timeoutSeconds: 30

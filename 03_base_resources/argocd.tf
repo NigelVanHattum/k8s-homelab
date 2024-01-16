@@ -78,6 +78,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "skooner"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "picture-of-the-day"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"
