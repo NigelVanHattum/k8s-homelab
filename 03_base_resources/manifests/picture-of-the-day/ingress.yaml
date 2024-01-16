@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-  name: skooner
-  namespace: skooner
+  name: picture-of-the-day
+  namespace: picture-of-the-day
 spec:
   ingressClassName: traefik
   rules:
