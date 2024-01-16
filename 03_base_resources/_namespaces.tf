@@ -110,6 +110,20 @@ resource "kubernetes_namespace" "skooner" {
   }
 }
 
+resource "kubernetes_namespace" "picture_of_the_day" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "picture-of-the-day"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}
+
 resource "kubernetes_namespace" "authentik" {
   metadata {
     annotations = {

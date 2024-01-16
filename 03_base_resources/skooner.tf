@@ -1,20 +1,12 @@
-resource "argocd_repository" "skooner" {
-  repo = "https://github.com/NigelVanHattum/k8s-homelab.git"
-  name = "nigel-k8s-homelabe"
-  type = "git"
-
-  depends_on = [argocd_project.argo-cd-system-project]
-}
-
 resource "argocd_application" "skooner" {
   metadata {
     name = kubernetes_namespace.skooner.metadata.0.name
   }
   wait = true
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
-      repo_url              = argocd_repository.skooner.repo
+      repo_url              = argocd_repository.k8s-homelab.repo
       path                  = "03_base_resources/manifests/skooner"
     }
 
@@ -43,11 +35,11 @@ resource "argocd_application" "skooner" {
   }
 }
 
-resource "kubernetes_service_account" "skooner_service_account" {
-  metadata {
-    name = "skooner-sa"
-  }
-}
+# resource "kubernetes_service_account" "skooner_service_account" {
+#   metadata {
+#     name = "skooner-sa"
+#   }
+# }
 
 resource "kubernetes_cluster_role_binding" "skooner_cluster_role_binding" {
   metadata {
@@ -60,7 +52,7 @@ resource "kubernetes_cluster_role_binding" "skooner_cluster_role_binding" {
   }
   subject {
     kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.skooner_service_account.metadata.0.name}"
+    name      = "default"
     namespace = "${kubernetes_namespace.skooner.metadata.0.name}"
   }
 }

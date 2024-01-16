@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: picture-of-the-day
+  namespace: picture-of-the-day
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: picture-of-the-day
+  template:
+    metadata:
+      labels:
+        k8s-app: picture-of-the-day
+    spec:
+      containers:
+      - name: picture-of-the-day
+        image: nigel95/picture-of-the-day
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+      nodeSelector:
+        'kubernetes.io/os': linux

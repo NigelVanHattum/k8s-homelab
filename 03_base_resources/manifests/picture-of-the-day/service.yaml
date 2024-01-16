@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: picture-of-the-day
+  namespace: picture-of-the-day
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    k8s-app: picture-of-the-day
