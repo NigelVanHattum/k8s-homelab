@@ -1,20 +1,45 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
   name: picture-of-the-day
   namespace: picture-of-the-day
 spec:
-  ingressClassName: traefik
-  rules:
-    - host: pictures.local.nigelvanhattum.nl
-      http:
-        paths:
-          - backend:
-              service:
-                name: picture-of-the-day
-                port:
-                  name: http
-            path: /
-            pathType: Prefix
+  entryPoints:                 
+    - internet
+  routes:                           
+  - kind: Rule
+    match: Host(`pictures.nigelvanhattum.nl`) 
+    services:                       
+    - kind: Service
+      name: picture-of-the-day
+      namespace: picture-of-the-day
+      passHostHeader: true
+      port: 8080                     
+      responseForwarding:
+        flushInterval: 1ms
+      # scheme: https
+      strategy: RoundRobin    
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: picture-of-the-day-local
+  namespace: picture-of-the-day
+spec:
+  entryPoints:                 
+    - websecure
+  routes:                           
+  - kind: Rule
+    match: Host(`pictures.local.nigelvanhattum.nl`) 
+    services:                       
+    - kind: Service
+      name: picture-of-the-day
+      namespace: picture-of-the-day
+      passHostHeader: true
+      port: 8080                     
+      responseForwarding:
+        flushInterval: 1ms
+      # scheme: https
+      strategy: RoundRobin   
