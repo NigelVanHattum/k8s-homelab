@@ -2,8 +2,7 @@ resource "argocd_repository" "metallb" {
   repo = "https://metallb.github.io/metallb"
   name = "metallb"
   type = "helm"
-
-  depends_on = [argocd_project.argo-cd-system-project]
+  depends_on = [time_sleep.wait_for_argo]
 }
 
 resource "argocd_application" "metallb" {
@@ -12,7 +11,7 @@ resource "argocd_application" "metallb" {
   }
   wait = true
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url        = argocd_repository.metallb.repo
       chart           = argocd_repository.metallb.name

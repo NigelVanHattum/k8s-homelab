@@ -2,8 +2,7 @@ resource "argocd_repository" "influxdb" {
   repo = "https://helm.influxdata.com"
   name = "influxdb2"
   type = "helm"
-
-  depends_on = [argocd_project.argo-cd-system-project]
+  depends_on = [time_sleep.wait_for_argo]
 }
 
 resource "argocd_application" "influxdb" {
@@ -12,7 +11,7 @@ resource "argocd_application" "influxdb" {
   }
   wait = true
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url        = argocd_repository.influxdb.repo
       chart           = argocd_repository.influxdb.name
@@ -50,4 +49,5 @@ resource "argocd_application" "influxdb" {
       name = "in-cluster"
     }
   }
+  depends_on = [kubectl_manifest.nfs_storage_class_influxdb]
 }

@@ -3,8 +3,7 @@ resource "argocd_repository" "postgresql" {
   name = "bitnamicharts/postgresql-ha"
   enable_oci = true
   type = "helm"
-
-  depends_on = [argocd_project.argo-cd-system-project]
+  depends_on = [time_sleep.wait_for_argo]
 }
 
 resource "argocd_application" "postgresql" {
@@ -13,7 +12,7 @@ resource "argocd_application" "postgresql" {
   }
 
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url        = argocd_repository.postgresql.repo
       chart           = argocd_repository.postgresql.name
@@ -55,6 +54,10 @@ resource "argocd_application" "postgresql" {
       name = "in-cluster"
     }
   }
+
+  depends_on = [kubectl_manifest.nfs_storage_class_postgresql, 
+                kubernetes_secret.pgpool_users, 
+                argocd_application.nfs_csi_driver]
 }
 
 resource "kubernetes_manifest" "postgres_ingress" {
@@ -63,5 +66,12 @@ resource "kubernetes_manifest" "postgres_ingress" {
   # wait {
   #   rollout = true
   # }
-  depends_on = [kubernetes_namespace.postgresql]
+  depends_on = [argocd_application.postgresql, argocd_application.traefik]
+}
+
+resource "time_sleep" "wait_for_postgress" {
+  depends_on = [kubernetes_manifest.postgres_ingress]
+
+  ### Postgresql is slow to start.....
+  create_duration = "1m"
 }

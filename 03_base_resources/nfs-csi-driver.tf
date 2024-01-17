@@ -2,8 +2,7 @@ resource "argocd_repository" "nfs_csi_driver" {
   repo = "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts"
   name = "csi-driver-nfs"
   type = "helm"
-
-  depends_on = [argocd_project.argo-cd-system-project]
+  depends_on = [time_sleep.wait_for_argo]
 }
 
 resource "argocd_application" "nfs_csi_driver" {
@@ -12,7 +11,7 @@ resource "argocd_application" "nfs_csi_driver" {
   }
 
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url        = argocd_repository.nfs_csi_driver.repo
       chart           = argocd_repository.nfs_csi_driver.name

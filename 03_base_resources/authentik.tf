@@ -3,7 +3,7 @@ resource "argocd_repository" "authentik" {
   name = "authentik"
   type = "helm"
 
-  depends_on = [postgresql_database.authentik]
+  depends_on = [time_sleep.wait_for_argo, postgresql_database.authentik]
 }
 
 resource "argocd_application" "authentik" {
@@ -53,4 +53,26 @@ resource "argocd_application" "authentik" {
     }
   }
   depends_on = [kubectl_manifest.nfs_storage_class_authentik]
+}
+
+data "authentik_flow" "default-source-authentication" {
+  slug = "default-source-authentication"
+  depends_on = [argocd_application.authentik]
+}
+
+data "authentik_flow" "default-enrollment-flow" {
+  slug = "default-source-enrollment"
+  depends_on = [argocd_application.authentik]
+}
+
+resource "authentik_source_oauth" "azure_ad" {
+  name                  = "Azure AD"
+  slug                  = "azure-ad"
+  authentication_flow   = data.authentik_flow.default-source-authentication.id
+  enrollment_flow       = data.authentik_flow.default-enrollment-flow.id
+#   user_matching_mode    = "email_link"
+  provider_type         = "openidconnect"
+  consumer_key          = var.authentik_azure_client_id
+  consumer_secret       = var.authentik_azure_client_secret
+  oidc_well_known_url   = "https://login.microsoftonline.com/${var.azure_tenant_id}/v2.0/.well-known/openid-configuration"
 }

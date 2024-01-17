@@ -2,8 +2,7 @@ resource "argocd_repository" "traefik" {
   repo = "https://traefik.github.io/charts"
   name = "traefik"
   type = "helm"
-
-  depends_on = [argocd_project.argo-cd-system-project]
+  depends_on = [time_sleep.wait_for_argo]
 }
 
 resource "argocd_application" "traefik" {
@@ -12,7 +11,7 @@ resource "argocd_application" "traefik" {
   }
   wait = true
   spec {
-    project = "system"
+    project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url        = argocd_repository.traefik.repo
       chart           = argocd_repository.traefik.name
@@ -46,14 +45,14 @@ resource "argocd_application" "traefik" {
       name = "in-cluster"
     }
   }
+  depends_on = [
+    kubectl_manifest.nfs_storage_class_traefik,
+    kubectl_manifest.traefik_ip_address_pool
+  ]
 }
 
 resource "kubectl_manifest" "authentik_middleware" {
   yaml_body          = file("manifests/networking/authentik-middleware.yaml")
   override_namespace = kubernetes_namespace.traefik.metadata.0.name
-
-  depends_on = [
-    kubernetes_namespace.traefik
-  ]
 }
 

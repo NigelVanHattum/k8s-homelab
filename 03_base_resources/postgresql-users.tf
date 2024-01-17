@@ -3,7 +3,7 @@ resource "postgresql_role" "authentik" {
   login    = true
   password = var.postgresql_authentik_password
 
-  depends_on = [argocd_application.postgresql, kubernetes_manifest.postgres_ingress, argocd_application.traefik]
+  depends_on = [time_sleep.wait_for_postgress, kubernetes_manifest.postgres_ingress]
 }
 
 resource "postgresql_role" "hass" {
@@ -11,5 +11,5 @@ resource "postgresql_role" "hass" {
   login    = true
   password = var.postgresql_hass_password
 
-  depends_on = [argocd_application.postgresql, kubernetes_manifest.postgres_ingress, argocd_application.traefik]
+  depends_on = [time_sleep.wait_for_postgress, kubernetes_manifest.postgres_ingress]
 }
