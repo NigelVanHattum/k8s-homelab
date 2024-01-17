@@ -65,6 +65,14 @@ data "authentik_flow" "default-enrollment-flow" {
   depends_on = [argocd_application.authentik]
 }
 
+data "authentik_stage" "default-authentication-identification" {
+  name = "default-authentication-identification"
+}
+
+data "authentik_source" "inbuilt" {
+  managed = "goauthentik.io/sources/inbuilt"
+}
+
 resource "authentik_source_oauth" "azure_ad" {
   name                  = "Azure AD"
   slug                  = "azure-ad"
@@ -75,4 +83,22 @@ resource "authentik_source_oauth" "azure_ad" {
   consumer_key          = var.authentik_azure_client_id
   consumer_secret       = var.authentik_azure_client_secret
   oidc_well_known_url   = "https://login.microsoftonline.com/${var.azure_tenant_id}/v2.0/.well-known/openid-configuration"
+}
+
+import {
+  to = authentik_stage_identification.example
+  id = data.authentik_stage.default-authentication-identification.id
+}
+
+resource "authentik_stage_identification" "example" {
+  name = data.authentik_stage.default-authentication-identification.name
+  case_insensitive_matching = true
+  sources = [
+    data.authentik_source.inbuilt.uuid,
+    authentik_source_oauth.azure_ad.uuid
+  ]
+  user_fields = [
+          "username",
+          "email"
+        ]
 }
