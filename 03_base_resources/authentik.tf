@@ -60,24 +60,26 @@ data "authentik_flow" "default-source-authentication" {
   depends_on = [argocd_application.authentik]
 }
 
-data "authentik_flow" "default-enrollment-flow" {
-  slug = "default-source-enrollment"
-  depends_on = [argocd_application.authentik]
-}
-
 data "authentik_stage" "default-authentication-identification" {
   name = "default-authentication-identification"
+  depends_on = [argocd_application.authentik]
 }
 
 data "authentik_source" "inbuilt" {
   managed = "goauthentik.io/sources/inbuilt"
+  depends_on = [argocd_application.authentik]
+}
+
+import {
+  to = authentik_stage_identification.identification
+  id = data.authentik_stage.default-authentication-identification.id
 }
 
 resource "authentik_source_oauth" "azure_ad" {
   name                  = "Azure AD"
   slug                  = "azure-ad"
   authentication_flow   = data.authentik_flow.default-source-authentication.id
-  enrollment_flow       = data.authentik_flow.default-enrollment-flow.id
+  enrollment_flow       = ""
 #   user_matching_mode    = "email_link"
   provider_type         = "openidconnect"
   consumer_key          = var.authentik_azure_client_id
@@ -85,12 +87,7 @@ resource "authentik_source_oauth" "azure_ad" {
   oidc_well_known_url   = "https://login.microsoftonline.com/${var.azure_tenant_id}/v2.0/.well-known/openid-configuration"
 }
 
-import {
-  to = authentik_stage_identification.example
-  id = data.authentik_stage.default-authentication-identification.id
-}
-
-resource "authentik_stage_identification" "example" {
+resource "authentik_stage_identification" "identification" {
   name = data.authentik_stage.default-authentication-identification.name
   case_insensitive_matching = true
   sources = [
