@@ -9,9 +9,9 @@ resource "helm_release" "argocd" {
 
   values = [
     templatefile("helm-values/argocd.yaml", {
-      tenant_id = var.azure_tenant_id
-      client_id = var.azure_client_id
-      client_secret = var.azure_client_secret
+      tenant_id = data.onepassword_item.azure_tenant_id.password
+      client_id = data.onepassword_item.argocd_azure_credentials.note_value
+      client_secret = data.onepassword_item.argocd_azure_credentials.password
       entra_admin_group_id = var.entra_admin_group_id
       argocd_admin_password = random_password.argocd_admin_password.bcrypt_hash
     })

@@ -20,10 +20,10 @@ resource "argocd_application" "authentik" {
 
       helm {
         values = templatefile("helm-values/authentik.yaml", {
-          authentik_secret_key = var.authentik_secret_key
-          authentik_postgresql_password = var.postgresql_authentik_password
-          authentik_geoip_account_id = var.geoIP_accountId
-          authentik_geoip_license_key = var.geoIP_licenseKey
+          authentik_secret_key = data.onepassword_item.key_authentik.password
+          authentik_postgresql_password = data.onepassword_item.database_authentik.password
+          authentik_geoip_account_id = data.onepassword_item.geoip_authentik.username
+          authentik_geoip_license_key = data.onepassword_item.geoip_authentik.password
           secret_name = kubernetes_secret.authentik_initial_credentials.metadata.0.name
         })
       }
@@ -73,6 +73,7 @@ data "authentik_source" "inbuilt" {
 import {
   to = authentik_stage_identification.identification
   id = data.authentik_stage.default-authentication-identification.id
+
 }
 
 resource "authentik_source_oauth" "azure_ad" {
@@ -82,9 +83,9 @@ resource "authentik_source_oauth" "azure_ad" {
   enrollment_flow       = ""
 #   user_matching_mode    = "email_link"
   provider_type         = "openidconnect"
-  consumer_key          = var.authentik_azure_client_id
-  consumer_secret       = var.authentik_azure_client_secret
-  oidc_well_known_url   = "https://login.microsoftonline.com/${var.azure_tenant_id}/v2.0/.well-known/openid-configuration"
+  consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
+  consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
+  oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
 }
 
 resource "authentik_stage_identification" "identification" {

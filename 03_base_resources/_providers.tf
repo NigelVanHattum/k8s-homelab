@@ -1,3 +1,7 @@
+provider "onepassword" {
+  service_account_token = var.onepassword_service_token
+}
+
 provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
@@ -17,10 +21,10 @@ provider "argocd" {
 }
 
 provider "postgresql" {
-  host            = "10.0.49.25"
-  port            = 5432
-  username        = "postgres"
-  password        = var.postgresql_admin_password
+  host            = data.onepassword_item.database_postgresql.hostname
+  port            = data.onepassword_item.database_postgresql.port
+  username        = data.onepassword_item.database_postgresql.username
+  password        = data.onepassword_item.database_postgresql.password
   sslmode         = "disable"
   connect_timeout = 15
 }

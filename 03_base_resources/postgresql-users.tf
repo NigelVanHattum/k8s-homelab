@@ -1,7 +1,7 @@
 resource "postgresql_role" "authentik" {
-  name     = var.postgresql_authentik_username
+  name     = data.onepassword_item.database_authentik.username
   login    = true
-  password = var.postgresql_authentik_password
+  password = data.onepassword_item.database_authentik.password
 
   depends_on = [time_sleep.wait_for_postgress, kubernetes_manifest.postgres_ingress]
 }
