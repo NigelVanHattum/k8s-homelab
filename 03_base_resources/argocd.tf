@@ -111,6 +111,13 @@ resource "argocd_project" "argo_cd_apps_project" {
       name = "*"
       namespace = "mediaserver"
     }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "firefly"
+    }
+    
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"
