@@ -29,7 +29,7 @@ variable "traefik_chart_version" {
 
 variable "postgresql_chart_version" {
   type    = string
-  default = "12.4.2"
+  default = "12.4.*"
 }
 
 variable "influxdb_chart_version" {
@@ -40,5 +40,5 @@ variable "influxdb_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2023.10.7"
+  default = "2023.10.*"
 }
