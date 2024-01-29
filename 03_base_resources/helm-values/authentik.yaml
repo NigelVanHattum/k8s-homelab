@@ -19,6 +19,9 @@ ingress:
         - path: "/"
           pathType: Prefix
 
+blueprints:
+  - ${blueprint_configmap}
+
 ### https://goauthentik.io/docs/installation/automated-install
 envValueFrom: 
   AUTHENTIK_BOOTSTRAP_TOKEN:

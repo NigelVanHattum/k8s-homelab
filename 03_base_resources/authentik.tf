@@ -6,6 +6,17 @@ resource "argocd_repository" "authentik" {
   depends_on = [time_sleep.wait_for_argo, postgresql_database.authentik]
 }
 
+resource "kubernetes_config_map" "custom_authentication_flow" {
+  metadata {
+    name = "authentik-blueprints"
+    namespace = kubernetes_namespace.authentik.metadata.0.name
+  }
+
+  data = {
+    "flow-custom-authentication-flow.yaml" = "${file("${path.module}/manifests/authentik/flow-custom-authentication-flow.yaml")}"
+  }
+}
+
 resource "argocd_application" "authentik" {
   metadata {
     name = kubernetes_namespace.authentik.metadata.0.name
@@ -25,6 +36,7 @@ resource "argocd_application" "authentik" {
           authentik_geoip_account_id = data.onepassword_item.geoip_authentik.username
           authentik_geoip_license_key = data.onepassword_item.geoip_authentik.password
           secret_name = kubernetes_secret.authentik_initial_credentials.metadata.0.name
+          blueprint_configmap = kubernetes_config_map.custom_authentication_flow.metadata.0.name
         })
       }
     }
@@ -70,12 +82,6 @@ data "authentik_source" "inbuilt" {
   depends_on = [argocd_application.authentik]
 }
 
-import {
-  to = authentik_stage_identification.identification
-  id = data.authentik_stage.default-authentication-identification.id
-
-}
-
 resource "authentik_source_oauth" "azure_ad" {
   name                  = "Azure AD"
   slug                  = "azure-ad"
@@ -86,17 +92,4 @@ resource "authentik_source_oauth" "azure_ad" {
   consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
   consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
-}
-
-resource "authentik_stage_identification" "identification" {
-  name = data.authentik_stage.default-authentication-identification.name
-  case_insensitive_matching = true
-  sources = [
-    data.authentik_source.inbuilt.uuid,
-    authentik_source_oauth.azure_ad.uuid
-  ]
-  user_fields = [
-          "username",
-          "email"
-        ]
 }
