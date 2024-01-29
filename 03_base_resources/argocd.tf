@@ -103,7 +103,7 @@ resource "argocd_project" "argo_cd_apps_project" {
   depends_on = [time_sleep.wait_for_argo]
 
   spec {
-    description = "project for system applications"
+    description = "project for applications"
     source_repos      = ["*"]
 
     destination {
