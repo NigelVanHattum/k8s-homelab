@@ -86,12 +86,12 @@ pgpool:
   ## @param pgpool.maxPool The maximum number of cached connections in each child process (PGPOOL_MAX_POOL)
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/pgpool#configuration
   ##
-  maxPool: 512
+  maxPool: 1024
 
   ## @param pgpool.childMaxConnections The maximum number of client connections in each child process (PGPOOL_CHILD_MAX_CONNECTIONS)
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/pgpool#configuration
   ##
-  childMaxConnections: 256
+  childMaxConnections: 512
   ## @param pgpool.childLifeTime The time in seconds to terminate a Pgpool-II child process if it remains idle (PGPOOL_CHILD_LIFE_TIME)
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/pgpool#configuration
   ##
@@ -148,11 +148,35 @@ pgpool:
     ##
     # initdbScriptsSecret: ""
 
-## PostgreSQL service parameters
-##
-service:
-  annotations: {
-    # traefik.ingress.kubernetes.io/router.entrypoints: internet,
-    # traefik.ingress.kubernetes.io/router.tls.domains.0.main: postgresql.nigelvanhattum.nl
-  }
-  
+## @section Backup parameters
+## This section implements a trivial logical dump cronjob of the database.
+## This only comes with the consistency guarantees of the dump program.
+## This is not a snapshot based roll forward/backward recovery backup.
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+backup:
+  ## @param backup.enabled Enable the logical dump of the database "regularly"
+  enabled: true
+  cronjob:
+    ## @param backup.cronjob.schedule Set the cronjob parameter schedule
+    schedule: "@daily"
+    # schedule: "* * * * *"
+    ## @param backup.cronjob.timeZone Set the cronjob parameter timeZone
+    timeZone: "Europe/Amsterdam"
+    ## @param backup.cronjob.concurrencyPolicy Set the cronjob parameter concurrencyPolicy
+    concurrencyPolicy: Replace
+    ## @param backup.cronjob.failedJobsHistoryLimit Set the cronjob parameter failedJobsHistoryLimit
+    failedJobsHistoryLimit: 3
+    ## @param backup.cronjob.successfulJobsHistoryLimit Set the cronjob parameter successfulJobsHistoryLimit
+    successfulJobsHistoryLimit: 3
+    restartPolicy: OnFailure
+    nodeSelector: {}
+    command:
+    - /bin/sh
+    - -c
+    - "pg_dumpall --exclude-database=postgres --exclude-database=authentik --exclude-database=repmgr --clean --if-exists --load-via-partition-root --quote-all-identifiers --no-password --file=${PGDUMP_DIR}/pg_dumpall-$(date '+%Y-%m-%d-%H-%M').pgdump"
+    storage:
+      existingClaim: "postgres-backup"
+      resourcePolicy: "keep"
+    containerSecurityContext:
+      enabled: true
+      runAsNonRoot: false

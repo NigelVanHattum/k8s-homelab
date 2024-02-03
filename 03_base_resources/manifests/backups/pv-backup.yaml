@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-backup
+  labels:
+    type: backup
+spec:
+  storageClassName: nfs-csi-backup
+  capacity:
+    storage: 30Gi
+  accessModes:
+  - ReadWriteMany
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    server: 192.168.20.3
+    path: /volume1/k8s/back-ups/postgresql

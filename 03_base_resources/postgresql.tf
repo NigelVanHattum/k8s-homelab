@@ -6,6 +6,20 @@ resource "argocd_repository" "postgresql" {
   depends_on = [time_sleep.wait_for_argo]
 }
 
+resource "kubectl_manifest" "pv_postgresql_backup" {
+  yaml_body          = file("manifests/backups/pv-backup.yaml")
+  override_namespace = kubernetes_namespace.postgresql.metadata.0.name
+
+  depends_on = [
+    argocd_application.nfs_csi_driver
+  ]
+}
+
+resource "kubectl_manifest" "pvc_postgresql_backup" {
+  yaml_body          = file("manifests/backups/pvc-postgresql.yaml")
+  override_namespace = kubectl_manifest.pv_postgresql_backup.override_namespace
+}
+
 resource "argocd_application" "postgresql" {
   metadata {
     name = kubernetes_namespace.postgresql.metadata.0.name
@@ -57,7 +71,8 @@ resource "argocd_application" "postgresql" {
 
   depends_on = [kubectl_manifest.nfs_storage_class_postgresql, 
                 kubernetes_secret.pgpool_users, 
-                argocd_application.nfs_csi_driver]
+                kubectl_manifest.nfs_storage_class_postgresql,
+                kubectl_manifest.nfs_storage_class_backup]
 }
 
 resource "kubernetes_manifest" "postgres_ingress" {
