@@ -31,5 +31,5 @@ provider "postgresql" {
 
 provider "authentik" {
   url   = "https://authentik.nigelvanhattum.nl"
-  token = random_password.authentik_admin_token.result
+  token = data.onepassword_item.authentik_admin_token.password
 }

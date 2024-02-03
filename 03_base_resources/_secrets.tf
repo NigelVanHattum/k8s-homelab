@@ -15,10 +15,6 @@ resource "random_password" "argocd_admin_password" {
   length           = 16
 }
 
-resource "random_password" "authentik_admin_token" {
-  length           = 32
-}
-
 
 ### ArgoCD
 resource "kubernetes_secret" "argocd_secret" {
@@ -77,6 +73,11 @@ data "onepassword_item" "database_authentik" {
   title  = "Database-Authentik"
 }
 
+data "onepassword_item" "database_firefly" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "Database-Firefly"
+}
+
 resource "kubernetes_secret" "pgpool_users" {
   metadata {
     name = var.pgpool_customUsersSecret
@@ -86,8 +87,8 @@ resource "kubernetes_secret" "pgpool_users" {
   immutable = false
 
   data = {
-    usernames = "${data.onepassword_item.database_postgresql.username},${data.onepassword_item.database_authentik.username},${var.postgresql_hass_username}"
-    passwords = "${data.onepassword_item.database_postgresql.password},${data.onepassword_item.database_authentik.password},${var.postgresql_hass_password}"
+    usernames = "${data.onepassword_item.database_postgresql.username},${data.onepassword_item.database_authentik.username},${var.postgresql_hass_username},${data.onepassword_item.database_firefly.username}"
+    passwords = "${data.onepassword_item.database_postgresql.password},${data.onepassword_item.database_authentik.password},${var.postgresql_hass_password},${data.onepassword_item.database_firefly.password}"
   }
 }
 
@@ -122,6 +123,11 @@ resource "kubernetes_secret" "influxdb_admin" {
 }
 
 ### Authentik
+data "onepassword_item" "authentik_admin_token" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "Authentik Token"
+}
+
 data "onepassword_item" "key_authentik" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title  = "Authentik Secret Key"
@@ -151,7 +157,7 @@ resource "kubernetes_secret" "authentik_initial_credentials" {
   immutable = true
 
   data = {
-    token = random_password.authentik_admin_token.result
+    token = data.onepassword_item.authentik_admin_token.password
     password = data.onepassword_item.login_authentik.password
     email = data.onepassword_item.login_authentik.username
   }
