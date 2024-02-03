@@ -1,0 +1,30 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: public-ingress
+  namespace: firefly
+spec:
+  entryPoints:                     
+    - internet
+  routes:
+    - kind: Rule
+      match: "Host(`finance.nigelvanhattum.nl`)"
+      middlewares:
+          - name: authentik
+            namespace: traefik
+      priority: 10
+      services:
+      - kind: Service
+        name: firefly-firefly-iii
+        namespace: firefly
+        port: http 
+    # This part is only required for single-app setups
+    - kind: Rule
+      match: "Host(`finance.nigelvanhattum.nl`) && PathPrefix(`/outpost.goauthentik.io/`)"
+      priority: 15
+      services:
+          - kind: Service
+            # Or, to use an external Outpost, create an ExternalName service and reference that here.
+            # See https://kubernetes.io/docs/concepts/services-networking/service/#externalname
+            name: ak-outpost-example-outpost
+            port: 9000

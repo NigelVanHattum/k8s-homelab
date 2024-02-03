@@ -1,5 +1,5 @@
-variable "linkerd_chart_version" {
+variable "firefly_chart_version" {
   type = string
-  description = "linkerd chart version"
-  default = "1.16.8"
+  description = "firefly chart version"
+  default = "0.7.2"
 }

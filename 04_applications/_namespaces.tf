@@ -1,9 +1,9 @@
-resource "kubernetes_namespace" "mediaserver" {
+resource "kubernetes_namespace" "firefly" {
   metadata {
     annotations = {
       "linkerd.io/inject" = "enabled"
     }
-    name   = "mediaserver"
+    name   = "firefly"
     labels = {
       "pod-security.kubernetes.io/audit"   = "privileged"
       "pod-security.kubernetes.io/enforce" = "privileged"

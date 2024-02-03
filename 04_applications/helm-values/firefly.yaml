@@ -1,0 +1,166 @@
+firefly-db:
+  # if you set this to false it will not be installed
+  enabled: false
+
+firefly-iii:
+  # -- Set to false to not deploy Firefly III
+  enabled: true
+  image:
+    repository: "fireflyiii/core"
+    pullPolicy: Always
+    tag: latest
+
+  persistence:
+    # -- If you set this to false, uploaded attachments are not stored persistently and will be lost with every restart of the pod
+    enabled: true
+    storageClassName: "nfs-csi-applications"
+    accessModes: ReadWriteOnce
+    storage: 10Gi
+    # -- If you want to use an existing claim, set it here
+    # existingClaim: ""
+
+  # -- Environment variables for Firefly III. See docs at: https://github.com/firefly-iii/firefly-iii/blob/main/.env.example
+  config:
+    # -- Set this to the name of a secret to load environment variables from. If defined, values in the secret will override values in config.env
+    existingSecret: ${firefly_secret_env}
+
+  # -- A cronjob for [recurring Firefly III tasks](https://docs.firefly-iii.org/firefly-iii/advanced-installation/cron/).
+  cronjob:
+    # -- Set to true to enable the CronJob. Note that you need to specify either cronjob.auth.existingSecret or cronjob.auth.token for it to actually be deployed.
+    enabled: false
+
+    # -- Authorization for the CronJob. See https://docs.firefly-iii.org/firefly-iii/advanced-installation/cron/#request-a-page-over-the-web
+    auth:
+      # -- The name of a secret containing a data.token field with the cronjob token
+      existingSecret: ${firefly_secret_env}
+
+      # -- The name of the key in the existing secret to get the cronjob token from
+      secretKey: "STATIC_CRON_TOKEN"
+
+      # -- The token in plain text
+      # token: ""
+
+    # -- Annotations for the CronJob
+    annotations: {}
+
+    # -- When to run the CronJob. Defaults to 03:00 as this is when Firefly III executes regular tasks.
+    schedule: "0 3 * * *"
+
+    # -- How many pods to keep around for successful jobs
+    successfulJobsHistoryLimit: 3
+
+    # -- How many pods to keep around for failed jobs
+    failedJobsHistoryLimit: 1
+
+    # -- How to treat failed jobs
+    restartPolicy: OnFailure
+
+    image:
+      repository: curlimages/curl
+      pullPolicy: IfNotPresent
+      tag: 7.81.0
+
+    imagePullSecrets: []
+
+    podAnnotations: {}
+
+    securityContext: {}
+
+    podSecurityContext: {}
+
+    resources: {}
+
+    nodeSelector: {}
+
+    tolerations: []
+
+    affinity: {}
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+importer:
+  # -- Set to false to not deploy the importer
+  enabled: true
+
+  image:
+    repository: fireflyiii/data-importer
+    pullPolicy: Always
+    tag: latest
+
+  # -- The proxies that are trusted by the importer
+  trustedProxies: "**"
+
+  fireflyiii:
+    # -- The URL at which Firefly III is available. If you change this value, click the "Reauthenticate" button on the importer after opening it!
+    url: "https://finance.local.nigelvanhattum.nl"
+
+    # -- The URL at which you access Firefly III. Check https://docs.firefly-iii.org/data-importer/install/configure/#configure-fidi to find out if you should set this.
+    # vanityUrl: "finance.local.nigelvanhattum.nl"
+
+  #   auth:
+  #     # -- If you specify an existingSecret, it has to have the accessToken in a .spec.data.accessToken
+  #     existingSecret: ""
+
+  #     # -- The access token in plain text
+  #     accessToken: ""
+
+  # # -- Environment variables for the importer. See docs at: https://github.com/firefly-iii/data-importer/blob/main/.env.example
+  # config:
+  #   # -- Set this to the name of a secret to load environment variables from. If defined, values in the secret will override values in config.env
+  #   existingSecret: ""
+
+  #   # -- Set environment variables from configMaps or Secrets
+  #   envValueFrom: {}
+
+  #   # -- Directly defined environment variables. Use this for non-secret configuration values.
+  #   env:
+  #     IGNORE_DUPLICATE_ERRORS: "false"
+  #     TZ: "Europe/Amsterdam"
+
+  # imagePullSecrets: []
+  # nameOverride: ""
+  # fullnameOverride: ""
+
+  # podAnnotations: {}
+
+  # podSecurityContext: {}
+  #   # fsGroup: 2000
+
+  # securityContext: {}
+  #   # capabilities:
+  #   #   drop:
+  #   #   - ALL
+  #   # readOnlyRootFilesystem: true
+  #   # runAsNonRoot: true
+  #   # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8080
