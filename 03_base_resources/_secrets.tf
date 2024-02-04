@@ -36,7 +36,7 @@ data "onepassword_item" "argocd_azure_credentials" {
 resource "onepassword_item" "argo_admin_password" {
   vault = data.onepassword_vault.homelab_vault.uuid
 
-  title    = "ArgoCD admin password"
+  title    = "ArgoCD admin login"
   category = "login"
   username = "admin"
   password = random_password.argocd_admin_password.result
@@ -135,7 +135,7 @@ data "onepassword_item" "key_authentik" {
 
 data "onepassword_item" "login_authentik" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Authentik"
+  title  = "Authentik admin login"
 }
 
 data "onepassword_item" "geoip_authentik" {
