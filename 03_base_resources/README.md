@@ -5,13 +5,46 @@
 Terraform uses a single service token that will allow you to connect to your secrets. To create your service token, follow [the guide provided by 1Password itself](https://developer.1password.com/docs/service-accounts/get-started/). 
 
 ## Linkerd
+> [!WARNING]
+> Using the Linkerd CNI is not an option, this is caused by Talos OS which does not include the "nsenter" package. 
 - [Linkerd homepage](https://linkerd.io/)
 - [Linkerd Helm Chart](https://linkerd.io/2.14/tasks/install-helm/)
 
-> [!NOTE]
-> Using the Linkerd CNI is not an option, this is caused by Talos OS which does not include the "nsenter" package. 
-
 Linkerd will be installed with a self-signed root-ca that is valid for 10 years. Nothing more to say about Linkerd.
+
+## ArgoCD
+- [ArgoCD homepage](https://argoproj.github.io/cd/)
+- [ArgoCD Helm Chart](https://github.com/argoproj/argo-helm)
+
+ArgoCD will be used to deploy and manage all following items on the cluster. ArgoCD also will be connected to Azure Entra ID to allow for easy sign-in. Deploying ArgoCD requires some 1Password secret to be present in order to properly setup the admin account and connect it all to Azure Entra ID. 
+
+### Setting up the credentials
+Below is the table of all the credentials that are needed for the ArgoCD deployment. Follow [this guide](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/microsoft/#azure-ad-app-registration-auth-using-oidc) to get the correct values.for the secrets. 
+
+The deployment will expect the "ArgoCD Azure Secret" Note to be the client secret ID. 
+
+| 1Password item         | Type      | Content            |
+|------------------------|-----------|--------------------|
+| Azure tenant           | password  | Password           |
+||||
+| ArgoCD admin password  | login     | Username, Password |
+| ArgoCD Azure Secret    | password  | Password, Note     |
+
+## MetalLB
+
+## Traefik
+
+## Skooner
+
+## Nfs csi driver
+
+## PostgreSQL
+
+## Authentik
+
+## InfluxDB
+
+## Picture of the Day
 
 # Old docs, need updates
 Linkerd is used to enable secure traffic throughout the whole cluster. Linkerd should be the first thing you install, this will effect all deployments that come after. 
