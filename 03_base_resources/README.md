@@ -8,8 +8,8 @@ Terraform uses a single service token that will allow you to connect to your sec
 - [Linkerd homepage](https://linkerd.io/)
 - [Linkerd Helm Chart](https://linkerd.io/2.14/tasks/install-helm/)
 
-[!NOTE]
-Using the Linkerd CNI is not an option, this is caused by Talos OS which does not include the "nsenter" package. 
+> [!NOTE]
+> Using the Linkerd CNI is not an option, this is caused by Talos OS which does not include the "nsenter" package. 
 
 Linkerd will be installed with a self-signed root-ca that is valid for 10 years. Nothing more to say about Linkerd.
 
