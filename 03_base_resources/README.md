@@ -6,7 +6,7 @@ Terraform uses a single service token that will allow you to connect to your sec
 
 ## Linkerd
 > [!WARNING]
-> Using the Linkerd CNI is not an option, this is caused by Talos OS which does not include the "nsenter" package. 
+> Using the Linkerd CNI is not an option, this is caused by Talos OS which does not include the "nsenter" package. See [#7945](https://github.com/linkerd/linkerd2/issues/7945) for more information and updates. 
 - [Linkerd homepage](https://linkerd.io/)
 - [Linkerd Helm Chart](https://linkerd.io/2.14/tasks/install-helm/)
 
@@ -31,6 +31,8 @@ The deployment will expect the "ArgoCD Azure Secret" Note to be the client secre
 | ArgoCD Azure Secret    | password  | Password, Note     |
 
 ## MetalLB
+- [MetalLB homepage](https://metallb.org/)
+- [MetalLB Helm Chart](https://metallb.org/installation/#installation-with-helm)
 
 ## Traefik
 
