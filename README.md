@@ -4,7 +4,7 @@ It consists of a [Proxmox VE](https://www.proxmox.com/en/proxmox-ve) node, in wh
 
 # Requirements
 In order to execute everything in this playbook, you will need to install a couple of tools
-- [Talosctl](https://www.talos.dev/v1.1/introduction/getting-started/#talosctl)
+- [Talosctl](https://www.talos.dev/v1.6/introduction/getting-started/#talosctl)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Terraform](https://developer.hashicorp.com/terraform/install)
 
@@ -76,6 +76,9 @@ $ ./03_bootstrap
 ```
 
 This will store all important files in the talos/.out/ folder. Keep these secure, and back them up. You need these files if you ever need to update your cluster or configure the cluster. 
+
+### Managing the cluster
+Upgrading both Talos OS itself and the kubernetes version, take a look at [my documentation](02_cluster/README.md)
 
 ## 03_base_resources
 To start with a basic cluster with enough possibilities to deploy your applications, they are deployed in bulk. It also uses 1Password to store all secrets need throughout the deployment. 
