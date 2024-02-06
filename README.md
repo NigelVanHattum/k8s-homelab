@@ -49,29 +49,11 @@ Installing and connection the talos cluster will be done in steps. The IP's of t
 $ cd 02_cluster/talos
 # This will ask for the control-plane IP
 $ ./01_init-control
-```
 
-Now open both controlplane.yaml and worker.yaml and add the following to the yaml files:
-```yaml
-machine:
-  kubelet:
-    extraArgs:
-      rotate-server-certificates: true
-```
-
-In the controlplane.yaml also add the following:
-```yaml
-cluster:
-  extraManifests:
-    - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-    - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-```
-now continue with the init proces: 
-
-```bash
 # This will ask for all worker noder IPs, enter comma seperated
 $ ./02_init-workers
-# After all the nodes are "ready", run
+
+# After all the nodes are "ready", run (you can view the status in the Proxmox console window)
 $ ./03_bootstrap
 ```
 

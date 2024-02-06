@@ -1,0 +1,5 @@
+# server certificate rotation is needed for the metric server to work
+machine:
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true

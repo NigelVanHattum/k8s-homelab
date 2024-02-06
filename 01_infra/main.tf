@@ -3,17 +3,22 @@ resource "proxmox_vm_qemu" "talos-controlpane" {
   target_node = var.proxmox_target_node
   iso = "local:iso/${var.k8s_iso}"
   onboot = true
-  oncreate = true
+  vm_state = "running"
   qemu_os = "other"
   scsihw = "virtio-scsi-pci"
   cpu = "host"
   cores = var.k8s_master_cpu
   memory = var.k8s_master_ram
 
-  disk {
-    type = "scsi"
-    storage = "local-lvm"
-    size = "20G"
+  disks {
+    scsi {
+      scsi0 {
+        disk{
+          storage = "local-lvm"
+          size = 20
+        }
+      }
+    }
   }
 
   network {
@@ -30,17 +35,22 @@ resource "proxmox_vm_qemu" "k8s-workers" {
   target_node = var.proxmox_target_node
   iso = "local:iso/${var.k8s_iso}"
   onboot = true
-  oncreate = true
+  vm_state = "running"
   qemu_os = "other"
   scsihw = "virtio-scsi-pci"
   cpu = "host"
   cores = var.k8s_worker_cpu
   memory = var.k8s_worker_ram
 
-  disk {
-    type = "scsi"
-    storage = "local-lvm"
-    size = "20G"
+  disks {
+    scsi {
+      scsi0 {
+        disk{
+          storage = "local-lvm"
+          size = 20
+        }
+      }
+    }
   }
 
   network {

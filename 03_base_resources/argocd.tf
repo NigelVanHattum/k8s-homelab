@@ -16,7 +16,9 @@ resource "helm_release" "argocd" {
       argocd_admin_password = random_password.argocd_admin_password.bcrypt_hash
     })
   ]
-  depends_on = [helm_release.linkerd]
+  depends_on = [helm_release.linkerd,
+                onepassword_item.argo_admin_password,
+                kubernetes_secret.argocd_secret]
 }
 
 resource "argocd_project" "argo-cd-system-project" {
