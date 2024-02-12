@@ -3,7 +3,7 @@ resource "postgresql_role" "authentik" {
   login    = true
   password = data.onepassword_item.database_authentik.password
 
-  depends_on = [time_sleep.wait_for_postgress, kubernetes_manifest.postgres_ingress]
+  depends_on = [time_sleep.wait_for_postgress, kubectl_manifest.postgres_ingress]
 }
 
 resource "postgresql_role" "hass" {
@@ -11,7 +11,7 @@ resource "postgresql_role" "hass" {
   login    = true
   password = var.postgresql_hass_password
 
-  depends_on = [time_sleep.wait_for_postgress, kubernetes_manifest.postgres_ingress]
+  depends_on = [time_sleep.wait_for_postgress, kubectl_manifest.postgres_ingress]
 }
 
 resource "postgresql_role" "firefly" {
@@ -19,5 +19,5 @@ resource "postgresql_role" "firefly" {
   login    = true
   password = data.onepassword_item.database_firefly.password
 
-  depends_on = [time_sleep.wait_for_postgress, kubernetes_manifest.postgres_ingress]
+  depends_on = [time_sleep.wait_for_postgress, kubectl_manifest.postgres_ingress]
 }

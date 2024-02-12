@@ -75,8 +75,9 @@ resource "argocd_application" "postgresql" {
                 kubectl_manifest.nfs_storage_class_backup]
 }
 
-resource "kubernetes_manifest" "postgres_ingress" {
-  manifest = yamldecode(file("${path.module}/manifests/ingress/postgresql.yaml"))
+resource "kubectl_manifest" "postgres_ingress" {
+  validate_schema = false
+  yaml_body = file("${path.module}/manifests/ingress/postgresql.yaml")
   ## wait does not work, there is no status viewer for it
   # wait {
   #   rollout = true
@@ -85,7 +86,7 @@ resource "kubernetes_manifest" "postgres_ingress" {
 }
 
 resource "time_sleep" "wait_for_postgress" {
-  depends_on = [kubernetes_manifest.postgres_ingress]
+  depends_on = [kubectl_manifest.postgres_ingress]
 
   ### Postgresql is slow to start.....
   create_duration = "1m"
