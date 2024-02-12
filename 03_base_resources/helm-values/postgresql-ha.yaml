@@ -167,7 +167,9 @@ backup:
     ## @param backup.cronjob.failedJobsHistoryLimit Set the cronjob parameter failedJobsHistoryLimit
     failedJobsHistoryLimit: 3
     ## @param backup.cronjob.successfulJobsHistoryLimit Set the cronjob parameter successfulJobsHistoryLimit
-    successfulJobsHistoryLimit: 3
+    successfulJobsHistoryLimit: 0
+    annotations: 
+      "linkerd.io/inject" : "disabled"
     restartPolicy: OnFailure
     nodeSelector: {}
     command:
