@@ -1,7 +1,7 @@
 variable "proxmox_url" {
   type = string
   description = "The API URL of the Proxmox server"
-  default = "https://10.0.49.20:8006/api2/json"
+  default = "https://10.0.48.20:8006/api2/json"
 }
 
 variable "proxmox_tls_insecure" {
