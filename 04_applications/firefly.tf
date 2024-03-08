@@ -71,6 +71,11 @@ resource "kubectl_manifest" "firefly_ingress-local" {
   override_namespace = kubernetes_namespace.firefly.metadata.0.name
 }
 
+resource "kubectl_manifest" "firefly_import-local" {
+  yaml_body          = file("manifests/firefly/importer-local.yaml")
+  override_namespace = kubernetes_namespace.firefly.metadata.0.name
+}
+
 resource "kubectl_manifest" "firefly_ingress-public" {
   yaml_body          = file("manifests/firefly/ingress-public.yaml")
   override_namespace = kubernetes_namespace.firefly.metadata.0.name

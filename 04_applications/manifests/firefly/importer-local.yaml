@@ -3,17 +3,17 @@ kind: Ingress
 metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-  name: firefly-local
+  name: firefly-importer
   namespace: firefly
 spec:
   ingressClassName: traefik
   rules:
-    - host: finance.local.nigelvanhattum.nl
+    - host: import.finance.local.nigelvanhattum.nl
       http:
         paths:
           - backend:
               service:
-                name: firefly-firefly-iii
+                name: firefly-importer
                 port:
                   name: http
             path: /
