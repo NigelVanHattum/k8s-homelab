@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "Homelab"
-      name = "01_infra-proxmox"
+      name = "01_infra"
     }
   }
 }

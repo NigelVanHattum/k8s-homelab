@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "Homelab"
-      name = "03_base_resources"
+      name = "02_base_resources"
     }
   }
 }

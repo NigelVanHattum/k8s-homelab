@@ -9,5 +9,5 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-        - name: postgresql-postgresql-ha-pgpool
-          port: postgresql
+        - name: ${service_name}
+          port: postgres

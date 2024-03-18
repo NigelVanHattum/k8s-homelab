@@ -11,20 +11,6 @@ variable "entra_admin_group_id" {
   default   = "TODO"
   }
 
-### Databases
-variable "pgpool_customUsersSecret" {
-  type = string
-  default = "postgres-users"
-  }
-variable "postgresql_hass_password" {
-  type = string
-  sensitive = true
-  }
-variable "postgresql_hass_username" {
-  type = string
-  default = "homeassistant"
-  }
-
 ### InfluxDB
 variable "influxdb_secret_name" {
   type = string

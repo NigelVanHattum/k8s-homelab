@@ -1,3 +1,13 @@
+data "terraform_remote_state" "infra" {
+  backend = "remote"
+  config = {
+    organization = "Nigel_dev"
+    workspaces = {
+      name = "01_infra"
+    }
+  }
+}
+
 ### 1Password
 data "onepassword_vault" "homelab_vault" {
   name = "Homelab"
@@ -17,17 +27,6 @@ resource "random_password" "argocd_admin_password" {
 
 
 ### ArgoCD
-resource "kubernetes_secret" "argocd_secret" {
-  metadata {
-    name = "argocd-admin-password"
-    namespace = kubernetes_namespace.argocd.metadata.0.name
-  }
-
-  data = {
-    password =random_password.argocd_admin_password.result
-  }
-}
-
 data "onepassword_item" "argocd_azure_credentials" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title  = "ArgoCD Azure Secret"
@@ -63,9 +62,31 @@ resource "kubernetes_secret" "cloudflare_api_token" {
 
 
 ### PostgreSQL
-data "onepassword_item" "database_postgresql" {
+data "onepassword_item" "synology_c2" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "Synology C2"
+}
+
+data "kubernetes_secret" "postgres_admin" {
+  metadata {
+    name = "postgresql-cluster-superuser"
+    namespace = kubernetes_namespace.postgresql.metadata.0.name
+  }
+
+  depends_on = [
+    argocd_application.postgres_cluster
+  ]
+}
+
+resource "onepassword_item" "database_postgresql" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title  = "Database-PostgreSQL"
+  
+  category = "database"
+  hostname = data.kubernetes_secret.postgres_admin.data["host"]
+  port     = data.kubernetes_secret.postgres_admin.data["port"]
+  username = data.kubernetes_secret.postgres_admin.data["username"]
+  password = data.kubernetes_secret.postgres_admin.data["password"]
 }
 
 data "onepassword_item" "database_authentik" {
@@ -77,35 +98,6 @@ data "onepassword_item" "database_firefly" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title  = "Database-Firefly"
 }
-
-resource "kubernetes_secret" "pgpool_users" {
-  metadata {
-    name = var.pgpool_customUsersSecret
-    namespace = kubernetes_namespace.postgresql.metadata.0.name
-  }
-
-  immutable = false
-
-  data = {
-    usernames = "${data.onepassword_item.database_postgresql.username},${data.onepassword_item.database_authentik.username},${var.postgresql_hass_username},${data.onepassword_item.database_firefly.username}"
-    passwords = "${data.onepassword_item.database_postgresql.password},${data.onepassword_item.database_authentik.password},${var.postgresql_hass_password},${data.onepassword_item.database_firefly.password}"
-  }
-}
-
-resource "kubernetes_secret" "postgres_admin_password" {
-  metadata {
-    name = "postgres-admin-password"
-    namespace = kubernetes_namespace.postgresql.metadata.0.name
-  }
-
-  immutable = true
-
-  data = {
-    repmgr-password = data.onepassword_item.database_postgresql.password
-    password = data.onepassword_item.database_postgresql.password
-  }
-}
-
 
 ### InfluxDB
 resource "kubernetes_secret" "influxdb_admin" {

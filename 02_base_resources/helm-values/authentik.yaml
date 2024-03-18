@@ -4,7 +4,7 @@ authentik:
     secret_key: ${authentik_secret_key}
     postgresql:
         use_pgpool: true
-        host: postgresql-postgresql-ha-pgpool.postgresql.svc.cluster.local
+        host: postgresql-cluster-rw.postgresql.svc.cluster.local
         password: ${authentik_postgresql_password}
     log_level: info
 

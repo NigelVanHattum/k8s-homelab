@@ -16,9 +16,9 @@ resource "helm_release" "argocd" {
       argocd_admin_password = random_password.argocd_admin_password.bcrypt_hash
     })
   ]
-  depends_on = [helm_release.linkerd,
-                onepassword_item.argo_admin_password,
-                kubernetes_secret.argocd_secret]
+  depends_on = [
+    onepassword_item.argo_admin_password
+    ]
 }
 
 resource "argocd_project" "argo-cd-system-project" {
@@ -32,6 +32,12 @@ resource "argocd_project" "argo-cd-system-project" {
     description = "project for system applications"
     source_repos      = ["*"]
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "nfs-csi-driver"
+    }
+    
     destination {
       server = "*"
       name = "*"

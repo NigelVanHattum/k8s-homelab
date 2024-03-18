@@ -96,20 +96,6 @@ resource "kubernetes_namespace" "influxdb" {
   }
 }
 
-resource "kubernetes_namespace" "skooner" {
-  metadata {
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-    name   = "skooner"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
-  }
-}
-
 resource "kubernetes_namespace" "picture_of_the_day" {
   metadata {
     annotations = {

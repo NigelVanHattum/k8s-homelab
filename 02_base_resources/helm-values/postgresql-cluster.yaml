@@ -1,0 +1,75 @@
+### https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml
+type: postgresql
+
+mode: standalone
+
+cluster:
+  # -- Number of instances
+  instances: 3
+
+  # -- Name of the container image, supporting both tags (<image>:<tag>) and digests for deterministic and repeatable deployments:
+  # <image>:<tag>@sha256:<digestValue>
+  # imageName: "postgres:16"  # Default value depends on type (postgresql/postgis/timescaledb)
+
+  # -- Image pull policy. One of Always, Never or IfNotPresent. If not defined, it defaults to IfNotPresent. Cannot be updated.
+  # More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+  imagePullPolicy: IfNotPresent
+
+  storage:
+    size: 10Gi
+    storageClass: "nfs-csi-postgresql"
+
+  # -- The instances' log level, one of the following values: error, warning, info (default), debug, trace
+  logLevel: "info"
+
+  # -- When this option is enabled, the operator will use the SuperuserSecret to update the postgres user password.
+  # If the secret is not present, the operator will automatically create one.
+  # When this option is disabled, the operator will ignore the SuperuserSecret content, delete it when automatically created,
+  # and then blank the password of the postgres user by setting it to NULL.
+  enableSuperuserAccess: true
+
+
+backups:
+  # -- You need to configure backups manually, so backups are disabled by default.
+  enabled: true
+
+  # -- Overrides the provider specific default endpoint. Defaults to:
+  # S3: https://s3.<region>.amazonaws.com"
+  endpointURL: ${s3_endpoint}  # Leave empty if using the default S3 endpoint
+
+  # -- Overrides the provider specific default path. Defaults to:
+  # S3: s3://<bucket><path>
+  # Azure: https://<storageAccount>.<serviceName>.core.windows.net/<clusterName><path>
+  # Google: gs://<bucket><path>
+  destinationPath: ""
+  # -- One of `s3`, `azure` or `google`
+  provider: s3
+  s3:
+    bucket: ${s3_bucket}
+    path: "/"
+    accessKey: ${s3_access_key}
+    secretKey: ${s3_secret_key}
+
+  scheduledBackups:
+    -
+      # -- Scheduled backup name
+      name: daily-backup
+      # -- Schedule in cron format
+      schedule: "0 0 * * * *"
+      # -- Backup owner reference
+      backupOwnerReference: self
+
+  # -- Retention policy for backups
+  retentionPolicy: "30d"
+
+pooler:
+  # -- Whether to enable PgBouncer
+  enabled: false
+  # -- PgBouncer pooling mode
+  poolMode: transaction
+  # -- Number of PgBouncer instances
+  instances: 3
+  # -- PgBouncer configuration parameters
+  parameters:
+    max_client_conn: "100"
+    default_pool_size: "25"
