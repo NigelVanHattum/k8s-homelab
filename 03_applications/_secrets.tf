@@ -1,3 +1,13 @@
+data "terraform_remote_state" "infra" {
+  backend = "remote"
+  config = {
+    organization = "Nigel_dev"
+    workspaces = {
+      name = "01_infra"
+    }
+  }
+}
+
 ### 1Password
 data "onepassword_vault" "homelab_vault" {
   name = "Homelab"
