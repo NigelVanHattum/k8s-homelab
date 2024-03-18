@@ -20,11 +20,9 @@ data "onepassword_item" "database_firefly" {
 }
 
 ### ArgoCD
-data "kubernetes_secret" "argocd_secret" {
-  metadata {
-    name = "argocd-admin-password"
-    namespace = "argo"
-  }
+data "onepassword_item" "argo_admin" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "ArgoCD admin login"
 }
 
 ### Authentik

@@ -93,3 +93,13 @@ resource "authentik_source_oauth" "azure_ad" {
   consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
 }
+
+resource "kubectl_manifest" "authentik_middleware" {
+  yaml_body          = file("manifests/networking/authentik-middleware.yaml")
+  override_namespace = kubernetes_namespace.traefik.metadata.0.name
+
+  depends_on = [
+    argocd_application.traefik,
+    argocd_application.authentik
+  ]
+}

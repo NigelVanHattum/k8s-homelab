@@ -31,8 +31,8 @@ provider "helm" {
 provider "argocd" {
   plain_text = true
   port_forward_with_namespace = "argo"
-  username = "admin"
-  password = random_password.argocd_admin_password.result
+  username = data.onepassword_item.argo_admin.username
+  password = data.onepassword_item.argo_admin.password
 }
 
 provider "authentik" {
