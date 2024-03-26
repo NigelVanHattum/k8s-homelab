@@ -1,20 +1,8 @@
-variable "proxmox_url" {
-  type = string
-  description = "The API URL of the Proxmox server"
-  default = "https://10.0.48.20:8006/api2/json"
-}
-
-variable "proxmox_api_key_id" {
-  type = string
-  description = "The id of the API key used for proxmox authentication"
-  default = "Terraform@pve!feb2024"
-}
-
-variable "proxmox_api_key_secret" {
-  type = string
-  description = "The secret value of the API key used"
+### 1Password
+variable "onepassword_service_token" {
+  type    = string
   sensitive = true
-}
+  }
 
 variable "master_vms" {
   type = map(object({
