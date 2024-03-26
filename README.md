@@ -49,9 +49,7 @@ In the Proxmox GUI, go to local storage -> ISO Images and then with Download fro
 ## 01_infra
 Follow the steps and guides listed [here](01_infra/README.md)
 
-
-### Managing the cluster
-Upgrading both Talos OS itself and the kubernetes version, take a look at [my documentation](02_cluster/README.md)
+# OLD - DO NOT READ :) 
 
 ## 03_base_resources
 To start with a basic cluster with enough possibilities to deploy your applications, they are deployed in bulk. It also uses 1Password to store all secrets need throughout the deployment. 
