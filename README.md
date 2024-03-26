@@ -49,37 +49,3 @@ In the Proxmox GUI, go to local storage -> ISO Images and then with Download fro
 ## 01_infra
 Follow the steps and guides listed [here](01_infra/README.md)
 
-# OLD - DO NOT READ :) 
-
-## 03_base_resources
-To start with a basic cluster with enough possibilities to deploy your applications, they are deployed in bulk. It also uses 1Password to store all secrets need throughout the deployment. 
-Below is a table of all secrets that it expects to be stored in 1password. All details, and how to setup the 1Password connection can be found [here](03_base_resources/README.md).
-
-| 1Password item         | Type      | Content            |
-|------------------------|-----------|--------------------|
-| Azure tenant           | password  | Password           |
-||||
-| ArgoCD admin password  | login     | Username, Password |
-| ArgoCD Azure Secret    | password  | Password, Note     |
-||||
-| Authentik admin login  | login     | Username, Password |
-| Authentik Azure Secret | password  | Password, Note     |
-| Authentik GeoIP        | login     | Username, Password |
-| Authentik Secret Key   | password  | Password           |
-| Authentik Token        | password  | Password           |
-||||
-| Cloudflare DNS token   | password  | Password           |
-||||
-| Database-PostgreSQL    | database  | Hostname, Port, Username, Password     |
-| Database-Authentik     | database  | Username, Password |
-| Database-Firefly       | database  | Username, Password |
-
-
-Running the following commands will depliy all base resources mentioned here. During the terraform plan phase it will request you to enter the 1Password service token.
-
-```bash
-$ cd 03_base_resources
-$ terraform init
-$ terraform plan -out plan.tfplan
-$ terraform apply plan.tfplan 
-```
