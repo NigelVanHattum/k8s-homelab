@@ -27,6 +27,7 @@ cluster:
   # When this option is disabled, the operator will ignore the SuperuserSecret content, delete it when automatically created,
   # and then blank the password of the postgres user by setting it to NULL.
   enableSuperuserAccess: true
+  superuserSecret: "${superuser_secret}"
 
 
 backups:
@@ -55,7 +56,7 @@ backups:
       # -- Scheduled backup name
       name: daily-backup
       # -- Schedule in cron format
-      schedule: "0 0 * * * *"
+      schedule: "0 4 * * *"
       # -- Backup owner reference
       backupOwnerReference: self
 

@@ -37,9 +37,9 @@ provider "argocd" {
 
 provider "postgresql" {
   host            = "10.0.49.25"
-  port            = onepassword_item.database_postgresql.port
-  username        = onepassword_item.database_postgresql.username
-  password        = onepassword_item.database_postgresql.password
+  port            = data.onepassword_item.database_postgresql.port
+  username        = data.onepassword_item.database_postgresql.username
+  password        = data.onepassword_item.database_postgresql.password
   sslmode         = "disable"
   connect_timeout = 15
 }

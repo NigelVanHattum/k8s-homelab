@@ -67,26 +67,27 @@ data "onepassword_item" "synology_c2" {
   title  = "Synology C2"
 }
 
-data "kubernetes_secret" "postgres_admin" {
-  metadata {
-    name = "postgresql-cluster-superuser"
-    namespace = kubernetes_namespace.postgresql.metadata.0.name
-  }
-
-  depends_on = [
-    argocd_application.postgres_cluster
-  ]
-}
-
-resource "onepassword_item" "database_postgresql" {
+data "onepassword_item" "database_postgresql" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title  = "Database-PostgreSQL"
-  
-  category = "database"
-  hostname = data.kubernetes_secret.postgres_admin.data["host"]
-  port     = data.kubernetes_secret.postgres_admin.data["port"]
-  username = data.kubernetes_secret.postgres_admin.data["username"]
-  password = data.kubernetes_secret.postgres_admin.data["password"]
+}
+
+resource "kubernetes_secret" "postgres_admin" {
+  metadata {
+    name = "postgresql-superuser"
+    namespace = kubernetes_namespace.postgresql.metadata.0.name
+    labels = {
+      "cnpg.io/reload" = ""
+    }
+  }
+
+  data = {
+    username = data.onepassword_item.database_postgresql.username
+    password = data.onepassword_item.database_postgresql.password
+    host     = data.onepassword_item.database_postgresql.hostname
+  }
+
+  type = "kubernetes.io/basic-auth"
 }
 
 data "onepassword_item" "database_authentik" {

@@ -67,6 +67,7 @@ resource "argocd_application" "postgres_cluster" {
           s3_access_key = data.onepassword_item.synology_c2.username
           s3_secret_key = data.onepassword_item.synology_c2.password
           s3_bucket = "postgresql-backup"
+          superuser_secret = kubernetes_secret.postgres_admin.metadata.0.name
         })
       }
     }
@@ -109,7 +110,7 @@ resource "argocd_application" "postgres_cluster" {
 resource "kubectl_manifest" "postgres_ingress" {
   validate_schema = false
   yaml_body = templatefile("${path.module}/manifests/ingress/postgresql.yaml", {
-    service_name = data.kubernetes_secret.postgres_admin.data["host"]
+    service_name = kubernetes_secret.postgres_admin.data["host"]
   })
   ## wait does not work, there is no status viewer for it
   # wait {
