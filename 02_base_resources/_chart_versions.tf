@@ -34,7 +34,7 @@ variable "cnpg_postgres_operator_chart_version" {
 
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.0.3"
+  default = "0.0.6"
 }
 
 variable "influxdb_chart_version" {
