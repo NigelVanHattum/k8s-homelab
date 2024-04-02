@@ -49,3 +49,6 @@ In the Proxmox GUI, go to local storage -> ISO Images and then with Download fro
 ## 01_infra
 Follow the steps and guides listed [here](01_infra/README.md)
 
+## 02_base_resources
+Follow the steps and guides listed [here](02_base_resources/README.md)
+

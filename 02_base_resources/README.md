@@ -1,8 +1,8 @@
-# Deploying the base resources for the k8s cluster
+# Deploying the base resources on the k8s cluster
 
-## 1Password (secret manager)
-1Password is used as the secret storage for all variables that Terraform needs during rollout of all resources. 
-Terraform uses a single service token that will allow you to connect to your secrets. To create your service token, follow [the guide provided by 1Password itself](https://developer.1password.com/docs/service-accounts/get-started/). 
+
+## 1Password requirements
+All 1Password requirements will be put into their corresponding chapters. 
 
 ## Linkerd
 > [!WARNING]
@@ -10,7 +10,7 @@ Terraform uses a single service token that will allow you to connect to your sec
 - [Linkerd homepage](https://linkerd.io/)
 - [Linkerd Helm Chart](https://linkerd.io/2.14/tasks/install-helm/)
 
-Linkerd will be installed with a self-signed root-ca that is valid for 10 years. Nothing more to say about Linkerd.
+Linkerd will be installed with a self-signed root-ca that is valid for 10 years. Linkerd will install a service mesh to ensure pod to pod network encryption. Nothing more to say about it. 
 
 ## ArgoCD
 - [ArgoCD homepage](https://argoproj.github.io/cd/)
@@ -19,24 +19,35 @@ Linkerd will be installed with a self-signed root-ca that is valid for 10 years.
 ArgoCD will be used to deploy and manage all following items on the cluster. ArgoCD also will be connected to Azure Entra ID to allow for easy sign-in. Deploying ArgoCD requires some 1Password secret to be present in order to properly setup the admin account and connect it all to Azure Entra ID. 
 
 ### Setting up the credentials
-Below is the table of all the credentials that are needed for the ArgoCD deployment. Follow [this guide](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/microsoft/#azure-ad-app-registration-auth-using-oidc) to get the correct values.for the secrets. 
+Below is the table of all the credentials that are needed for the ArgoCD deployment. Follow [this guide](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/microsoft/#azure-ad-app-registration-auth-using-oidc) to get the correct values for the secrets. 
 
-The deployment will expect the "ArgoCD Azure Secret" Note to be the client secret ID. 
 
 | 1Password item         | Type      | Content            |
 |------------------------|-----------|--------------------|
-| Azure tenant           | password  | Password           |
-||||
-| ArgoCD admin password  | login     | Username, Password |
-| ArgoCD Azure Secret    | password  | Password, Note     |
+| {{local.onepassword.azure_tenant}}         | password  | Password           |
+| {{local.onepassword.argocd_admin}}  | login     | Username, Password |
+| {{local.onepassword.argocd_azure_secret}}    | password  | Password, Note     |
 
 ## MetalLB
 - [MetalLB homepage](https://metallb.org/)
 - [MetalLB Helm Chart](https://metallb.org/installation/#installation-with-helm)
 
-## Traefik
+MetalLB gets deployed as a load balancer for the k8s cluster. This will allow your applications to be directly accessable on available ip addresses. You can find all ip addresses within the `_locals.tf` file.
 
-## Skooner
+## Traefik
+- [Traefik homepage](https://traefik.io/)
+- [Traefik Helm Chart](https://doc.traefik.io/traefik/getting-started/install-traefik/#use-the-helm-chart)
+
+Traefik gets deployed as an ingress controller, to easily expose the applications running on the cluster. 
+
+### Setting up the credentials
+Below is the table of all the credentials that are needed for the Traefik deployment. I use Cloudflare as my domain registar. Follow [this guide](https://go-acme.github.io/lego/dns/cloudflare/) to get your Cloudflare DNS token. This will allow Traefik to request letsEncrypt certificates for your domain(s). 
+
+
+| 1Password item         | Type      | Content            |
+|------------------------|-----------|--------------------|
+| {{local.onepassword.cloudflare_api_token}}    | password  | Password     |
+
 
 ## Nfs csi driver
 

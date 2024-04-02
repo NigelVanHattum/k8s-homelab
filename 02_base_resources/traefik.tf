@@ -18,7 +18,10 @@ resource "argocd_application" "traefik" {
       target_revision = var.traefik_chart_version
 
       helm {
-        values = file("helm-values/traefik.yaml")
+        values = templatefile("helm-values/traefik.yaml", {
+          domain = local.domain
+          cloudflare_api_token = kubernetes_secret.cloudflare_api_token.metadata.0.name
+        })
       }
     }
 

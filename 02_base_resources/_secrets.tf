@@ -10,13 +10,13 @@ data "terraform_remote_state" "infra" {
 
 ### 1Password
 data "onepassword_vault" "homelab_vault" {
-  name = "Homelab"
+  name = local.onepassword.vault_name
 }
 
 ### Azure tenant
 data "onepassword_item" "azure_tenant_id" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Azure tenant"
+  title  = local.onepassword.azure_tenant
 }
 
 
@@ -29,13 +29,13 @@ resource "random_password" "argocd_admin_password" {
 ### ArgoCD
 data "onepassword_item" "argocd_azure_credentials" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "ArgoCD Azure Secret"
+  title  = local.onepassword.argocd_azure_secret
 }
 
 resource "onepassword_item" "argo_admin_password" {
   vault = data.onepassword_vault.homelab_vault.uuid
 
-  title    = "ArgoCD admin login"
+  title    = local.onepassword.argocd_admin
   category = "login"
   username = "admin"
   password = random_password.argocd_admin_password.result
@@ -44,7 +44,7 @@ resource "onepassword_item" "argo_admin_password" {
 ### Traefik 
 data "onepassword_item" "cloudflare_dns_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Cloudflare DNS token"
+  title  = local.onepassword.cloudflare_api_token
 }
 
 resource "kubernetes_secret" "cloudflare_api_token" {

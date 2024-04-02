@@ -44,7 +44,9 @@ resource "argocd_application" "metallb" {
 }
 
 resource "kubectl_manifest" "traefik_ip_address_pool" {
-  yaml_body          = file("manifests/networking/traefik-addresspool.yaml")
+  yaml_body          = templatefile("manifests/networking/traefik-addresspool.yaml", {
+    traefik_ip = local.ip_address.ingress
+  })
   override_namespace = kubernetes_namespace.metallb.metadata.0.name
 
   depends_on = [
@@ -53,7 +55,9 @@ resource "kubectl_manifest" "traefik_ip_address_pool" {
 }
 
 resource "kubectl_manifest" "extra_ip_address_pool" {
-  yaml_body          = file("manifests/networking/extra-addresspool.yaml")
+  yaml_body          = templatefile("manifests/networking/extra-addresspool.yaml", {
+    extra_ips = local.ip_address.extra_pool
+  })
   override_namespace = kubernetes_namespace.metallb.metadata.0.name
 
   depends_on = [

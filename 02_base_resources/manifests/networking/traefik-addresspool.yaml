@@ -5,4 +5,4 @@ metadata:
   namespace: metal-lb
 spec:
   addresses:
-    - 10.0.49.25/32
+    - ${traefik_ip}/32

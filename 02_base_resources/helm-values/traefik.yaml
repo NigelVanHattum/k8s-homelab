@@ -10,7 +10,7 @@ env:
   - name: CF_DNS_API_TOKEN
     valueFrom:
       secretKeyRef:
-        name: cloudflare-token
+        name: ${cloudflare_api_token}
         key: token
 
 ports:
@@ -28,7 +28,7 @@ ports:
       options: ""
       certResolver: "letsencrypt"
       domains:
-        - main: "*.nigelvanhattum.nl"
+        - main: "*.${domain}"
     middlewares: []
     forwardedHeaders:
       insecure: true
@@ -43,7 +43,7 @@ ports:
       options: ""
       certResolver: "letsencrypt"
       domains:
-        - main: "*.local.nigelvanhattum.nl"
+        - main: "*.local.${domain}"
     middlewares: []
     forwardedHeaders:
       insecure: true
