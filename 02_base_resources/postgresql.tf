@@ -60,13 +60,12 @@ resource "argocd_application" "postgres_cluster" {
       chart           = "cluster"
       target_revision = var.cnpg_postgres_cluster_chart_version
 
-## TODO
       helm {
         values = templatefile("helm-values/postgresql-cluster.yaml", {
           s3_endpoint = data.onepassword_item.synology_c2.url
           s3_access_key = data.onepassword_item.synology_c2.username
           s3_secret_key = data.onepassword_item.synology_c2.password
-          s3_bucket = "postgresql-backup"
+          s3_bucket = local.database.backup_c2_bucket
           superuser_secret = kubernetes_secret.postgres_admin.metadata.0.name
         })
       }

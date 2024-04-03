@@ -25,8 +25,8 @@ Below is the table of all the credentials that are needed for the ArgoCD deploym
 | 1Password item         | Type      | Content            |
 |------------------------|-----------|--------------------|
 | {{local.onepassword.azure_tenant}}         | password  | Password           |
-| {{local.onepassword.argocd_admin}}  | login     | Username, Password |
-| {{local.onepassword.argocd_azure_secret}}    | password  | Password, Note     |
+| {{local.onepassword.argo.dmin}}  | login     | Username, Password |
+| {{local.onepassword.argo.azure_secret}}    | password  | Password, Note     |
 
 ## MetalLB
 - [MetalLB homepage](https://metallb.org/)
@@ -46,12 +46,33 @@ Below is the table of all the credentials that are needed for the Traefik deploy
 
 | 1Password item         | Type      | Content            |
 |------------------------|-----------|--------------------|
-| {{local.onepassword.cloudflare_api_token}}    | password  | Password     |
+| {{local.onepassword.traefik.cloudflare_api_token}}    | password  | Password     |
 
 
 ## Nfs csi driver
+- [NFS csi driver](https://github.com/kubernetes-csi/csi-driver-nfs?tab=readme-ov-file)
+- [Helm Chart](https://github.com/kubernetes-csi/csi-driver-nfs/tree/master/charts)
+
+The NFS CSI driver is used to persist files from the cluster to my NAS. 
 
 ## PostgreSQL
+- [PostgreSQL homepage](https://www.postgresql.org/)
+- [CNPG homepage](https://cloudnative-pg.io/)
+- [Helm Chart](https://github.com/cloudnative-pg/charts)
+- [Synology C2](https://c2.synology.com/en-global/object-storage/overview)
+
+PostgreSQL gets deployed as a single database cluster, that will provide databases for all applications on the cluster. Deployment is done via the CNPG operator. Since I have a Synology NAS, they also provide me with 15GB of S3 compatible C2 storage. I use this to store my backups. 
+
+### Setting up the credentials
+Below is the table of all the credentials that are needed for the postgreSQL deployment. 
+
+
+| 1Password item         | Type      | Content            |
+|------------------------|-----------|--------------------|
+| {{local.onepassword.postgresql.synology_c2}}    | login  | url (c2 endpoint), Username (access_key), Password (secret_key)    |
+| {{local.onepassword.postgresql.postgres_user}}  | database  | Username, Password     |
+
+Repeat the postgres user setup for each new database/ user 
 
 ## Authentik
 

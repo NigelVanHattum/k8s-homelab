@@ -4,8 +4,8 @@ metadata:
   name: nfs-csi-influxdb
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 192.168.20.3
-  share: /volume1/k8s/influxdb
+  server: ${nas_ip}
+  share: ${root_path}/influxdb
 reclaimPolicy: Retain
 mountOptions:
   - hard

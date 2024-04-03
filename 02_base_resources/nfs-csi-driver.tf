@@ -44,7 +44,10 @@ resource "argocd_application" "nfs_csi_driver" {
 }
 
 resource "kubectl_manifest" "nfs_storage_class_postgresql" {
-  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-postgresql.yaml")
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-postgresql.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [
@@ -53,7 +56,10 @@ resource "kubectl_manifest" "nfs_storage_class_postgresql" {
 }
 
 resource "kubectl_manifest" "nfs_storage_class_traefik" {
-  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-traefik.yaml")
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-traefik.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [
@@ -62,7 +68,10 @@ resource "kubectl_manifest" "nfs_storage_class_traefik" {
 }
 
 resource "kubectl_manifest" "nfs_storage_class_authentik" {
-  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-authentik.yaml")
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-authentik.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [
@@ -71,7 +80,10 @@ resource "kubectl_manifest" "nfs_storage_class_authentik" {
 }
 
 resource "kubectl_manifest" "nfs_storage_class_applications" {
-  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-applications.yaml")
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-applications.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [
@@ -80,7 +92,10 @@ resource "kubectl_manifest" "nfs_storage_class_applications" {
 }
 
 resource "kubectl_manifest" "nfs_storage_class_influxdb" {
-  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-influxdb.yaml")
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-influxdb.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [
@@ -89,7 +104,10 @@ resource "kubectl_manifest" "nfs_storage_class_influxdb" {
 }
 
 resource "kubectl_manifest" "nfs_storage_class_backup" {
-  yaml_body          = file("manifests/nfs-csi/nfs-storageClass-backup.yaml")
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-backup.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
   override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
 
   depends_on = [

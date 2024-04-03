@@ -4,8 +4,8 @@ metadata:
   name: nfs-csi-backup
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 192.168.20.3
-  share: /volume1/k8s/back-ups
+  server: ${nas_ip}
+  share: ${root_path}/back-ups
 reclaimPolicy: Retain
 mountOptions:
   - hard

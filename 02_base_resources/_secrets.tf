@@ -29,13 +29,13 @@ resource "random_password" "argocd_admin_password" {
 ### ArgoCD
 data "onepassword_item" "argocd_azure_credentials" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = local.onepassword.argocd_azure_secret
+  title  = local.onepassword.argo.azure_secret
 }
 
 resource "onepassword_item" "argo_admin_password" {
   vault = data.onepassword_vault.homelab_vault.uuid
 
-  title    = local.onepassword.argocd_admin
+  title    = local.onepassword.argo.admin
   category = "login"
   username = "admin"
   password = random_password.argocd_admin_password.result
@@ -44,7 +44,7 @@ resource "onepassword_item" "argo_admin_password" {
 ### Traefik 
 data "onepassword_item" "cloudflare_dns_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = local.onepassword.cloudflare_api_token
+  title  = local.onepassword.traefik.cloudflare_api_token
 }
 
 resource "kubernetes_secret" "cloudflare_api_token" {
@@ -64,12 +64,12 @@ resource "kubernetes_secret" "cloudflare_api_token" {
 ### PostgreSQL
 data "onepassword_item" "synology_c2" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Synology C2"
+  title  = local.onepassword.postgresql.synology_c2
 }
 
 data "onepassword_item" "database_postgresql" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Database-PostgreSQL"
+  title  = local.onepassword.postgresql.postgres_user
 }
 
 resource "kubernetes_secret" "postgres_admin" {
@@ -84,7 +84,7 @@ resource "kubernetes_secret" "postgres_admin" {
   data = {
     username = data.onepassword_item.database_postgresql.username
     password = data.onepassword_item.database_postgresql.password
-    host     = data.onepassword_item.database_postgresql.hostname
+    host     = local.database.read_write_service_name
   }
 
   type = "kubernetes.io/basic-auth"
@@ -92,12 +92,12 @@ resource "kubernetes_secret" "postgres_admin" {
 
 data "onepassword_item" "database_authentik" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Database-Authentik"
+  title  = local.onepassword.postgresql.authentik_user
 }
 
 data "onepassword_item" "database_firefly" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Database-Firefly"
+  title  = local.onepassword.postgresql.firefly_user
 }
 
 ### InfluxDB
