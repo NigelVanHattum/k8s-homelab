@@ -82,6 +82,20 @@ resource "kubernetes_namespace" "postgresql" {
   }
 }
 
+resource "kubernetes_namespace" "postgresql_recovery" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "postgresql-recovery"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}
+
 resource "kubernetes_namespace" "influxdb" {
   metadata {
     annotations = {

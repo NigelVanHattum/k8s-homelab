@@ -119,3 +119,56 @@ resource "kubectl_manifest" "postgres_ingress" {
   depends_on = [argocd_application.postgres_cluster, 
                 argocd_application.traefik]
 }
+
+
+### 
+## Recovery cluster! Enable when needed
+###
+# resource "kubernetes_secret" "recovery_c2_credentials" {
+#   metadata {
+#     name = "synology-c2-credentials"
+#     namespace = kubernetes_namespace.postgresql_recovery.metadata.0.name
+#     labels = {
+#       "cnpg.io/reload" = ""
+#     }
+#   }
+
+#   data = {
+#     access_key = data.onepassword_item.synology_c2.username
+#     secret_key = data.onepassword_item.synology_c2.password
+#   }
+# }
+
+
+# resource "kubernetes_secret" "postgres_admin_recovery" {
+#   metadata {
+#     name = "postgresql-superuser"
+#     namespace = kubernetes_namespace.postgresql_recovery.metadata.0.name
+#     labels = {
+#       "cnpg.io/reload" = ""
+#     }
+#   }
+
+#   data = {
+#     username = data.onepassword_item.database_postgresql.username
+#     password = data.onepassword_item.database_postgresql.password
+#     host     = local.database.read_write_service_name
+#   }
+
+#   type = "kubernetes.io/basic-auth"
+# }
+
+# resource "kubectl_manifest" "recovery_cluster" {
+#   validate_schema = false
+#   override_namespace = kubernetes_namespace.postgresql_recovery.metadata.0.name
+#   yaml_body = templatefile("${path.module}/manifests/postgresql-cluster-restore.yaml", {
+#     superuser_secret = kubernetes_secret.postgres_admin_recovery.metadata.0.name
+#     synology_c2_endpoint = data.onepassword_item.synology_c2.url
+#     bucket_name = local.database.backup_c2_bucket
+#     synology_c2_secret = kubernetes_secret.recovery_c2_credentials.metadata.0.name
+#   })
+#   ## wait does not work, there is no status viewer for it
+#   # wait {
+#   #   rollout = true
+#   # }
+# }

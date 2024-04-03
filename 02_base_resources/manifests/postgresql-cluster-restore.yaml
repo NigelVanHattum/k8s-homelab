@@ -1,0 +1,32 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-restore
+spec:
+  imageName: "ghcr.io/cloudnative-pg/postgresql:15.2"
+  logLevel: debug
+  superuserSecret:
+    name: ${superuser_secret}
+
+  bootstrap:
+    recovery:
+      source: clusterBackup
+
+  externalClusters:
+    - name: clusterBackup
+      barmanObjectStore:
+        endpointURL: ${synology_c2_endpoint}
+        destinationPath: "s3://${bucket_name}/" 
+        serverName: postgresql-cluster
+        s3Credentials:
+          accessKeyId:
+            name: ${synology_c2_secret}
+            key: access_key
+          secretAccessKey:
+            name: ${synology_c2_secret}
+            key: secret_key
+        wal:
+          maxParallel: 8
+  storage:
+    size: 10Gi
+    storageClass: "nfs-csi-postgresql"
