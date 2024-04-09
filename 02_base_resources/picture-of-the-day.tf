@@ -1,5 +1,5 @@
 resource "argocd_repository" "k8s-homelab" {
-  repo = "https://github.com/NigelVanHattum/k8s-homelab.git"
+  repo = "https://github.com/NigelVanHattum/k8s-homelab-deployments.git"
   name = "nigel-k8s-homelab"
   type = "git"
   depends_on = [time_sleep.wait_for_argo]
@@ -14,7 +14,7 @@ resource "argocd_application" "picture_of_the_day" {
     project = argocd_project.argo-cd-system-project.metadata.0.name
     source {
       repo_url              = argocd_repository.k8s-homelab.repo
-      path                  = "03_base_resources/manifests/picture-of-the-day"
+      path                  = "picture-of-the-day"
     }
 
     sync_policy {
