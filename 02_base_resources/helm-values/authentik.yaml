@@ -42,6 +42,8 @@ global:
 geoip:
   enabled: false
   updateInterval: 8
+  existingSecret:
+    secretName: ${geo_ip_secret}
 
 redis:
   enabled: true

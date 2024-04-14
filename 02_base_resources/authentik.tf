@@ -33,8 +33,7 @@ resource "argocd_application" "authentik" {
         values = templatefile("helm-values/authentik.yaml", {
           authentik_secret_key = data.onepassword_item.key_authentik.password
           authentik_postgresql_password = data.onepassword_item.database_authentik.password
-          authentik_geoip_account_id = data.onepassword_item.geoip_authentik.username
-          authentik_geoip_license_key = data.onepassword_item.geoip_authentik.password
+          geo_ip_secret = kubernetes_secret.authentik_geo_ip_credentials.metadata.0.name
           secret_name = kubernetes_secret.authentik_initial_credentials.metadata.0.name
           blueprint_configmap = kubernetes_config_map.custom_authentication_flow.metadata.0.name
         })

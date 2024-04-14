@@ -118,27 +118,27 @@ resource "kubernetes_secret" "influxdb_admin" {
 ### Authentik
 data "onepassword_item" "authentik_admin_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "Authentik Token"
+  title    = local.onepassword.authentik.api_token
 }
 
 data "onepassword_item" "key_authentik" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Authentik Secret Key"
+  title  = local.onepassword.authentik.secret_key
 }
 
 data "onepassword_item" "login_authentik" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Authentik admin login"
+  title  = local.onepassword.authentik.admin_credentials
 }
 
 data "onepassword_item" "geoip_authentik" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Authentik GeoIP"
+  title  = local.onepassword.authentik.geo_ip
 }
 
 data "onepassword_item" "authentik_azure_credentials" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Authentik Azure Secret"
+  title  = local.onepassword.authentik.azure_secret
 }
 
 resource "kubernetes_secret" "authentik_initial_credentials" {
@@ -153,5 +153,19 @@ resource "kubernetes_secret" "authentik_initial_credentials" {
     token = data.onepassword_item.authentik_admin_token.password
     password = data.onepassword_item.login_authentik.password
     email = data.onepassword_item.login_authentik.username
+  }
+}
+
+resource "kubernetes_secret" "authentik_geo_ip_credentials" {
+  metadata {
+    name = "authentik-geoip-secret"
+    namespace = kubernetes_namespace.authentik.metadata.0.name
+  }
+
+  immutable = true
+
+  data = {
+    account_id = data.onepassword_item.geoip_authentik.username
+    license_key = data.onepassword_item.geoip_authentik.password
   }
 }

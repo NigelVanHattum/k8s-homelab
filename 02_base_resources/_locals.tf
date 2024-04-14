@@ -16,6 +16,14 @@ locals {
             authentik_user = "postgresql-Authentik"
             firefly_user = "postgresql-Firefly"
         }
+        authentik = {
+            api_token = "Authentik Token"
+            secret_key = "Authentik Secret Key"
+            admin_credentials = "Authentik admin login"
+            geo_ip = "Authentik GeoIP"
+            azure_secret = "Authentik Azure Secret"
+
+        }
     }
     ip_address = {
         ingress = "10.0.49.25"

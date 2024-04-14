@@ -75,10 +75,29 @@ Below is the table of all the credentials that are needed for the postgreSQL dep
 Repeat the postgres user setup for each new database/ user 
 
 ## Authentik
+- [Authentik homepage](https://goauthentik.io/)
+- [Helm Chart](https://github.com/goauthentik/helm)
+
+Authentik is my central authentication provider. This enables me to expose normally unsafe applications with external authentication. This works via a Middleware for traefik, so the application never gets traffic for unauthorized clients.  
+
+### Geo-IP
+- [Geo-ip homepage](https://www.maxmind.com/en/geolite2/signup)
+Geo-ip is an external service that links IP addresses to geo-locations. This enables Authentik to log the location of login attempts.
+
+### Setting up the credentials
+| 1Password item         | Type      | Content            |
+|------------------------|-----------|--------------------|
+| {{local.onepassword.azure_tenant}}         | password  | Password           |
+| {{local.onepassword.authentik.api_token}}    | password  | api_token    |
+| {{local.onepassword.authentik.secret_key}}  | password  | Password (used to sign calls, don't change!)    |
+| {{local.onepassword.authentik.admin_credentials}}  | login  | Username, Password     |
+| {{local.onepassword.authentik.geo_ip}}  | login  | Username, Password     |
+| {{local.onepassword.authentik.azure_secret}}  | passowrd  | Password, Note (secret)    |
 
 ## InfluxDB
 
 ## Picture of the Day
+Just an image finder I created, this allows you to always download the latest BING potd and the NASA apod. 
 
 # Old docs, need updates
 Linkerd is used to enable secure traffic throughout the whole cluster. Linkerd should be the first thing you install, this will effect all deployments that come after. 
