@@ -13,6 +13,7 @@ resource "helm_release" "linkerd-crd" {
   namespace        = "linkerd"
   create_namespace = false
   name             = "linkerd-crds"
+  version          = var.linkerd_crd_chart_version
 }
 
 ### https://github.com/linkerd/linkerd2/issues/7945
@@ -79,7 +80,7 @@ resource "argocd_application" "linkerd" {
     source {
       repo_url        = argocd_repository.linkerd.repo
       chart           = "linkerd-control-plane"
-      target_revision = var.linkerd_chart_version
+      target_revision = var.linkerd_control_plane_chart_version
 
       helm {
         parameter {

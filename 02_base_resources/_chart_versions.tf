@@ -1,40 +1,46 @@
-variable "linkerd_chart_version" {
+variable "linkerd_crd_chart_version" {
   type = string
   description = "linkerd chart version"
-  default = "1.16.8"
+  default = "1.8.0"
+}
+
+variable "linkerd_control_plane_chart_version" {
+  type = string
+  description = "linkerd chart version"
+  default = "1.16.11"
 }
 
 variable "argocd_chart_version" {
   type    = string
   description = "argocd chart version"
-  default = "5.52.0"
+  default = "6.7.11"
 }
 
 variable "nfs_csi_driver_chart_version" {
   type    = string
-  default = "v4.5.0"
+  default = "v4.6.0"
 }
 
 variable "metallb_chart_version" {
   type = string
   description = "MetalLB version"
-  default = "0.13.12"
+  default = "0.14.4"
 }
 
 variable "traefik_chart_version" {
   type = string
   description = "Traefik chart version (not traefik version)"
-  default = "26.0.0"
+  default = "27.0.2"
 }
 
 variable "cnpg_postgres_operator_chart_version" {
   type    = string
-  default = "0.20.1"
+  default = "0.20.2"
 }
 
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.0.6"
+  default = "0.0.7"
 }
 
 variable "influxdb_chart_version" {

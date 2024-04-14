@@ -1,5 +1,6 @@
 image:
   tag: "3.0"
+  pullPolicy: Always
 
 certResolvers:
   letsencrypt:
@@ -18,7 +19,8 @@ ports:
     ## -- Enable this entrypoint as a default entrypoint. When a service doesn't explicitly set an entrypoint it will only use this entrypoint.
     # asDefault: true
     port: 8444
-    expose: true
+    expose:
+      default: true
     exposedPort: 6443
     protocol: TCP
     http3:
@@ -34,7 +36,8 @@ ports:
       insecure: true
   websecure:
     port: 8443
-    expose: true
+    expose:
+      default: true
     exposedPort: 443
     http3:
       enabled: true
@@ -49,7 +52,8 @@ ports:
       insecure: true
   postgresql:
     port: 5432
-    expose: true
+    expose:
+      default: true
     exposedPort: 5432
     tls:
       enabled: false

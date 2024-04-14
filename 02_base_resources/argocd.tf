@@ -21,6 +21,15 @@ resource "helm_release" "argocd" {
     ]
 }
 
+resource "kubectl_manifest" "argo_public_ingress" {
+  validate_schema = false
+  yaml_body = file("${path.module}/manifests/ingress/argo.yaml")
+  ## wait does not work, there is no status viewer for it
+  # wait {
+  #   rollout = true
+  # }
+}
+
 resource "argocd_project" "argo-cd-system-project" {
   metadata {
     name      = "system"

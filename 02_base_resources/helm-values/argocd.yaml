@@ -2,10 +2,8 @@ server:
   ingress:
     enabled: true
     annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: internet, websecure
-    hosts:
-      - argo.nigelvanhattum.nl
-      - argo.local.nigelvanhattum.nl
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hostname: argo.local.nigelvanhattum.nl
   autoscaling: 
     enabled: true
     minReplicas: 1
