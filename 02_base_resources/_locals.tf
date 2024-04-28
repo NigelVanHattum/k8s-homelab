@@ -32,6 +32,7 @@ locals {
     }
     file_share = {
         nas_root_mount = "/volume1/k8s"
+        nas_plex_root = "/volume1/Plex-Media"
     }
     database = {
         backup_c2_bucket = "postgresql-backup"

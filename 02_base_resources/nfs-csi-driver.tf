@@ -114,3 +114,15 @@ resource "kubectl_manifest" "nfs_storage_class_backup" {
     argocd_application.nfs_csi_driver
   ]
 }
+
+resource "kubectl_manifest" "nfs_storage_class_plex_media" {
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-plex.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_plex_root
+  })
+  override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
+
+  depends_on = [
+    argocd_application.nfs_csi_driver
+  ]
+}
