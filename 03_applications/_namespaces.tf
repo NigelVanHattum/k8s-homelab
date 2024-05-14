@@ -11,3 +11,17 @@ resource "kubernetes_namespace" "firefly" {
     }
   }
 }
+
+resource "kubernetes_namespace" "floatplane" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "floatplane"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}

@@ -112,40 +112,6 @@ resource "argocd_project" "argo-cd-system-project" {
   }
 }
 
-resource "argocd_project" "argo_cd_apps_project" {
-  metadata {
-    name      = "apps"
-  }
-
-  depends_on = [time_sleep.wait_for_argo]
-
-  spec {
-    description = "project for applications"
-    source_repos      = ["*"]
-
-    destination {
-      server = "*"
-      name = "*"
-      namespace = "mediaserver"
-    }
-
-    destination {
-      server = "*"
-      name = "*"
-      namespace = "firefly"
-    }
-    
-    cluster_resource_whitelist {
-      group = "*"
-      kind  = "*"
-    }
-
-    orphaned_resources {
-      warn = true
-    }
-  }
-}
-
 resource "time_sleep" "wait_for_argo" {
   depends_on = [helm_release.argocd]
 

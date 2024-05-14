@@ -1,0 +1,35 @@
+# Default values for floatplane-downloader.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image:
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "dev"
+
+floatplane:
+  credentials:
+    username: ${username}
+    password: ${password}
+    mfa: ${mfaToken}
+    plexToken: ${plexToken}
+  persistence:
+    media:
+      spec:
+        volumeName: fp-downloader-media
+        storageClassName: nfs-csi-plex
+        volumeMode: Filesystem
+        accessModes:
+        - ReadWriteMany
+        resources:
+          requests:
+            storage: 25Gi
+    db: 
+      spec:
+        volumeName: fp-downloader-db
+        storageClassName: nfs-csi-applications
+        volumeMode: Filesystem
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

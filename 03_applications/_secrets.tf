@@ -16,7 +16,7 @@ data "onepassword_vault" "homelab_vault" {
 ### PostgreSQL
 data "onepassword_item" "database_firefly" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Database-Firefly"
+  title  = "postgresql-Firefly"
 }
 
 ### ArgoCD
@@ -63,4 +63,16 @@ resource "kubernetes_secret" "firefly_environment" {
     DB_PASSWORD = data.onepassword_item.database_firefly.password
     STATIC_CRON_TOKEN = data.onepassword_item.firefly_cron_token.password
   }
+}
+
+### Plex
+data "onepassword_item" "plex_token" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "Plex Token"
+}
+
+### Floatplane
+data "onepassword_item" "floatplane" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "floatplane.com"
 }
