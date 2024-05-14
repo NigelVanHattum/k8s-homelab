@@ -95,6 +95,11 @@ resource "argocd_application" "linkerd" {
           name = "identity.issuer.tls.keyPEM"
           value = tls_private_key.issuer.private_key_pem
         }
+        parameter {
+          name = "cniEnabled"
+          # set to true when using CNI
+          value = false
+        }
       }
     }
 
