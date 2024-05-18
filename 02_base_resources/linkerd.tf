@@ -1,5 +1,5 @@
 resource "argocd_repository" "linkerd" {
-  repo = "https://helm.linkerd.io/stable"
+  repo = "https://helm.linkerd.io/edge"
   name = "linkerd"
   type = "helm"
   depends_on = [time_sleep.wait_for_argo]
@@ -7,7 +7,7 @@ resource "argocd_repository" "linkerd" {
 
 ## Installing CRD's
 resource "helm_release" "linkerd-crd" {
-  repository = "https://helm.linkerd.io/stable"
+  repository = "https://helm.linkerd.io/edge"
   chart      = "linkerd-crds"
 
   namespace        = "linkerd"
