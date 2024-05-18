@@ -6,6 +6,6 @@ variable "firefly_chart_version" {
 
 variable "floatplane_downloader_chart_version" {
   type = string
-  description = "firefly chart version"
-  default = "0.1.0"
+  description = "fp-downloader chart version"
+  default = "0.2.1"
 }

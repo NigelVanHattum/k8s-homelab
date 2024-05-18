@@ -14,22 +14,8 @@ floatplane:
     plexToken: ${plexToken}
   persistence:
     media:
-      spec:
-        volumeName: fp-downloader-media
-        storageClassName: nfs-csi-plex
-        volumeMode: Filesystem
-        accessModes:
-        - ReadWriteMany
-        resources:
-          requests:
-            storage: 25Gi
+      volumeName: fp-downloader-media
+      storageClassName: nfs-csi-plex
     db: 
-      spec:
-        volumeName: fp-downloader-db
-        storageClassName: nfs-csi-applications
-        volumeMode: Filesystem
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
+      volumeName: fp-downloader-db
+      storageClassName: nfs-csi-applications
