@@ -1,6 +1,6 @@
 locals {
-  target_node = "k8s-master-node"
-  iso_file = "talos-metal-amd64.iso"
+  target_node = "proxmox"
+  iso_file = "talos-linux-utils.iso"
 }
 
 resource "proxmox_vm_qemu" "talos-controlpane" {
