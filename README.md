@@ -32,6 +32,9 @@ You can create a tf cloud account [here](https://app.terraform.io/session). Foll
 The first step will need to be done manually on a physical machine.  
 Download the latest [Proxmox image](https://www.proxmox.com/en/downloads/category/iso-images-pve) and copy it to a USB. After this insert the USB in the machine and follow the setup process of Proxmox.  
 
+### Showing temps in the Proxmox summary
+Follow this guide: [reddit.com](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu_temperature_in_proxmox_summery_in/)
+
 #### Terraform user account
 After the Proxmox node has been made available, login to it's GUI to create the account used by Terraform.
 1. Add a user called `terraform` in the Proxmox realm.
