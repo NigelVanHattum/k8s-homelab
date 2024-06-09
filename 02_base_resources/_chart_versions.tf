@@ -35,12 +35,12 @@ variable "traefik_chart_version" {
 
 variable "cnpg_postgres_operator_chart_version" {
   type    = string
-  default = "0.21.2"
+  default = "0.21.4"
 }
 
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.0.8"
+  default = "0.0.9"
 }
 
 variable "influxdb_chart_version" {
