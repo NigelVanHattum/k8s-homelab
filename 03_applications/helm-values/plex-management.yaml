@@ -1,0 +1,197 @@
+# Default values for plex-management.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+prowlarr:
+  enabled: true
+  image:
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+  service:
+    type: ClusterIP
+    port: 9696
+  prowlarr: 
+    PUID: ${PUID}
+    PGID: ${PGID}
+    timezone: "Europe/Amsterdam"
+
+    persistence:
+      config:
+        storageClassName: nfs-csi-applications
+        existingVolume: ${pv_prowlarr_name}
+        size: "1Gi"
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: prowlarr.local.nigelvanhattum.nl
+        paths:
+          - path: /
+            pathType: Prefix
+
+sonarr:
+  enabled: true
+  image:
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+  sonarr: 
+    PUID: ${PUID}
+    PGID: ${PGID}
+    timezone: "Europe/Amsterdam"
+
+    persistence:
+      config:
+        storageClassName: "nfs-csi-applications"
+        existingVolume: ${pv_sonarr_config}
+        size: "1Gi"
+      extraVolumes:
+        - volumeName: downloads
+          useExistingPvc: ${pvc_p2p_name}
+          containerPath: ${p2p_containerPath}   
+        - volumeName: "series"
+          size: "15Ti"
+          containerPath: ${series_containerPath}
+          accessModes:
+            - ReadWriteMany
+          storageClassName: "nfs-csi-applications"
+          existingVolume: ${pv_series}
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: sonarr.local.nigelvanhattum.nl
+        paths:
+          - path: /
+            pathType: Prefix
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024M
+    requests:
+      cpu: 500m
+      memory: 256M
+
+radarr:
+  enabled: true
+  image:
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+  radarr: 
+    PUID: ${PUID}
+    PGID: ${PGID}
+    timezone: "Europe/Amsterdam"
+
+    persistence:
+      config:
+        storageClassName: "nfs-csi-applications"
+        existingVolume: ${pv_radarr_config}
+        size: "1Gi"
+      extraVolumes:
+        - volumeName: downloads
+          useExistingPvc: ${pvc_p2p_name}
+          containerPath: ${p2p_containerPath}    
+        - volumeName: "007"
+          size: "1Ti"
+          containerPath: ${movies_007_containerPath}
+          accessModes:
+            - ReadWriteMany
+          storageClassName: "nfs-csi-applications"
+          existingVolume: ${pv_007}
+        - volumeName: "movies"
+          size: "15Ti"
+          containerPath: ${movies_containerPath}
+          accessModes:
+            - ReadWriteMany
+          storageClassName: "nfs-csi-applications"
+          existingVolume: ${pv_movies}    
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: radarr.local.nigelvanhattum.nl
+        paths:
+          - path: /
+            pathType: Prefix
+
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 1
+      memory: 1024M
+    requests:
+      cpu: 500m
+      memory: 256M
+
+ombi:
+  enabled: true
+  ombi: 
+    PUID: ${PUID}
+    PGID: ${PGID}
+    timezone: "Europe/Amsterdam"
+
+    persistence:
+      config:
+        storageClassName: nfs-csi-applications
+        existingVolume: ${pv_ombi_config}
+        size: "1Gi"
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: internet
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: requests.nigelvanhattum.nl
+        paths:
+          - path: /
+            pathType: Prefix
+
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 300m
+      memory: 512M
+    requests:
+      cpu: 200m
+      memory: 256M
+
+sharedP2PPvc:
+  enabled: true
+  name: ${pvc_p2p_name}
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Ti
+    storageClassName: nfs-csi-applications
+    volumeMode: Filesystem
+    volumeName: ${pv_p2p_name}

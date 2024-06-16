@@ -16,6 +16,20 @@ locals {
     file_share = {
         nas_root_mount = "/volume1/k8s"
         nas_plex_root = "/volume1/Plex-Media"
+        p2p_root = "/volume2/P2P"
+        PUID: 1036
+        PGID: 100
+        pv_names = {
+            p2p_root = "pv-p2p"
+            pvc_p2p = "pvc-p2p"
+            prowlarr_config = "pv-prowlarr-config"
+            ombi_config = "pv-ombi-config"
+            radarr_config = "pv-radarr-config"
+            sonarr_config = "pv-sonarr-config"
+            plex_007 = "pv-plex-007"
+            plex_movie = "pv-plex-movie"
+            plex_serie = "pv-plex-serie"
+        }
     }
     database = {
         backup_c2_bucket = "postgresql-backup"

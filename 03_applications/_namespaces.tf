@@ -25,3 +25,17 @@ resource "kubernetes_namespace" "floatplane" {
     }
   }
 }
+
+resource "kubernetes_namespace" "plex_management" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "plex-management"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}

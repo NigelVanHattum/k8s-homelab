@@ -28,7 +28,13 @@ resource "argocd_project" "argo_cd_apps_project" {
     destination {
       server = "*"
       name = "*"
-      namespace = "floatplane"
+      namespace = kubernetes_namespace.floatplane.metadata.0.name
+    }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.plex_management.metadata.0.name
     }
     
     cluster_resource_whitelist {
