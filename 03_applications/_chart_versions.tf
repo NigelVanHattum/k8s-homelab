@@ -14,3 +14,8 @@ variable "plex_management_chart_version" {
   type = string
   default = "0.1.2"
 }
+
+variable "heimdall_chart_version" {
+  type = string
+  default = "0.1.1"
+}
