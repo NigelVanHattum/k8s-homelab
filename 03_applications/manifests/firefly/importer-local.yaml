@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: import.finance.local.nigelvanhattum.nl
+    - host: import-finance.local.nigelvanhattum.nl
       http:
         paths:
           - backend:
