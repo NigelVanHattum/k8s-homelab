@@ -8,7 +8,7 @@ resource "proxmox_vm_qemu" "talos-controlpane" {
 
   name = each.key
   target_node = local.target_node
-  iso = "local:iso/${local.iso_file}"
+  # iso = "local:iso/${local.iso_file}"
 
   onboot = true
   vm_state = "running"
@@ -19,6 +19,13 @@ resource "proxmox_vm_qemu" "talos-controlpane" {
   memory = each.value.memory
 
   disks {
+    ide {
+      ide2 {
+        cdrom {
+          iso = "local:iso/${local.iso_file}"
+        }
+      }
+    }
     scsi {
       scsi0 {
         disk{
@@ -43,7 +50,7 @@ resource "proxmox_vm_qemu" "talos-worker" {
 
   name = each.key
   target_node = local.target_node
-  iso = "local:iso/${local.iso_file}"
+  # iso = "local:iso/${local.iso_file}"
 
   onboot = true
   vm_state = "running"
@@ -54,6 +61,13 @@ resource "proxmox_vm_qemu" "talos-worker" {
   memory = each.value.memory
 
   disks {
+    ide {
+      ide2 {
+        cdrom {
+          iso = "local:iso/${local.iso_file}"
+        }
+      }
+    }
     scsi {
       scsi0 {
         disk{

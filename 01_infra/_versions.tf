@@ -3,15 +3,16 @@ terraform {
   required_providers {
     onepassword = {
       source = "1Password/onepassword"
-      version = ">= 1.4.1, < 2.0.0"
+      version = ">= 2.0.0, < 3.0.0"
     }
     proxmox = {
       source = "telmate/proxmox"
-      version = "3.0.1-rc1"
+      version = "3.0.1-rc3"
     }
     talos = {
       source = "siderolabs/talos"
-      version = ">= 0.4.0, < 1.0.0"
+      # Stuck on 0.4.0 until https://github.com/siderolabs/terraform-provider-talos/issues/168 is fixed
+      version = "0.4.0" #">= 0.4.0, < 1.0.0"
     }
     kubectl = {
       source = "alekc/kubectl"
