@@ -17,6 +17,7 @@ resource "helm_release" "linkerd-crd" {
 }
 
 ### https://github.com/linkerd/linkerd2/issues/7945
+### https://github.com/siderolabs/terraform-provider-talos/issues/144
 # resource "helm_release" "linkerd-cni" {
 #   repository = "https://helm.linkerd.io/stable"
 #   chart      = "linkerd2-cni"
