@@ -13,3 +13,11 @@ resource "postgresql_role" "firefly" {
 
   depends_on = [kubectl_manifest.postgres_ingress]
 }
+
+resource "postgresql_role" "mealie" {
+  name     = data.onepassword_item.database_mealie.username
+  login    = true
+  password = data.onepassword_item.database_mealie.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}

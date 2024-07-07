@@ -100,6 +100,11 @@ data "onepassword_item" "database_firefly" {
   title  = local.onepassword.postgresql.firefly_user
 }
 
+data "onepassword_item" "database_mealie" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.mealie_user
+}
+
 ### InfluxDB
 resource "kubernetes_secret" "influxdb_admin" {
   metadata {
