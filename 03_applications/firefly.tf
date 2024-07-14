@@ -4,10 +4,6 @@ resource "argocd_repository" "firefly" {
   type = "helm"
 }
 
-data "authentik_flow" "default_authorization_flow" {
-  slug = "default-provider-authorization-implicit-consent"
-}
-
 resource "authentik_provider_proxy" "authentik_firefly_provider" {
   name               = "firefly"
   mode               = "forward_single"
@@ -67,16 +63,16 @@ resource "argocd_application" "firefly" {
 }
 
 resource "kubectl_manifest" "firefly_ingress-local" {
-  yaml_body          = file("manifests/firefly/ingress-local.yaml")
+  yaml_body          = file("manifests/ingress/firefly-ingress-local.yaml")
   override_namespace = kubernetes_namespace.firefly.metadata.0.name
 }
 
 resource "kubectl_manifest" "firefly_import-local" {
-  yaml_body          = file("manifests/firefly/importer-local.yaml")
+  yaml_body          = file("manifests/ingress/firefly-importer-local.yaml")
   override_namespace = kubernetes_namespace.firefly.metadata.0.name
 }
 
 resource "kubectl_manifest" "firefly_ingress-public" {
-  yaml_body          = file("manifests/firefly/ingress-public.yaml")
+  yaml_body          = file("manifests/ingress/firefly-ingress-public.yaml")
   override_namespace = kubernetes_namespace.firefly.metadata.0.name
 }

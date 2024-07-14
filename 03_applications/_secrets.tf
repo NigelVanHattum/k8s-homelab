@@ -13,6 +13,11 @@ data "onepassword_vault" "homelab_vault" {
   name = "Homelab"
 }
 
+### Authentik
+data "authentik_flow" "default_authorization_flow" {
+  slug = "default-provider-authorization-implicit-consent"
+}
+
 ### PostgreSQL
 data "onepassword_item" "database_firefly" {
   vault = data.onepassword_vault.homelab_vault.uuid
