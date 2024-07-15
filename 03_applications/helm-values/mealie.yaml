@@ -1,0 +1,70 @@
+# -- Deployment type, options are 'Deployment', 'StatefulSet'. Deployment has no options for volumeMounts
+type: Deployment
+# Default values for mealie.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image:
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+mealie: 
+  env: 
+  - name: ALLOW_SIGNUP
+    value: "false"
+  - name: PUID
+    value: "${PUID}"
+  - name: PGID
+    value: "${PGID}"
+  - name: TZ
+    value: Etc/UTC
+  - name: BASE_URL
+    value: https://mealie.nigelvanhattum.nl
+    # Database Settings
+  - name: DB_ENGINE
+    value: postgres
+  - name: POSTGRES_USER
+    valueFrom:
+      secretKeyRef:
+        name: ${postgres_secret}
+        key: username
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: ${postgres_secret}
+        key: password
+  - name: POSTGRES_SERVER
+    value: ${postgres_host}
+  - name: POSTGRES_PORT
+    value: "${postgres_port}"
+  - name: POSTGRES_DB
+    value: ${postgres_database_name}
+  - name: SMTP_HOST
+    valueFrom:
+      secretKeyRef:
+        name: ${smtp_credentials}
+        key: host
+  - name: SMTP_FROM_EMAIL
+    value: mealie@nigelvanhattum.nl
+  - name: SMTP_USER
+    valueFrom:
+      secretKeyRef:
+        name: ${smtp_credentials}
+        key: username
+  - name: SMTP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: ${smtp_credentials}
+        key: password
+
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  hosts:
+    - host: mealie.local.nigelvanhattum.nl
+      paths:
+        - path: /
+          pathType: Prefix

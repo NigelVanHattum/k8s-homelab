@@ -13,6 +13,12 @@ data "onepassword_vault" "homelab_vault" {
   name = "Homelab"
 }
 
+### SMTP
+data "onepassword_item" "smtp" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "Mailersend SMTP"
+}
+
 ### Authentik
 data "authentik_flow" "default_authorization_flow" {
   slug = "default-provider-authorization-implicit-consent"
@@ -22,6 +28,11 @@ data "authentik_flow" "default_authorization_flow" {
 data "onepassword_item" "database_firefly" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title  = "postgresql-Firefly"
+}
+
+data "onepassword_item" "database_mealie" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "postgresql-Mealie"
 }
 
 ### ArgoCD
@@ -80,4 +91,30 @@ data "onepassword_item" "plex_token" {
 data "onepassword_item" "floatplane" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title    = "floatplane.com"
+}
+
+### Mealie
+resource "kubernetes_secret" "mealie" {
+  metadata {
+    name = "mealie-db"
+    namespace = kubernetes_namespace.mealie.metadata.0.name
+  }
+
+  data = {
+    username    = data.onepassword_item.database_mealie.username
+    password    = data.onepassword_item.database_mealie.password
+  }
+}
+
+resource "kubernetes_secret" "mealie_smtp" {
+  metadata {
+    name = "mealie-smtp"
+    namespace = kubernetes_namespace.mealie.metadata.0.name
+  }
+
+  data = {
+    username    = data.onepassword_item.smtp.username
+    password    = data.onepassword_item.smtp.password
+    host        = data.onepassword_item.smtp.url
+  }
 }
