@@ -7,12 +7,12 @@ variable "firefly_chart_version" {
 variable "floatplane_downloader_chart_version" {
   type = string
   description = "fp-downloader chart version"
-  default = "0.2.1"
+  default = "0.2.2"
 }
 
 variable "plex_management_chart_version" {
   type = string
-  default = "0.1.2"
+  default = "0.1.4"
 }
 
 variable "heimdall_chart_version" {
