@@ -35,6 +35,11 @@ data "onepassword_item" "database_mealie" {
   title  = "postgresql-Mealie"
 }
 
+data "onepassword_item" "database_sonarr" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "postgresql-Sonarr"
+}
+
 ### ArgoCD
 data "onepassword_item" "argo_admin" {
   vault = data.onepassword_vault.homelab_vault.uuid
@@ -85,6 +90,18 @@ resource "kubernetes_secret" "firefly_environment" {
 data "onepassword_item" "plex_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title    = "Plex Token"
+}
+
+resource "kubernetes_secret" "sonarr_postgres" {
+  metadata {
+    name = "sonarr-postgres"
+    namespace = kubernetes_namespace.plex_management.metadata.0.name
+  }
+
+  data = {
+    username = data.onepassword_item.database_sonarr.username
+    password = data.onepassword_item.database_sonarr.password
+  }
 }
 
 ### Floatplane

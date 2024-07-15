@@ -18,3 +18,17 @@ resource "postgresql_database" "mealie" {
   connection_limit  = -1
   allow_connections = true
 }
+
+resource "postgresql_database" "sonarr-main" {
+  name              = "${postgresql_role.sonarr.name}-main"
+  owner             = postgresql_role.sonarr.name
+  connection_limit  = -1
+  allow_connections = true
+}
+
+resource "postgresql_database" "sonarr-log" {
+  name              = "${postgresql_role.sonarr.name}-log"
+  owner             = postgresql_role.sonarr.name
+  connection_limit  = -1
+  allow_connections = true
+}

@@ -42,12 +42,31 @@ sonarr:
     tag: "latest"
 
   sonarr: 
-    PUID: ${PUID}
-    PGID: ${PGID}
-    timezone: "Europe/Amsterdam"
+    env: 
+      - name: PUID
+        value: "${PUID}"
+      - name: PGID
+        value: "${PGID}"
+      - name: TZ
+        value: Etc/UTC
+      - name: SONARR__POSTGRES__HOST
+        value: "${postgres_host}"
+      - name: SONARR__POSTGRES__PORT
+        value: "${postgres_port}"
+      - name: SONARR__POSTGRES__USER
+        valueFrom:
+          secretKeyRef:
+            name: ${postgres_sonarr}
+            key: username
+      - name: SONARR__POSTGRES__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: ${postgres_sonarr}
+            key: password
 
     persistence:
       config:
+        enabled: true
         storageClassName: "nfs-csi-applications"
         existingVolume: ${pv_sonarr_config}
         size: "1Gi"

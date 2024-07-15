@@ -105,6 +105,11 @@ data "onepassword_item" "database_mealie" {
   title  = local.onepassword.postgresql.mealie_user
 }
 
+data "onepassword_item" "database_sonarr" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.sonarr
+}
+
 ### InfluxDB
 resource "kubernetes_secret" "influxdb_admin" {
   metadata {

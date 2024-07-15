@@ -21,3 +21,11 @@ resource "postgresql_role" "mealie" {
 
   depends_on = [kubectl_manifest.postgres_ingress]
 }
+
+resource "postgresql_role" "sonarr" {
+  name     = data.onepassword_item.database_sonarr.username
+  login    = true
+  password = data.onepassword_item.database_sonarr.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}

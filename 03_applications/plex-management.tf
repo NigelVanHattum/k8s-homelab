@@ -88,6 +88,9 @@ resource "argocd_application" "plex-management" {
       helm {
         values = templatefile("helm-values/plex-management.yaml",
         {
+          ## database
+          postgres_host = local.ip_address.ingress
+          postgres_port = "5432"
           ## file share permissions
           PUID = local.file_share.PUID
           PGID = local.file_share.PGID
@@ -101,6 +104,7 @@ resource "argocd_application" "plex-management" {
           pv_sonarr_config = local.file_share.pv_names.sonarr_config,
           pv_series = local.file_share.pv_names.plex_serie,
           series_containerPath = format("%s/%s",local.file_share.nas_plex_root,"Series"),
+          postgres_sonarr = kubernetes_secret.sonarr_postgres.metadata.0.name
           ## Radarr
           pv_radarr_config = local.file_share.pv_names.radarr_config,
           pv_007 = local.file_share.pv_names.plex_007,
