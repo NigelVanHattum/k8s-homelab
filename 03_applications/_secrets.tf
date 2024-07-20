@@ -40,6 +40,16 @@ data "onepassword_item" "database_sonarr" {
   title  = "postgresql-Sonarr"
 }
 
+data "onepassword_item" "database_radarr" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "postgresql-Radarr"
+}
+
+data "onepassword_item" "database_prowlarr" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "postgresql-Prowlarr"
+}
+
 ### ArgoCD
 data "onepassword_item" "argo_admin" {
   vault = data.onepassword_vault.homelab_vault.uuid
@@ -101,6 +111,30 @@ resource "kubernetes_secret" "sonarr_postgres" {
   data = {
     username = data.onepassword_item.database_sonarr.username
     password = data.onepassword_item.database_sonarr.password
+  }
+}
+
+resource "kubernetes_secret" "radarr_postgres" {
+  metadata {
+    name = "radarr-postgres"
+    namespace = kubernetes_namespace.plex_management.metadata.0.name
+  }
+
+  data = {
+    username = data.onepassword_item.database_radarr.username
+    password = data.onepassword_item.database_radarr.password
+  }
+}
+
+resource "kubernetes_secret" "prowlarr_postgres" {
+  metadata {
+    name = "prowlarr-postgres"
+    namespace = kubernetes_namespace.plex_management.metadata.0.name
+  }
+
+  data = {
+    username = data.onepassword_item.database_prowlarr.username
+    password = data.onepassword_item.database_prowlarr.password
   }
 }
 

@@ -110,6 +110,16 @@ data "onepassword_item" "database_sonarr" {
   title  = local.onepassword.postgresql.sonarr
 }
 
+data "onepassword_item" "database_radarr" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.radarr
+}
+
+data "onepassword_item" "database_prowlarr" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.prowlarr
+}
+
 ### InfluxDB
 resource "kubernetes_secret" "influxdb_admin" {
   metadata {

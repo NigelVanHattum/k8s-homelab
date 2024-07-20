@@ -29,3 +29,19 @@ resource "postgresql_role" "sonarr" {
 
   depends_on = [kubectl_manifest.postgres_ingress]
 }
+
+resource "postgresql_role" "radarr" {
+  name     = data.onepassword_item.database_radarr.username
+  login    = true
+  password = data.onepassword_item.database_radarr.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}
+
+resource "postgresql_role" "prowlarr" {
+  name     = data.onepassword_item.database_prowlarr.username
+  login    = true
+  password = data.onepassword_item.database_prowlarr.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}

@@ -32,3 +32,31 @@ resource "postgresql_database" "sonarr-log" {
   connection_limit  = -1
   allow_connections = true
 }
+
+resource "postgresql_database" "radarr-main" {
+  name              = "${postgresql_role.radarr.name}-main"
+  owner             = postgresql_role.radarr.name
+  connection_limit  = -1
+  allow_connections = true
+}
+
+resource "postgresql_database" "radarr-log" {
+  name              = "${postgresql_role.radarr.name}-log"
+  owner             = postgresql_role.radarr.name
+  connection_limit  = -1
+  allow_connections = true
+}
+
+resource "postgresql_database" "prowlarr-main" {
+  name              = "${postgresql_role.prowlarr.name}-main"
+  owner             = postgresql_role.prowlarr.name
+  connection_limit  = -1
+  allow_connections = true
+}
+
+resource "postgresql_database" "prowlarr-log" {
+  name              = "${postgresql_role.prowlarr.name}-log"
+  owner             = postgresql_role.prowlarr.name
+  connection_limit  = -1
+  allow_connections = true
+}
