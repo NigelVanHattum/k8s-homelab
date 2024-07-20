@@ -12,7 +12,7 @@ variable "floatplane_downloader_chart_version" {
 
 variable "plex_management_chart_version" {
   type = string
-  default = "0.1.6"
+  default = "0.1.8"
 }
 
 variable "heimdall_chart_version" {

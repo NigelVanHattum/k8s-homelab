@@ -100,6 +100,7 @@ resource "argocd_application" "plex-management" {
           p2p_containerPath = format("%s/%s",local.file_share.p2p_root,"Complete"),
           ## Prowlarr
           pv_prowlarr_name = local.file_share.pv_names.prowlarr_config,
+          postgres_prowlarr = kubernetes_secret.prowlarr_postgres.metadata.0.name
           ## Sonarr
           pv_sonarr_config = local.file_share.pv_names.sonarr_config,
           pv_series = local.file_share.pv_names.plex_serie,
@@ -111,6 +112,7 @@ resource "argocd_application" "plex-management" {
           pv_movies = local.file_share.pv_names.plex_movie,
           movies_containerPath = format("%s/%s",local.file_share.nas_plex_root,"Movies"),
           movies_007_containerPath = format("%s/%s",local.file_share.nas_plex_root,"007"),
+          postgres_radarr = kubernetes_secret.radarr_postgres.metadata.0.name
           ## Ombi
           pv_ombi_config = local.file_share.pv_names.ombi_config
         })

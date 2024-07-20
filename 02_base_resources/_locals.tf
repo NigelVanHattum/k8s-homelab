@@ -17,6 +17,8 @@ locals {
             firefly_user = "postgresql-Firefly"
             mealie_user = "postgresql-Mealie"
             sonarr = "postgresql-Sonarr"
+            radarr = "postgresql-Radarr"
+            prowlarr = "postgresql-Prowlarr"
         }
         authentik = {
             api_token = "Authentik Token"

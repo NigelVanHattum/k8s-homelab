@@ -12,9 +12,27 @@ prowlarr:
     type: ClusterIP
     port: 9696
   prowlarr: 
-    PUID: ${PUID}
-    PGID: ${PGID}
-    timezone: "Europe/Amsterdam"
+    env: 
+      - name: PUID
+        value: "${PUID}"
+      - name: PGID
+        value: "${PGID}"
+      - name: TZ
+        value: Etc/UTC
+      - name: PROWLARR__POSTGRES__HOST
+        value: "${postgres_host}"
+      - name: PROWLARR__POSTGRES__PORT
+        value: "${postgres_port}"
+      - name: PROWLARR__POSTGRES__USER
+        valueFrom:
+          secretKeyRef:
+            name: ${postgres_prowlarr}
+            key: username
+      - name: PROWLARR__POSTGRES__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: ${postgres_prowlarr}
+            key: password
 
     persistence:
       config:
@@ -111,9 +129,27 @@ radarr:
     tag: "latest"
 
   radarr: 
-    PUID: ${PUID}
-    PGID: ${PGID}
-    timezone: "Europe/Amsterdam"
+    env: 
+      - name: PUID
+        value: "${PUID}"
+      - name: PGID
+        value: "${PGID}"
+      - name: TZ
+        value: Etc/UTC
+      - name: RADARR__POSTGRES__HOST
+        value: "${postgres_host}"
+      - name: RADARR__POSTGRES__PORT
+        value: "${postgres_port}"
+      - name: RADARR__POSTGRES__USER
+        valueFrom:
+          secretKeyRef:
+            name: ${postgres_radarr}
+            key: username
+      - name: RADARR__POSTGRES__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: ${postgres_radarr}
+            key: password
 
     persistence:
       config:
