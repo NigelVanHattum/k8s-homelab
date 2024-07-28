@@ -56,15 +56,33 @@ mealie:
       secretKeyRef:
         name: ${smtp_credentials}
         key: password
+  - name: OIDC_AUTH_ENABLED
+    value: "true"
+  - name: OIDC_SIGNUP_ENABLED
+    value: "false"
+  - name: OIDC_CONFIGURATION_URL
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_config}
+        key: config_url
+  - name: OIDC_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_config}
+        key: client_id
 
 
 ingress:
   enabled: true
   className: "traefik"
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure, internet
   hosts:
     - host: mealie.local.nigelvanhattum.nl
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: mealie.nigelvanhattum.nl
       paths:
         - path: /
           pathType: Prefix

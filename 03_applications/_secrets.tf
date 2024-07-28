@@ -169,3 +169,15 @@ resource "kubernetes_secret" "mealie_smtp" {
     host        = data.onepassword_item.smtp.url
   }
 }
+
+resource "kubernetes_secret" "mealie_oidc" {
+  metadata {
+    name = "mealie-oidc"
+    namespace = kubernetes_namespace.mealie.metadata.0.name
+  }
+
+  data = {
+    config_url   = data.authentik_provider_oauth2_config.mealie.provider_info_url
+    client_id    = authentik_provider_oauth2.mealie.client_id
+  }
+}

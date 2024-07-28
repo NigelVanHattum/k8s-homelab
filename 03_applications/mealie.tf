@@ -1,19 +1,21 @@
-# resource "kubectl_manifest" "mealie_ingress-public" {
-#   yaml_body          = file("manifests/firefly/ingress-public.yaml")
-#   override_namespace = kubernetes_namespace.firefly.metadata.0.name
-# }
+resource "random_uuid" "authentik_mealie_oauth_client_id" {
+}
 
-resource "authentik_provider_proxy" "authentik_mealie_provider" {
-  name               = "mealie"
-  mode               = "forward_single"
-  external_host      = "https://mealie.nigelvanhattum.nl"
-  authorization_flow = data.authentik_flow.default_authorization_flow.id
+resource "authentik_provider_oauth2" "mealie" {
+  name                = "mealie"
+  client_id           = random_uuid.authentik_mealie_oauth_client_id.result
+  authorization_flow  = data.authentik_flow.default_authorization_flow.id
+  redirect_uris       = ["https://mealie.nigelvanhattum.nl/login", "https://mealie.local.nigelvanhattum.nl/login"]
+}
+
+data "authentik_provider_oauth2_config" "mealie" {
+  provider_id = authentik_provider_oauth2.mealie.id
 }
 
 resource "authentik_application" "authentik_mealie_application" {
   name              = "mealie"
   slug              = "mealie"
-  protocol_provider = authentik_provider_proxy.authentik_mealie_provider.id
+  protocol_provider = authentik_provider_oauth2.mealie.id
 }
 
 resource "argocd_application" "mealie" {
@@ -38,6 +40,7 @@ resource "argocd_application" "mealie" {
           postgres_port             = data.onepassword_item.database_mealie.port
           postgres_database_name    = data.onepassword_item.database_mealie.database
           smtp_credentials          = kubernetes_secret.mealie_smtp.metadata.0.name
+          oidc_config               = kubernetes_secret.mealie_oidc.metadata.0.name
         })
       }
     }
