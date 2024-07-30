@@ -71,27 +71,32 @@ data "authentik_flow" "default-source-authentication" {
   depends_on = [argocd_application.authentik]
 }
 
+data "authentik_flow" "default_source_enrollment" {
+  slug = "default-source-enrollment"
+  depends_on = [argocd_application.authentik]
+}
+
 data "authentik_stage" "default-authentication-identification" {
   name = "default-authentication-identification"
   depends_on = [argocd_application.authentik]
-}
+}  
 
 data "authentik_source" "inbuilt" {
   managed = "goauthentik.io/sources/inbuilt"
   depends_on = [argocd_application.authentik]
 }
 
-# resource "authentik_source_oauth" "azure_ad" {
-#   name                  = "Azure AD"
-#   slug                  = "azure-ad"
-#   authentication_flow   = data.authentik_flow.default-source-authentication.id
-#   enrollment_flow       = ""
-# #   user_matching_mode    = "email_link"
-#   provider_type         = "openidconnect"
-#   consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
-#   consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
-#   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
-# }
+resource "authentik_source_oauth" "azure_ad" {
+  name                  = "Azure AD"
+  slug                  = "azure-ad"
+  authentication_flow   = data.authentik_flow.default-source-authentication.id
+  enrollment_flow       = data.authentik_flow.default_source_enrollment.id
+#   user_matching_mode    = "email_link"
+  provider_type         = "azuread"
+  consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
+  consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
+  oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
+}
 
 ## Default admin user
 data "authentik_user" "akadmin" {
