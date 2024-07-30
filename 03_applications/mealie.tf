@@ -5,17 +5,31 @@ resource "authentik_provider_oauth2" "mealie" {
   name                = "mealie"
   client_id           = random_uuid.authentik_mealie_oauth_client_id.result
   authorization_flow  = data.authentik_flow.default_authorization_flow.id
-  redirect_uris       = ["https://mealie.nigelvanhattum.nl/login", "https://mealie.local.nigelvanhattum.nl/login"]
+  redirect_uris       = ["https://mealie.nigelvanhattum.nl/login*", "https://mealie.local.nigelvanhattum.nl/login*"]
+  client_type = "public"
+  property_mappings = data.authentik_scope_mapping.oidc_mapping.ids
 }
 
 data "authentik_provider_oauth2_config" "mealie" {
   provider_id = authentik_provider_oauth2.mealie.id
 }
 
-resource "authentik_application" "authentik_mealie_application" {
+resource "authentik_application" "mealie" {
   name              = "mealie"
   slug              = "mealie"
   protocol_provider = authentik_provider_oauth2.mealie.id
+}
+
+resource "authentik_policy_binding" "mealie_admin" {
+  target = authentik_application.mealie.uuid
+  group  = data.authentik_group.admin.id
+  order  = 0
+}
+
+resource "authentik_policy_binding" "mealie_household" {
+  target = authentik_application.mealie.uuid
+  group  = data.authentik_group.houshold.id
+  order  = 1
 }
 
 resource "argocd_application" "mealie" {
@@ -41,6 +55,7 @@ resource "argocd_application" "mealie" {
           postgres_database_name    = data.onepassword_item.database_mealie.database
           smtp_credentials          = kubernetes_secret.mealie_smtp.metadata.0.name
           oidc_config               = kubernetes_secret.mealie_oidc.metadata.0.name
+          authentik_admin_group     = local.authentik.group_admin
         })
       }
     }

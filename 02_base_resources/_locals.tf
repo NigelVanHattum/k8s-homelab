@@ -42,4 +42,9 @@ locals {
         backup_c2_bucket = "postgresql-backup"
         read_write_service_name = "postgresql-cluster-rw"
     }
+    authentik = {
+        group_admin     = "Admin"
+        group_household = "Household"
+        group_guests    = "Guests"
+    }
 }

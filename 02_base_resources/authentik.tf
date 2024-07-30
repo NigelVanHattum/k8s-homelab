@@ -81,16 +81,39 @@ data "authentik_source" "inbuilt" {
   depends_on = [argocd_application.authentik]
 }
 
-resource "authentik_source_oauth" "azure_ad" {
-  name                  = "Azure AD"
-  slug                  = "azure-ad"
-  authentication_flow   = data.authentik_flow.default-source-authentication.id
-  enrollment_flow       = ""
-#   user_matching_mode    = "email_link"
-  provider_type         = "openidconnect"
-  consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
-  consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
-  oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
+# resource "authentik_source_oauth" "azure_ad" {
+#   name                  = "Azure AD"
+#   slug                  = "azure-ad"
+#   authentication_flow   = data.authentik_flow.default-source-authentication.id
+#   enrollment_flow       = ""
+# #   user_matching_mode    = "email_link"
+#   provider_type         = "openidconnect"
+#   consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
+#   consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
+#   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
+# }
+
+## Default admin user
+data "authentik_user" "akadmin" {
+  username = "akadmin"
+}
+
+resource "authentik_group" "admin" {
+  name         = local.authentik.group_admin
+  users        = [data.authentik_user.akadmin.id]
+  is_superuser = false
+}
+
+resource "authentik_group" "household" {
+  name         = local.authentik.group_household
+  users        = [data.authentik_user.akadmin.id]
+  is_superuser = false
+}
+
+resource "authentik_group" "guests" {
+  name         = local.authentik.group_guests
+  users        = [data.authentik_user.akadmin.id]
+  is_superuser = false
 }
 
 resource "kubectl_manifest" "authentik_middleware" {

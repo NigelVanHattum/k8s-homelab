@@ -59,7 +59,11 @@ mealie:
   - name: OIDC_AUTH_ENABLED
     value: "true"
   - name: OIDC_SIGNUP_ENABLED
-    value: "false"
+    value: "true"
+  - name: OIDC_AUTO_REDIRECT
+    value: "true"
+  - name: OIDC_ADMIN_GROUP
+    value: ${authentik_admin_group}
   - name: OIDC_CONFIGURATION_URL
     valueFrom:
       secretKeyRef:
