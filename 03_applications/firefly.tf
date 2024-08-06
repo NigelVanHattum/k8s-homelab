@@ -11,6 +11,12 @@ resource "authentik_provider_proxy" "authentik_firefly_provider" {
   authorization_flow = data.authentik_flow.default_authorization_flow.id
 }
 
+resource "authentik_policy_binding" "firefly_admin" {
+  target = authentik_application.authentik_firefly_application.uuid
+  group  = data.authentik_group.admin.id
+  order  = 0
+}
+
 resource "authentik_application" "authentik_firefly_application" {
   name              = "firefly"
   slug              = "firefly"
