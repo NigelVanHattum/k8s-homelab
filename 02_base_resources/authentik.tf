@@ -98,29 +98,6 @@ resource "authentik_source_oauth" "azure_ad" {
   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
 }
 
-## Default admin user
-data "authentik_user" "akadmin" {
-  username = "akadmin"
-}
-
-resource "authentik_group" "admin" {
-  name         = local.authentik.group_admin
-  users        = [data.authentik_user.akadmin.id]
-  is_superuser = false
-}
-
-resource "authentik_group" "household" {
-  name         = local.authentik.group_household
-  users        = [data.authentik_user.akadmin.id]
-  is_superuser = false
-}
-
-resource "authentik_group" "guests" {
-  name         = local.authentik.group_guests
-  users        = [data.authentik_user.akadmin.id]
-  is_superuser = false
-}
-
 resource "kubectl_manifest" "authentik_middleware" {
   yaml_body          = file("manifests/networking/authentik-middleware.yaml")
   override_namespace = kubernetes_namespace.traefik.metadata.0.name

@@ -24,7 +24,7 @@ resource "argocd_application" "traefik" {
         })
       }
     }
-
+    
     sync_policy {
       automated {
         prune       = true
