@@ -1,5 +1,6 @@
 locals {
   master_ips       = [for master in var.master_vms : master.ip_address]
+  worker_ips       = [for worker in var.worker_vms : worker.ip_address]
   cluster_name     = "talos-homelab"
   cluster_endpoint = "https://${local.master_ips[0]}:6443"
 }
@@ -23,7 +24,11 @@ data "talos_machine_configuration" "worker" {
 data "talos_client_configuration" "this" {
   cluster_name         = local.cluster_name
   client_configuration = talos_machine_secrets.this.client_configuration
-  nodes                = local.master_ips
+  endpoints            = local.master_ips
+  nodes                = setunion(
+    local.master_ips,
+    local.worker_ips,
+  )
 }
 
 resource "talos_machine_configuration_apply" "controlplane" {
