@@ -1,5 +1,5 @@
 # -- Deployment type, options are 'Deployment', 'StatefulSet'. Deployment has no options for volumeMounts
-type: Deployment
+type: StatefulSet
 # Default values for mealie.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -9,6 +9,10 @@ image:
   tag: "latest"
 
 mealie: 
+  persistence:
+    config:
+      existingVolume: ${pv_name}
+      storageClassName: nfs-csi-applications
   env: 
   - name: ALLOW_SIGNUP
     value: "false"

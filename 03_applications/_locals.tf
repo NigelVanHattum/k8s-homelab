@@ -30,6 +30,7 @@ locals {
             plex_movie = "pv-plex-movie"
             plex_serie = "pv-plex-serie"
             heimdall_config = "pv-heimdall-config"
+            mealie = "pv-mealie"
         }
     }
     database = {

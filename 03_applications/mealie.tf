@@ -32,6 +32,15 @@ resource "authentik_policy_binding" "mealie_household" {
   order  = 1
 }
 
+resource "kubectl_manifest" "pv_mealie" {
+  yaml_body = templatefile("manifests/storage/pv-mealie.yaml", {
+    pv_name         = local.file_share.pv_names.mealie, 
+    ip_address      = local.ip_address.nas_ip,
+    k8s_rootmount        = local.file_share.nas_root_mount
+  })
+  override_namespace = kubernetes_namespace.mealie.metadata.0.name
+}
+
 resource "argocd_application" "mealie" {
   metadata {
     name = kubernetes_namespace.mealie.metadata.0.name
@@ -47,6 +56,7 @@ resource "argocd_application" "mealie" {
       helm {
         values = templatefile("helm-values/mealie.yaml",
         {
+          pv_name                   = local.file_share.pv_names.mealie
           PUID                      = local.file_share.PUID
           PGID                      = local.file_share.PGID
           postgres_secret           = kubernetes_secret.mealie.metadata.0.name
