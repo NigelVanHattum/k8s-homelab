@@ -1,0 +1,59 @@
+cluster:
+  name: homelab
+externalServices:
+  prometheus:
+    host: https://prometheus-prod-24-prod-eu-west-2.grafana.net
+    basicAuth:
+      username: "1728447"
+      password: ${grafana_token}
+  loki:
+    host: https://logs-prod-012.grafana.net
+    basicAuth:
+      username: "963953"
+      password: ${grafana_token}
+  tempo:
+    host: https://tempo-prod-10-prod-eu-west-2.grafana.net:443
+    basicAuth:
+      username: "958268"
+      password: ${grafana_token}
+metrics:
+  enabled: true
+  alloy:
+    metricsTuning:
+      useIntegrationAllowList: true
+  cost:
+    enabled: false
+  kepler:
+    enabled: true
+  node-exporter:
+    enabled: true
+logs:
+  enabled: true
+  pod_logs:
+    enabled: true
+  cluster_events:
+    enabled: true
+traces:
+  enabled: true
+receivers:
+  grpc:
+    enabled: true
+  http:
+    enabled: true
+  zipkin:
+    enabled: false
+  grafanaCloudMetrics:
+    enabled: false
+opencost:
+  enabled: false
+kube-state-metrics:
+  enabled: true
+prometheus-node-exporter:
+  enabled: true
+prometheus-operator-crds:
+  enabled: true
+kepler:
+  enabled: true
+alloy: {}
+alloy-events: {}
+alloy-logs: {}

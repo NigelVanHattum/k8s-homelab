@@ -12,6 +12,20 @@ resource "kubernetes_namespace" "linkerd" {
   }
 }
 
+resource "kubernetes_namespace" "grafana" {
+  metadata {
+    annotations = {
+      # "linkerd.io/inject" = "enabled"
+    }
+    name   = "grafana"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}
+
 resource "kubernetes_namespace" "argocd" {
   metadata {
     annotations = {

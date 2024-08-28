@@ -41,6 +41,12 @@ resource "onepassword_item" "argo_admin_password" {
   password = random_password.argocd_admin_password.result
 }
 
+### Grafana
+data "onepassword_item" "grafana_token" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.grafana.api_token
+}
+
 ### Traefik 
 data "onepassword_item" "cloudflare_dns_token" {
   vault = data.onepassword_vault.homelab_vault.uuid

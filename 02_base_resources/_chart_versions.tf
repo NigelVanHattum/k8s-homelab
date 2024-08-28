@@ -19,7 +19,7 @@ variable "argocd_chart_version" {
 variable "k8s_monitoring_chart_version" {
   type    = string
   description = "grafana monitoring"
-  default = "1.8.8"
+  default = "1.4.8"
 }
 
 variable "nfs_csi_driver_chart_version" {

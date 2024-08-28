@@ -28,6 +28,9 @@ locals {
             azure_secret = "Authentik Azure Secret"
 
         }
+        grafana = {
+            api_token = "Grafana Cloud token"
+        }
     }
     ip_address = {
         ingress = "10.0.49.25"

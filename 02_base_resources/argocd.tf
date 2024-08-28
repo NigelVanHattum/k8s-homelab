@@ -92,7 +92,7 @@ resource "argocd_project" "argo-cd-system-project" {
     destination {
       server = "*"
       name = "*"
-      namespace = "skooner"
+      namespace = "grafana"
     }
 
     destination {
