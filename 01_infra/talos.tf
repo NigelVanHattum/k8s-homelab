@@ -11,6 +11,7 @@ data "talos_machine_configuration" "controlplane" {
   cluster_endpoint = local.cluster_endpoint
   machine_type     = "controlplane"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
+  talos_version    = "v1.7"
 }
 
 data "talos_machine_configuration" "worker" {
@@ -18,6 +19,7 @@ data "talos_machine_configuration" "worker" {
   cluster_endpoint = local.cluster_endpoint
   machine_type     = "worker"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
+  talos_version    = "v1.7"
 }
 
 data "talos_client_configuration" "this" {

@@ -12,7 +12,7 @@ terraform {
     talos = {
       source = "siderolabs/talos"
       # Stuck on 0.4.0 until https://github.com/siderolabs/terraform-provider-talos/issues/168 is fixed
-      version = "0.4.0" #">= 0.4.0, < 1.0.0"
+      version = "0.5.0" #">= 0.4.0, < 1.0.0"
     }
     kubectl = {
       source = "alekc/kubectl"
