@@ -4,25 +4,15 @@ resource "kubernetes_namespace" "linkerd" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "linkerd"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
 resource "kubernetes_namespace" "grafana" {
   metadata {
     annotations = {
-      # "linkerd.io/inject" = "enabled"
+      "linkerd.io/inject" = "enabled"
     }
     name   = "grafana"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -32,11 +22,6 @@ resource "kubernetes_namespace" "argocd" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "argo"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -46,11 +31,6 @@ resource "kubernetes_namespace" "nfs_csi_driver" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "nfs-csi-driver"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -60,11 +40,6 @@ resource "kubernetes_namespace" "metallb" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "metal-lb"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -74,11 +49,6 @@ resource "kubernetes_namespace" "traefik" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "traefik"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -88,11 +58,6 @@ resource "kubernetes_namespace" "postgresql" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "postgresql"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -102,11 +67,6 @@ resource "kubernetes_namespace" "postgresql_recovery" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "postgresql-recovery"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -116,11 +76,6 @@ resource "kubernetes_namespace" "influxdb" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "influxdb"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -130,11 +85,6 @@ resource "kubernetes_namespace" "picture_of_the_day" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "picture-of-the-day"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -144,10 +94,5 @@ resource "kubernetes_namespace" "authentik" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "authentik"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }

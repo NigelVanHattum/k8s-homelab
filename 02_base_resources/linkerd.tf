@@ -18,14 +18,19 @@ resource "helm_release" "linkerd-crd" {
 
 ### https://github.com/linkerd/linkerd2/issues/7945
 ### https://github.com/siderolabs/terraform-provider-talos/issues/144
-# resource "helm_release" "linkerd-cni" {
-#   repository = "https://helm.linkerd.io/stable"
-#   chart      = "linkerd2-cni"
+resource "helm_release" "linkerd-cni" {
+  repository = "https://helm.linkerd.io/stable"
+  chart      = "linkerd2-cni"
 
-#   namespace        = "linkerd"
-#   create_namespace = false
-#   name             = "linkerd-cni"
-# }
+  namespace        = "linkerd"
+  create_namespace = false
+  name             = "linkerd-cni"
+
+  set {
+    name = "priorityClassName"
+    value = "system-node-critical"
+  }
+}
 
 resource "tls_private_key" "ca" {
   algorithm   = "ECDSA"
@@ -97,9 +102,13 @@ resource "argocd_application" "linkerd" {
           value = tls_private_key.issuer.private_key_pem
         }
         parameter {
+          name = "priorityClassName"
+          value = "system-cluster-critical"
+        }
+        parameter {
           name = "cniEnabled"
           # set to true when using CNI
-          value = false
+          value = true
         }
       }
     }
@@ -127,4 +136,9 @@ resource "argocd_application" "linkerd" {
       name = "in-cluster"
     }
   }
+
+  depends_on = [
+    helm_release.linkerd-cni, 
+    helm_release.linkerd-crd
+  ]
 }
