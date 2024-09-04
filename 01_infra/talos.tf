@@ -6,6 +6,38 @@ locals {
 
 resource "talos_machine_secrets" "this" {}
 
+data "talos_image_factory_extensions_versions" "this" {
+  # get the latest talos version
+  talos_version = "v1.7.6"
+  filters = {
+    names = [
+      "amd-ucode",
+      "amdgpu-firmware",
+      "util-linux-tools"
+    ]
+  }
+}
+
+resource "talos_image_factory_schematic" "this" {
+  schematic = yamlencode(
+    {
+      customization = {
+        systemExtensions = {
+          officialExtensions = data.talos_image_factory_extensions_versions.this.extensions_info.*.name
+        }
+      }
+    }
+  )
+}
+
+output "schematic_id" {
+  value = talos_image_factory_schematic.this.id
+}
+
+output "upgrade_command" {
+  value = "Please update talos with the following command: talosctl upgrade -n 'NODE_IP' --preserve -i factory.talos.dev/installer/${talos_image_factory_schematic.this.id}:v'TALOS_VERSION'"
+}
+
 data "talos_machine_configuration" "controlplane" {
   cluster_name     = local.cluster_name
   cluster_endpoint = local.cluster_endpoint
@@ -74,7 +106,7 @@ resource "talos_machine_bootstrap" "this" {
   node                 = local.master_ips[0]
 }
 
-data "talos_cluster_kubeconfig" "this" {
+resource "talos_cluster_kubeconfig" "this" {
   depends_on = [
     talos_machine_bootstrap.this
   ]
