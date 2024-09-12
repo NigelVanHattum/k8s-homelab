@@ -40,7 +40,7 @@ global:
           key: password
 
 geoip:
-  enabled: false
+  enabled: true
   updateInterval: 8
   existingSecret:
     secretName: ${geo_ip_secret}
