@@ -4,6 +4,11 @@ resource "kubernetes_namespace" "linkerd" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "linkerd"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
   }
 }
 
@@ -31,6 +36,11 @@ resource "kubernetes_namespace" "nfs_csi_driver" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "nfs-csi-driver"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
   }
 }
 
