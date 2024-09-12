@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 1.5.0, < 2.0.0"
+  required_version = ">= 1.8.0, < 2.0.0"
   required_providers {
     onepassword = {
       source = "1Password/onepassword"
-      version = ">= 1.4.1, < 2.0.0"
+      version = ">= 2.0.0, < 3.0.0"
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
