@@ -18,11 +18,11 @@ resource "argocd_application" "influxdb" {
       target_revision = var.influxdb_chart_version
 
       helm {
-        values = file("helm-values/influxdb.yaml")
-        parameter {
-            name = "adminUser.existingSecret"
-            value = "${var.influxdb_secret_name}"
-        }
+        values = templatefile("helm-values/influxdb.yaml", {
+          existingSecret = kubernetes_secret.influxdb_admin.metadata.0.name
+          adminUser = data.onepassword_item.influxdb_admin_user.password
+          storageClass = "nfs-csi-influxdb"
+        })
       }
     }
 

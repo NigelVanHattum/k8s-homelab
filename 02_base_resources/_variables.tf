@@ -16,11 +16,3 @@ variable "influxdb_secret_name" {
   type = string
   default = "influxdb-admin-user"
   }
-variable "influxdb_admin_token" {
-  type = string
-  sensitive = true
-  }
-variable "influxdb_admin_password" {
-  type = string
-  sensitive = true
-  }

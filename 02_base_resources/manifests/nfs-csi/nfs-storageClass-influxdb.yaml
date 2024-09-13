@@ -5,7 +5,7 @@ metadata:
 provisioner: nfs.csi.k8s.io
 parameters:
   server: ${nas_ip}
-  share: ${root_path}/influxdb
+  share: ${root_path}/applications/influxdb
 reclaimPolicy: Retain
 mountOptions:
   - hard

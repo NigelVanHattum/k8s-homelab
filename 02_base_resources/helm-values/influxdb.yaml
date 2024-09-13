@@ -4,7 +4,7 @@
 adminUser:
   organization: "influxdata"
   bucket: "default"
-  user: "admin"
+  user: ${adminUser}
   retention_policy: "0s"
   ## Leave empty to generate a random password and token.
   ## Or fill any of these values to use fixed values.
@@ -14,7 +14,7 @@ adminUser:
   ## The password and token are obtained from an existing secret. The expected
   ## keys are `admin-password` and `admin-token`.
   ## If set, the password and token values above are ignored.
-  existingSecret: influxdb-auth
+  existingSecret: ${existingSecret}
 
 ## Persist data to a persistent volume
 ##
@@ -31,7 +31,7 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "nfs-csi-influxdb"
+  storageClass: ${storageClass}
   accessMode: ReadWriteOnce
   size: 32Gi
 

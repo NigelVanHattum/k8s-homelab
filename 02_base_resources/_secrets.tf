@@ -127,6 +127,16 @@ data "onepassword_item" "database_prowlarr" {
 }
 
 ### InfluxDB
+data "onepassword_item" "influxdb_admin_user" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.radarr
+}
+
+data "onepassword_item" "influxdb_token" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.prowlarr
+}
+
 resource "kubernetes_secret" "influxdb_admin" {
   metadata {
     name = var.influxdb_secret_name
@@ -136,8 +146,9 @@ resource "kubernetes_secret" "influxdb_admin" {
   immutable = false
 
   data = {
-    admin-password = "${var.influxdb_admin_password}"
-    admin-token = "${var.influxdb_admin_token}"
+    username = "${data.onepassword_item.influxdb_admin_user.username}"
+    admin-password = "${data.onepassword_item.influxdb_admin_user.password}"
+    admin-token = "${data.onepassword_item.influxdb_token.password}"
   }
 }
 
