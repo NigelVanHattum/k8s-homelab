@@ -1,7 +1,8 @@
 resource "kubernetes_namespace" "linkerd" {
   metadata {
     annotations = {
-      "linkerd.io/inject" = "enabled"
+      # kip ei verhaal? 
+      # "linkerd.io/inject" = "enabled"
     }
     name   = "linkerd"
     labels = {
@@ -18,6 +19,11 @@ resource "kubernetes_namespace" "grafana" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "grafana"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
   }
 }
 
@@ -50,6 +56,11 @@ resource "kubernetes_namespace" "metallb" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "metal-lb"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
   }
 }
 

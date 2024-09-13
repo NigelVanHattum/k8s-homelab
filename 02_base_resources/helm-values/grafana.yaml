@@ -1,3 +1,5 @@
+configValidator:
+  enabled: false
 cluster:
   name: homelab
 externalServices:
