@@ -4,11 +4,6 @@ resource "kubernetes_namespace" "firefly" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "firefly"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -18,11 +13,6 @@ resource "kubernetes_namespace" "floatplane" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "floatplane"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -32,11 +22,6 @@ resource "kubernetes_namespace" "plex_management" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "plex-management"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -46,11 +31,6 @@ resource "kubernetes_namespace" "heimdall" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "heimdall"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
 
@@ -60,10 +40,5 @@ resource "kubernetes_namespace" "mealie" {
       "linkerd.io/inject" = "enabled"
     }
     name   = "mealie"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
   }
 }
