@@ -59,6 +59,7 @@ backups:
       schedule: "0 0 4 * * *"
       # -- Backup owner reference
       backupOwnerReference: self
+      method: barmanObjectStore
 
   # -- Retention policy for backups
   retentionPolicy: "30d"
