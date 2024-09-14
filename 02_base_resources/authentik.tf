@@ -98,27 +98,37 @@ resource "authentik_source_oauth" "azure_ad" {
   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
 }
 
-## Default admin user
-data "authentik_user" "akadmin" {
-  username = "akadmin"
-}
-
 resource "authentik_group" "admin" {
   name         = local.authentik.group_admin
-  users        = [data.authentik_user.akadmin.id]
   is_superuser = false
+
+  lifecycle {
+    ignore_changes = [
+      users
+    ]
+  }
 }
 
 resource "authentik_group" "household" {
   name         = local.authentik.group_household
-  users        = [data.authentik_user.akadmin.id]
   is_superuser = false
+
+  lifecycle {
+    ignore_changes = [
+      users
+    ]
+  }
 }
 
 resource "authentik_group" "guests" {
   name         = local.authentik.group_guests
-  users        = [data.authentik_user.akadmin.id]
   is_superuser = false
+
+  lifecycle {
+    ignore_changes = [
+      users
+    ]
+  }
 }
 
 resource "kubectl_manifest" "authentik_middleware" {
