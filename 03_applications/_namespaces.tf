@@ -42,3 +42,12 @@ resource "kubernetes_namespace" "mealie" {
     name   = "mealie"
   }
 }
+
+resource "kubernetes_namespace" "ollama" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "ollama"
+  }
+}

@@ -28,6 +28,12 @@ resource "argocd_project" "argo_cd_apps_project" {
     destination {
       server = "*"
       name = "*"
+      namespace = "ollama"
+    }
+
+    destination {
+      server = "*"
+      name = "*"
       namespace = kubernetes_namespace.floatplane.metadata.0.name
     }
 

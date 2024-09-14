@@ -1,0 +1,80 @@
+# Docker image
+image:
+  # -- Docker pull policy
+  pullPolicy: Always
+  # -- Docker image tag, overrides the image tag whose default is the chart appVersion.
+  # tag: ""
+
+# Ollama parameters
+ollama:
+  
+  # -- List of models to pull at container startup
+  # The more you add, the longer the container will take to start if models are not present
+  # models:
+  #  - llama2
+  #  - mistral
+  models:
+    - llama3.1:8b #4,7GB
+    # - llama3.1:70b # 40GB
+    # - llama3.1:405b # 229GB
+    # - gemma:7b
+
+  # -- Add insecure flag for pulling at container startup
+  insecure: false
+
+  # -- Override ollama-data volume mount path, default: "/root/.ollama"
+  mountPath: ""
+
+# Service account
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+
+  # -- Automatically mount a ServiceAccount's API credentials?
+  automount: true
+
+# Configure the ingress resource that allows you to access the
+ingress:
+  # -- Enable ingress controller resource
+  enabled: true
+
+  # -- Additional annotations for the Ingress resource.
+  annotations: {}
+    # kubernetes.io/ingress.class: traefik
+
+  # The list of hostnames to be covered with this ingress record.
+  hosts:
+    - host: ollama.local.nigelvanhattum.nl
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Configure resource requests and limits
+# ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+  # -- Pod requests
+  requests:
+    # Memory request
+    memory: 256Mi
+
+    # CPU request
+    cpu: 2000m
+
+  # -- Pod limit
+  limits:
+    # Memory limit
+    memory: 4096Mi
+
+    # CPU limit
+    cpu: 4000m
+
+# Enable persistence using Persistent Volume Claims
+# ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+persistentVolume:
+  # -- Enable persistence using PVC
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  storageClass: "nfs-csi-applications"
+  volumeName: ${pv_name}
