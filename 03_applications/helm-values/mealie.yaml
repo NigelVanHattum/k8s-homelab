@@ -79,7 +79,7 @@ mealie:
         name: ${oidc_config}
         key: client_id
   - name: OPENAI_BASE_URL
-    value: ollama.local.nigelvanhattum.nl
+    value: https://ollama.local.nigelvanhattum.nl
   - name: OPENAI_API_KEY
     value: "Dummy"
   - name: OPENAI_MODEL
