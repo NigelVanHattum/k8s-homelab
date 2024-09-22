@@ -238,6 +238,84 @@ ombi:
       cpu: 200m
       memory: 256M
 
+tdarr:
+  enabled: true
+  tdarr: 
+    service:
+      webUI:
+        port: 8265
+      server:
+        port: 8266
+    env: 
+      - name: PUID 
+        value: "${PUID}"
+      - name: PGID
+        value: "${PGID}"
+      - name: TZ
+        value: Europe/Amsterdam
+      - name: webUIPort
+        value: "8265"
+      - name: internalNode
+        value: "true"
+      - name: ffmpegVersion
+        value: "6"
+      - name: serverIP
+        value: plex-management-tdarr-server.plex-management.svc.cluster.local
+      - name: serverPort
+        value: "8266"
+      - name: inContainer
+        value: "true"
+
+    persistence:
+      server:
+        # -- is turned to false, will only create an emptyDir for the server
+        enabled: true
+        storageClassName: "nfs-csi-applications"
+        existingVolume: ${pv_tdarr_server}
+        size: "1Gi"
+      config:
+        # -- is turned to false, will only create an emptyDir for config
+        enabled: true
+        storageClassName: "nfs-csi-applications"
+        existingVolume: ${pv_tdarr_config}
+        size: "1Gi"
+      extraVolumes:   
+        - volumeName: "cache"
+          size: "30Gi"
+          containerPath: "/temp"
+          accessModes:
+            - ReadWriteOnce
+          storageClassName: "nfs-csi-applications"
+          existingVolume: ${pv_tdarr_cache}
+        - volumeName: "movies"
+          useExistingPvc: "radarr-movies-plex-management-radarr-0"
+          containerPath: ${movies_containerPath}
+  ingress:
+    webUI: 
+      enabled: true
+      className: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        # kubernetes.io/ingress.class: nginx
+        # kubernetes.io/tls-acme: "true"
+      hosts:
+        - host: tdarr.local.nigelvanhattum.nl
+          paths:
+            - path: /
+              pathType: Prefix
+
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 3000m
+      memory: 2048M
+    requests:
+      cpu: 200m
+      memory: 256M
+
 sharedP2PPvc:
   enabled: true
   name: ${pvc_p2p_name}
