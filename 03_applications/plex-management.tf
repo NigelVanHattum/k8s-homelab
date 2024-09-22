@@ -70,6 +70,33 @@ resource "kubectl_manifest" "pv_plex_movies" {
   override_namespace = kubernetes_namespace.plex_management.metadata.0.name
 }
 
+resource "kubectl_manifest" "pv_tdarr_config" {
+  yaml_body = templatefile("manifests/storage/pv-tdarr-config.yaml", {
+    pv_name         = local.file_share.pv_names.tdarr_config, 
+    ip_address      = local.ip_address.nas_ip,
+    k8s_rootmount   = local.file_share.nas_root_mount
+  })
+  override_namespace = kubernetes_namespace.plex_management.metadata.0.name
+}
+
+resource "kubectl_manifest" "pv_tdarr_server" {
+  yaml_body = templatefile("manifests/storage/pv-tdarr-server.yaml", {
+    pv_name         = local.file_share.pv_names.tdarr_server, 
+    ip_address      = local.ip_address.nas_ip,
+    k8s_rootmount   = local.file_share.nas_root_mount
+  })
+  override_namespace = kubernetes_namespace.plex_management.metadata.0.name
+}
+
+resource "kubectl_manifest" "pv_tdarr_cache" {
+  yaml_body = templatefile("manifests/storage/pv-tdarr-cache.yaml", {
+    pv_name         = local.file_share.pv_names.tdarr_cache, 
+    ip_address      = local.ip_address.nas_ip,
+    k8s_rootmount   = local.file_share.nas_root_mount
+  })
+  override_namespace = kubernetes_namespace.plex_management.metadata.0.name
+}
+
 
 
 resource "argocd_application" "plex-management" {
@@ -115,6 +142,10 @@ resource "argocd_application" "plex-management" {
           postgres_radarr = kubernetes_secret.radarr_postgres.metadata.0.name
           ## Ombi
           pv_ombi_config = local.file_share.pv_names.ombi_config
+          ## Tdarr
+          pv_tdarr_server = local.file_share.pv_names.tdarr_server
+          pv_tdarr_config = local.file_share.pv_names.tdarr_config
+          pv_tdarr_cache = local.file_share.pv_names.tdarr_cache
         })
       }
     }
