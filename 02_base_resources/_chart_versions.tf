@@ -1,7 +1,7 @@
 variable "linkerd_chart_version" {
   type = string
   description = "linkerd chart version"
-  default = "2024.9.2"
+  default = "2024.10.2"
 }
 
 variable "argocd_chart_version" {
