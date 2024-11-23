@@ -26,9 +26,9 @@ metrics:
   cost:
     enabled: false
   kepler:
-    enabled: true
+    enabled: false
   node-exporter:
-    enabled: true
+    enabled: false
 logs:
   enabled: true
   pod_logs:
