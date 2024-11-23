@@ -240,6 +240,8 @@ ombi:
 
 tdarr:
   enabled: true
+  image:
+    # pullPolicy: Always
   tdarr: 
     service:
       webUI:
@@ -290,6 +292,9 @@ tdarr:
         - volumeName: "movies"
           useExistingPvc: "radarr-movies-plex-management-radarr-0"
           containerPath: ${movies_containerPath}
+        - volumeName: "series"
+          useExistingPvc: "sonarr-series-plex-management-sonarr-0"
+          containerPath: ${series_containerPath}
   ingress:
     webUI: 
       enabled: true
