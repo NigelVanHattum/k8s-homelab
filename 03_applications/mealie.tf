@@ -6,7 +6,7 @@ resource "authentik_provider_oauth2" "mealie" {
   client_id           = random_uuid.authentik_mealie_oauth_client_id.result
   authorization_flow  = data.authentik_flow.default_authorization_flow.id
   redirect_uris       = ["https://mealie.nigelvanhattum.nl/login*", "https://mealie.local.nigelvanhattum.nl/login*"]
-  client_type = "public"
+  # client_type = "public"
   property_mappings = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
 }
 

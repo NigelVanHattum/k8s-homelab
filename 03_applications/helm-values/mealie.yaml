@@ -78,6 +78,11 @@ mealie:
       secretKeyRef:
         name: ${oidc_config}
         key: client_id
+  - name: OIDC_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_config}
+        key: client_secret
   - name: OPENAI_BASE_URL
     value: https://ollama.local.nigelvanhattum.nl
   - name: OPENAI_API_KEY

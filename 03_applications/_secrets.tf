@@ -174,5 +174,6 @@ resource "kubernetes_secret" "mealie_oidc" {
   data = {
     config_url   = data.authentik_provider_oauth2_config.mealie.provider_info_url
     client_id    = authentik_provider_oauth2.mealie.client_id
+    client_secret    = authentik_provider_oauth2.mealie.client_secret
   }
 }
