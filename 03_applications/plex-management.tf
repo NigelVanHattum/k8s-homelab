@@ -97,6 +97,18 @@ resource "kubectl_manifest" "pv_tdarr_cache" {
   override_namespace = kubernetes_namespace.plex_management.metadata.0.name
 }
 
+resource "kubectl_manifest" "tdarr_server_socket" {
+  validate_schema = false
+  yaml_body = templatefile("${path.module}/manifests/ingress/tdarr-server.yaml", {
+    service_name = "plex-management-tdarr-server"
+  })
+  ## wait does not work, there is no status viewer for it
+  # wait {
+  #   rollout = true
+  # }
+  override_namespace = kubernetes_namespace.plex_management.metadata.0.name
+}
+
 
 
 resource "argocd_application" "plex-management" {
