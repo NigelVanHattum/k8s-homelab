@@ -8,7 +8,7 @@ resource "talos_machine_secrets" "this" {}
 
 data "talos_image_factory_extensions_versions" "this" {
   # get the latest talos version
-  talos_version = "v1.7.6"
+  talos_version = local.talos_version
   filters = {
     names = [
       "amd-ucode",
@@ -43,7 +43,7 @@ data "talos_machine_configuration" "controlplane" {
   cluster_endpoint = local.cluster_endpoint
   machine_type     = "controlplane"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
-  talos_version    = "v1.7"
+  talos_version    = local.talos_version
 }
 
 data "talos_machine_configuration" "worker" {
@@ -51,7 +51,7 @@ data "talos_machine_configuration" "worker" {
   cluster_endpoint = local.cluster_endpoint
   machine_type     = "worker"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
-  talos_version    = "v1.7"
+  talos_version    = local.talos_version
 }
 
 data "talos_client_configuration" "this" {
