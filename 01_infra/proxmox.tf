@@ -14,9 +14,10 @@ resource "proxmox_vm_qemu" "talos-controlpane" {
   vm_state = "running"
   qemu_os = "other"
   scsihw = "virtio-scsi-pci"
-  cpu = "host"
+  cpu_type = "host"
   cores = each.value.cpu_cores
   memory = each.value.memory
+  skip_ipv6 = true
 
   disks {
     ide {
@@ -37,11 +38,12 @@ resource "proxmox_vm_qemu" "talos-controlpane" {
   }
 
   network {
+    id        = each.value.network_id
     model     = "virtio"
     bridge    = "vmbr0"
     firewall  = false
     macaddr   = each.value.mac_address
-    tag       = each.value.vlan_tag
+    # tag       = each.value.vlan_tag
   }
 }
 
@@ -56,9 +58,10 @@ resource "proxmox_vm_qemu" "talos-worker" {
   vm_state = "running"
   qemu_os = "other"
   scsihw = "virtio-scsi-pci"
-  cpu = "host"
+  cpu_type = "host"
   cores = each.value.cpu_cores
   memory = each.value.memory
+  skip_ipv6 = true
 
   disks {
     ide {
@@ -79,10 +82,11 @@ resource "proxmox_vm_qemu" "talos-worker" {
   }
 
   network {
+    id        = each.value.network_id
     model     = "virtio"
     bridge    = "vmbr0"
     firewall  = false
     macaddr   = each.value.mac_address
-    tag       = each.value.vlan_tag
+    # tag       = each.value.vlan_tag
   }
 }

@@ -13,6 +13,7 @@ variable "master_vms" {
     memory       = optional(number, 8192)
     storage_size = optional(number, 32)
     storage_name = optional(string, "local-lvm")
+    network_id   = optional(number, 7)
     vlan_tag     = optional(number, -1)
   }))
 }
@@ -26,6 +27,7 @@ variable "worker_vms" {
     memory       = optional(number, 4096)
     storage_size = optional(number, 32)
     storage_name = optional(string, "local-lvm")
+    network_id   = optional(number, 7)
     vlan_tag     = optional(number, -1)
   }))
 }
