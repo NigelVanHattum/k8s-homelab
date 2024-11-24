@@ -1,6 +1,7 @@
 ### https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml
 type: postgresql
-
+version:
+  postgresql: "15"
 mode: standalone
 
 cluster:
@@ -64,14 +65,14 @@ backups:
   # -- Retention policy for backups
   retentionPolicy: "30d"
 
-pooler:
-  # -- Whether to enable PgBouncer
-  enabled: false
-  # -- PgBouncer pooling mode
-  poolMode: transaction
-  # -- Number of PgBouncer instances
-  instances: 3
-  # -- PgBouncer configuration parameters
-  parameters:
-    max_client_conn: "100"
-    default_pool_size: "25"
+# pooler:
+#   # -- Whether to enable PgBouncer
+#   enabled: false
+#   # -- PgBouncer pooling mode
+#   poolMode: transaction
+#   # -- Number of PgBouncer instances
+#   instances: 3
+#   # -- PgBouncer configuration parameters
+#   parameters:
+#     max_client_conn: "100"
+#     default_pool_size: "25"
