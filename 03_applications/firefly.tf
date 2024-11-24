@@ -8,6 +8,7 @@ resource "authentik_provider_proxy" "authentik_firefly_provider" {
   name               = "firefly"
   mode               = "forward_single"
   external_host      = "https://finance.nigelvanhattum.nl"
+  invalidation_flow  = data.authentik_flow.default_provider_invalidation_flow.id
   authorization_flow = data.authentik_flow.default_authorization_flow.id
 }
 

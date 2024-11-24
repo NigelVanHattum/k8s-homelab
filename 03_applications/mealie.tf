@@ -2,12 +2,21 @@ resource "random_uuid" "authentik_mealie_oauth_client_id" {
 }
 
 resource "authentik_provider_oauth2" "mealie" {
-  name                = "mealie"
-  client_id           = random_uuid.authentik_mealie_oauth_client_id.result
-  authorization_flow  = data.authentik_flow.default_authorization_flow.id
-  redirect_uris       = ["https://mealie.nigelvanhattum.nl/login*", "https://mealie.local.nigelvanhattum.nl/login*"]
-  # client_type = "public"
-  property_mappings = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
+  name                        = "mealie"
+  client_id                   = random_uuid.authentik_mealie_oauth_client_id.result
+  authorization_flow          = data.authentik_flow.default_authorization_flow.id
+  allowed_redirect_uris       = [
+    {
+      matching_mode = "regex",
+      url           = "https://mealie.nigelvanhattum.nl/login*",
+    },
+    {
+      matching_mode = "regex",
+      url           = "https://mealie.local.nigelvanhattum.nl/login*",
+    }
+  ]
+  invalidation_flow           = data.authentik_flow.default_provider_invalidation_flow.id
+  property_mappings           = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
 }
 
 data "authentik_provider_oauth2_config" "mealie" {
