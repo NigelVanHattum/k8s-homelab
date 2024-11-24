@@ -65,6 +65,7 @@ resource "argocd_application" "mealie" {
       helm {
         values = templatefile("helm-values/mealie.yaml",
         {
+          mealie_version            = local.mealie_version
           pv_name                   = local.file_share.pv_names.mealie
           PUID                      = local.file_share.PUID
           PGID                      = local.file_share.PGID

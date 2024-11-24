@@ -27,3 +27,8 @@ terraform {
     }
   }
 }
+
+locals {
+  # https://github.com/mealie-recipes/mealie/releases
+  mealie_version = "v2.2.0"
+}
