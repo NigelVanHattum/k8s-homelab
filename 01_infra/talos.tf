@@ -74,7 +74,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
     file("${path.module}/talos_config_patches/cert-rotate-patch.yaml"),
     templatefile("${path.module}/talos_config_patches/hostname-config.yaml", {
       hostname = each.key
-    })
+    }),
+    file("${path.module}/talos_config_patches/max-disk-size.yaml")
   ]
 }
 
@@ -92,7 +93,8 @@ resource "talos_machine_configuration_apply" "worker" {
     file("${path.module}/talos_config_patches/cert-rotate-patch.yaml"),
     templatefile("${path.module}/talos_config_patches/hostname-config.yaml", {
       hostname = each.key
-    })
+    }),
+    file("${path.module}/talos_config_patches/max-disk-size.yaml")
   ]
 }
 

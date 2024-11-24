@@ -1,0 +1,10 @@
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL # Name of the volume.
+# The provisioning describes how the volume is provisioned.
+provisioning:
+    # The disk selector expression.
+    diskSelector:
+        match: disk.transport == "virtio" # The Common Expression Language (CEL) expression to match the disk.
+    maxSize: 25GiB # The maximum size of the volume, if not specified the volume can grow to the size of the
+    grow: false
