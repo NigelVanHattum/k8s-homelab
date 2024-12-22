@@ -8,7 +8,7 @@ firefly-iii:
   image:
     repository: "fireflyiii/core"
     pullPolicy: Always
-    tag: latest
+    tag: "${firefly_version}"
 
   persistence:
     # -- If you set this to false, uploaded attachments are not stored persistently and will be lost with every restart of the pod

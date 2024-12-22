@@ -14,7 +14,8 @@ ollama:
   #  - llama2
   #  - mistral
   models:
-    - llama3.1:8b #4,7GB
+    - llama3.2:1b
+    # - llama3.1:8b #4,7GB
     # - llama3.1:70b # 40GB
     # - llama3.1:405b # 229GB
     # - gemma:7b

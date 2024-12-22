@@ -33,6 +33,7 @@ resource "argocd_application" "firefly" {
       helm {
         values = templatefile("helm-values/firefly.yaml",
         {
+          firefly_version    = local.firefly_version
           firefly_secret_env = kubernetes_secret.firefly_environment.metadata.0.name
         })
       }

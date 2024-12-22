@@ -84,11 +84,11 @@ mealie:
         name: ${oidc_config}
         key: client_secret
   - name: OPENAI_BASE_URL
-    value: https://ollama.local.nigelvanhattum.nl
+    value: https://ollama.local.nigelvanhattum.nl/v1
   - name: OPENAI_API_KEY
     value: "Dummy"
   - name: OPENAI_MODEL
-    value: llama3.1 
+    value: llama3.2:1b
 
 
 ingress:

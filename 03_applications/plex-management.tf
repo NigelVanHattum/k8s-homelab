@@ -138,14 +138,17 @@ resource "argocd_application" "plex-management" {
           pvc_p2p_name = local.file_share.pv_names.pvc_p2p,
           p2p_containerPath = format("%s/%s",local.file_share.p2p_root,"Complete"),
           ## Prowlarr
+          prowlarr_version = local.prowlarr_version
           pv_prowlarr_name = local.file_share.pv_names.prowlarr_config,
           postgres_prowlarr = kubernetes_secret.prowlarr_postgres.metadata.0.name
           ## Sonarr
+          sonarr_version = local.sonarr_version
           pv_sonarr_config = local.file_share.pv_names.sonarr_config,
           pv_series = local.file_share.pv_names.plex_serie,
           series_containerPath = format("%s/%s",local.file_share.nas_plex_root,"Series"),
           postgres_sonarr = kubernetes_secret.sonarr_postgres.metadata.0.name
           ## Radarr
+          radarr_version = local.radarr_version
           pv_radarr_config = local.file_share.pv_names.radarr_config,
           pv_007 = local.file_share.pv_names.plex_007,
           pv_movies = local.file_share.pv_names.plex_movie,
@@ -153,8 +156,10 @@ resource "argocd_application" "plex-management" {
           movies_007_containerPath = format("%s/%s",local.file_share.nas_plex_root,"007"),
           postgres_radarr = kubernetes_secret.radarr_postgres.metadata.0.name
           ## Ombi
+          ombi_version = local.ombi_version
           pv_ombi_config = local.file_share.pv_names.ombi_config
           ## Tdarr
+          tdarr_version   = local.tdarr_version
           pv_tdarr_server = local.file_share.pv_names.tdarr_server
           pv_tdarr_config = local.file_share.pv_names.tdarr_config
           pv_tdarr_cache = local.file_share.pv_names.tdarr_cache

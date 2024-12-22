@@ -4,7 +4,8 @@
 prowlarr:
   enabled: true
   image:
-  pullPolicy: Always
+    tag: "${prowlarr_version}"
+    pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
@@ -56,8 +57,7 @@ sonarr:
   enabled: true
   image:
     pullPolicy: Always
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    tag: "${sonarr_version}"
 
   sonarr: 
     env: 
@@ -125,8 +125,7 @@ radarr:
   enabled: true
   image:
     pullPolicy: Always
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    tag: "${radarr_version}"
 
   radarr: 
     env: 
@@ -202,6 +201,9 @@ radarr:
 
 ombi:
   enabled: true
+  image:
+    tag: "${ombi_version}"
+    pullPolicy: Always
   ombi: 
     PUID: ${PUID}
     PGID: ${PGID}
@@ -241,7 +243,8 @@ ombi:
 tdarr:
   enabled: true
   image:
-    # pullPolicy: Always
+    tag: "${tdarr_version}"
+    pullPolicy: Always
   tdarr: 
     service:
       webUI:
