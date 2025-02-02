@@ -56,3 +56,6 @@ Thumbs.db
 
 */terraform.tfvars
 **/.helm
+
+
+*.upgrade-node.lock
