@@ -7,11 +7,11 @@ terraform {
     }
     proxmox = {
       source = "telmate/proxmox"
-      version = "3.0.1-rc5"
+      version = "3.0.1-rc6"
     }
     talos = {
       source = "siderolabs/talos"
-      version = "0.6.1"
+      version = ">= 0.7.0, < 0.8.0"
     }
     kubectl = {
       source = "alekc/kubectl"
