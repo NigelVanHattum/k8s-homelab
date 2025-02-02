@@ -1,5 +1,5 @@
 output "talosconfig" {
-  value     = talos_machine_secrets.this.client_configuration
+  value     = data.talos_client_configuration.this.talos_config
   sensitive = true
 }
 
@@ -26,4 +26,10 @@ output "kube_client_key" {
 output "kubeconfig" {
   value     = talos_cluster_kubeconfig.this.kubeconfig_raw
   sensitive = true
+}
+
+resource "local_sensitive_file" "talosconfig" {
+  content         = data.talos_client_configuration.this.talos_config
+  filename        = pathexpand("${var.talos_config_path}/${var.cluster_name}.yaml")
+  file_permission = "0644"
 }
