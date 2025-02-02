@@ -48,7 +48,7 @@ variable "cnpg_postgres_operator_chart_version" {
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cluster
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.1.0"
+  default = "0.1.3"
 }
 
 variable "influxdb_chart_version" {
