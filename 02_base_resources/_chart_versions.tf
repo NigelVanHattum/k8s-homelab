@@ -22,33 +22,39 @@ variable "k8s_monitoring_chart_version" {
 # https://github.com/kubernetes-csi/csi-driver-nfs
 variable "nfs_csi_driver_chart_version" {
   type    = string
-  default = "v4.9.0"
+  default = "v4.10.0"
 }
 
 # https://github.com/metallb/metallb/tree/main/charts/metallb/charts/crds
 variable "metallb_chart_version" {
   type = string
   description = "MetalLB version"
-  default = "0.14.8"
+  default = "0.14.9"
 }
 
 # https://github.com/traefik/traefik-helm-chart
+variable "traefik_crd_chart_version" {
+  type = string
+  description = "Traefik CRD chart version (not traefik version)"
+  default = "1.5.0"
+}
+
 variable "traefik_chart_version" {
   type = string
   description = "Traefik chart version (not traefik version)"
-  default = "33.0.0"
+  default = "34.4.1"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
 variable "cnpg_postgres_operator_chart_version" {
   type    = string
-  default = "0.22.1"
+  default = "0.23.2"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cluster
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.1.3"
+  default = "0.2.1"
 }
 
 variable "influxdb_chart_version" {
@@ -61,5 +67,5 @@ variable "influxdb_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2024.10.4"
+  default = "2025.2.1"
 }
