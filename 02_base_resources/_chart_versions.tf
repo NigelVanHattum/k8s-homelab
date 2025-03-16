@@ -9,7 +9,7 @@
 variable "argocd_chart_version" {
   type    = string
   description = "argocd chart version"
-  default = "7.7.5"
+  default = "7.8.11"
 }
 
 # https://github.com/grafana/k8s-monitoring-helm

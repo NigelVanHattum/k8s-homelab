@@ -33,6 +33,12 @@ provider "argocd" {
   port_forward_with_namespace = "argo"
   username = "admin"
   password = random_password.argocd_admin_password.result
+  kubernetes {
+    host                   = data.terraform_remote_state.infra.outputs.kube_host
+    cluster_ca_certificate = base64decode(data.terraform_remote_state.infra.outputs.kube_cluster_ca)
+    client_certificate     = base64decode(data.terraform_remote_state.infra.outputs.kube_client_cert)
+    client_key             = base64decode(data.terraform_remote_state.infra.outputs.kube_client_key)
+  }
 }
 
 provider "postgresql" {
