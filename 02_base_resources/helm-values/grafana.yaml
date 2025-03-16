@@ -1,61 +1,97 @@
-configValidator:
-  enabled: false
 cluster:
   name: homelab
-externalServices:
-  prometheus:
-    host: https://prometheus-prod-24-prod-eu-west-2.grafana.net
-    basicAuth:
-      username: "1728447"
+destinations:
+  - name: metricsService
+    type: prometheus
+    url: https://prometheus-prod-24-prod-eu-west-2.grafana.net/api/prom/push
+    auth:
+      type: basic
+      username: '1728447'
       password: ${grafana_token}
-  loki:
-    host: https://logs-prod-012.grafana.net
-    basicAuth:
-      username: "963953"
+  - name: logsService
+    type: loki
+    url: https://logs-prod-012.grafana.net/loki/api/v1/push
+    auth:
+      type: basic
+      username: '963953'
       password: ${grafana_token}
-  tempo:
-    host: https://tempo-prod-10-prod-eu-west-2.grafana.net:443
-    basicAuth:
-      username: "958268"
+  - name: tracesService
+    type: otlp
+    protocol: grpc
+    metrics:
+      enabled: false
+    logs:
+      enabled: false
+    traces:
+      enabled: true
+    url: https://tempo-prod-10-prod-eu-west-2.grafana.net:443
+    auth:
+      type: basic
+      username: '958268'
       password: ${grafana_token}
-metrics:
+clusterMetrics:
   enabled: true
-  alloy:
-    metricsTuning:
-      useIntegrationAllowList: true
-  cost:
+  kube-state-metrics:
+    deploy: true
+  node-exporter:
+    deploy: true
+    enabled: false
+  opencost:
     enabled: false
   kepler:
     enabled: false
-  node-exporter:
-    enabled: false
-logs:
+alloy-metrics:
   enabled: true
-  pod_logs:
-    enabled: true
-  cluster_events:
-    enabled: true
-traces:
+clusterEvents:
   enabled: true
-receivers:
-  grpc:
-    enabled: true
-  http:
-    enabled: true
-  zipkin:
-    enabled: false
-  grafanaCloudMetrics:
-    enabled: false
-opencost:
-  enabled: false
-kube-state-metrics:
+alloy-singleton:
   enabled: true
-prometheus-node-exporter:
+podLogs:
   enabled: true
-prometheus-operator-crds:
+alloy-logs:
   enabled: true
-kepler:
+applicationObservability:
   enabled: true
-alloy: {}
-alloy-events: {}
-alloy-logs: {}
+  receivers:
+    otlp:
+      includeDebugMetrics: true
+      grpc:
+        enabled: true
+      http:
+        enabled: true
+    zipkin:
+      enabled: false
+      includeDebugMetrics: true
+alloy-receiver:
+  enabled: true
+  alloy:
+    extraPorts:
+      - name: otlp-grpc
+        port: 4317
+        targetPort: 4317
+        protocol: TCP
+      - name: otlp-http
+        port: 4318
+        targetPort: 4318
+        protocol: TCP
+annotationAutodiscovery:
+  enabled: true
+prometheusOperatorObjects:
+  enabled: true
+  crds:
+    deploy: true
+integrations:
+  alloy:
+    instances:
+      - name: alloy
+        labelSelectors:
+          app.kubernetes.io/name:
+            - alloy-metrics
+            - alloy-singleton
+            - alloy-logs
+            - alloy-receiver
+        metrics:
+          tuning:
+            useDefaultAllowList: true
+            includeMetrics:
+              - alloy_build_info

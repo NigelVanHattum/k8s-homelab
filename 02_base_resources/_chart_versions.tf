@@ -16,7 +16,7 @@ variable "argocd_chart_version" {
 variable "k8s_monitoring_chart_version" {
   type    = string
   description = "grafana monitoring"
-  default = "1.6.11"
+  default = "2.0.18"
 }
 
 # https://github.com/kubernetes-csi/csi-driver-nfs
