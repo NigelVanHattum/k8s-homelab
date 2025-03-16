@@ -30,29 +30,29 @@ terraform {
 
 locals {
   # https://github.com/mealie-recipes/mealie/releases
-  mealie_version = "v2.2.0"
+  mealie_version = "v2.7.1"
 
   # https://github.com/firefly-iii/firefly-iii/releases
   # https://hub.docker.com/r/fireflyiii/core/tags
-  firefly_version = "version-6.1"
+  firefly_version = "version-6"
 
   ### PLEX
   # https://github.com/Prowlarr/Prowlarr/releases
   # https://hub.docker.com/r/linuxserver/prowlarr/tags
-  prowlarr_version = "1.26.1"
+  prowlarr_version = "latest"
 
   # https://github.com/Radarr/Radarr/releases
   # https://hub.docker.com/r/linuxserver/radarr/tags
-  radarr_version = "5.15.1"
+  radarr_version = "latest"
 
   # https://github.com/Sonarr/Sonarr/releases
   # https://hub.docker.com/r/linuxserver/sonarr/tags
-  sonarr_version = "4.0.10"
+  sonarr_version = "latest"
 
   # https://github.com/Ombi-app/Ombi/releases
   # https://hub.docker.com/r/linuxserver/ombi/tags
-  ombi_version = "4.44.1"
+  ombi_version = "4.47.1"
   # https://github.com/haveagitgat/Tdarr/pkgs/container/tdarr
-  tdarr_version = "2.27.02"
+  tdarr_version = "latest"
   
 }

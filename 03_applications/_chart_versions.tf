@@ -33,5 +33,5 @@ variable "mealie_chart_version" {
 # https://github.com/otwld/ollama-helm
 variable "ollama_chart_version" {
   type = string
-  default = "0.67.0"
+  default = "1.9.0"
 }

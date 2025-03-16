@@ -14,11 +14,13 @@ ollama:
   #  - llama2
   #  - mistral
   models:
-    - llama3.2:1b
-    # - llama3.1:8b #4,7GB
-    # - llama3.1:70b # 40GB
-    # - llama3.1:405b # 229GB
-    # - gemma:7b
+    pull: 
+      - llama3.2:1b
+      # - llama3.1:8b #4,7GB
+      # - llama3.1:70b # 40GB
+      # - llama3.1:405b # 229GB
+      # - gemma:7b
+    run: []
 
   # -- Add insecure flag for pulling at container startup
   insecure: false
@@ -57,15 +59,15 @@ resources:
   # -- Pod requests
   requests:
     # Memory request
-    memory: 256Mi
+    memory: 5Gi
 
     # CPU request
-    cpu: 2000m
+    cpu: 200m
 
   # -- Pod limit
   limits:
     # Memory limit
-    memory: 4096Mi
+    memory: 6Gi
 
     # CPU limit
     cpu: 4000m
