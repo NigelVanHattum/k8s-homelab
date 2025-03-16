@@ -18,8 +18,8 @@ terraform {
       version = ">= 2.11.0, < 3.0.0"
     }
     argocd = {
-      source = "oboukili/argocd"
-      version = ">= 6.0.3, < 7.0.0"
+      source = "argoproj-labs/argocd"
+      version = ">= 7.0.0, < 8.0.0"
     }
     authentik = {
       source = "goauthentik/authentik"
