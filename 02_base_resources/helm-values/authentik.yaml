@@ -16,6 +16,14 @@ server:
     hosts:
       - "authentik.nigelvanhattum.nl"
 
+worker:
+  livenessProbe:
+    timeoutSeconds: 5
+  readinessProbe:
+    timeoutSeconds: 5
+  startupProbe:
+    timeoutSeconds: 5
+
 blueprints:
   configMaps:
     - ${blueprint_configmap}
