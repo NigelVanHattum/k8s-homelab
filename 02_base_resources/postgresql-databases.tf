@@ -60,3 +60,10 @@ resource "postgresql_database" "prowlarr-log" {
   connection_limit  = -1
   allow_connections = true
 }
+
+resource "postgresql_database" "litellm" {
+  name              = postgresql_role.litellm.name
+  owner             = postgresql_role.litellm.name
+  connection_limit  = -1
+  allow_connections = true
+}

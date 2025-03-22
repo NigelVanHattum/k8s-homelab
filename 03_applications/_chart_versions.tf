@@ -35,3 +35,9 @@ variable "ollama_chart_version" {
   type = string
   default = "1.9.0"
 }
+
+# https://github.com/BerriAI/litellm/pkgs/container/litellm-helm
+variable "litellm_chart_version" {
+  type = string
+  default = "0.1.640"
+}

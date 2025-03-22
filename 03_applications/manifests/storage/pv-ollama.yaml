@@ -16,4 +16,4 @@ spec:
     - nfsvers=4.1
   nfs:
     server: ${ip_address}
-    path: ${k8s_rootmount}/applications/mealie
+    path: ${k8s_rootmount}/applications/ollama

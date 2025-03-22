@@ -45,6 +45,11 @@ data "onepassword_item" "database_prowlarr" {
   title  = "postgresql-Prowlarr"
 }
 
+data "onepassword_item" "database_litellm" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "postgresql-LiteLLM"
+}
+
 ### ArgoCD
 data "onepassword_item" "argo_admin" {
   vault = data.onepassword_vault.homelab_vault.uuid
@@ -175,5 +180,34 @@ resource "kubernetes_secret" "mealie_oidc" {
     config_url   = data.authentik_provider_oauth2_config.mealie.provider_info_url
     client_id    = authentik_provider_oauth2.mealie.client_id
     client_secret    = authentik_provider_oauth2.mealie.client_secret
+  }
+}
+
+### Lite LLM
+data "onepassword_item" "litellm_masterkey" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "Lite-LLM master key"
+}
+
+resource "kubernetes_secret" "litellm_masterkey" {
+  metadata {
+    name = local.litellm.masterKey_secret_name
+    namespace = kubernetes_namespace.litellm.metadata.0.name
+  }
+
+  data = {
+    (local.litellm.masterKey_key_name) = data.onepassword_item.litellm_masterkey.password
+  }
+}
+
+resource "kubernetes_secret" "litellm_db_credentials" {
+  metadata {
+    name = local.litellm.db_secret_name
+    namespace = kubernetes_namespace.litellm.metadata.0.name
+  }
+
+  data = {
+    (local.litellm.db_user_key) = data.onepassword_item.database_litellm.username
+    (local.litellm.db_password_key) = data.onepassword_item.database_litellm.password
   }
 }

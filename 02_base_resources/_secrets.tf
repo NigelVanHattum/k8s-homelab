@@ -126,6 +126,11 @@ data "onepassword_item" "database_prowlarr" {
   title  = local.onepassword.postgresql.prowlarr
 }
 
+data "onepassword_item" "database_litellm" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.litellm
+}
+
 ### InfluxDB
 data "onepassword_item" "influxdb_admin_user" {
   vault = data.onepassword_vault.homelab_vault.uuid

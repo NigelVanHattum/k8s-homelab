@@ -1,0 +1,77 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  defaultStorageClass: nfs-csi-redis
+
+ingress:
+# Ingress is in the manifest folder.
+  enabled: false
+
+# masterkey: changeit
+
+# if set, use this secret for the master key; otherwise, autogenerate a new one
+masterkeySecretName: ${masterkey_secret}
+# if set, use this secret key for the master key; otherwise, use the default key
+masterkeySecretKey: ${masterkey_secret_key}
+
+# The elements within proxy_config are rendered as config.yaml for the proxy
+#  Examples: https://github.com/BerriAI/litellm/tree/main/litellm/proxy/example_config_yaml
+#  Reference: https://docs.litellm.ai/docs/proxy/configs
+proxy_config:
+  model_list: []
+    # - model_name: fake-openai-endpoint
+    #   litellm_params:
+    #     model: openai/fake
+    #     api_key: fake-key
+    #     api_base: https://exampleopenaiendpoint-production.up.railway.app/
+  general_settings:
+    master_key: os.environ/PROXY_MASTER_KEY
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+db:
+  # Use an existing postgres server/cluster
+  useExisting: true
+
+  # How to connect to the existing postgres server/cluster
+  endpoint: ${database_endpoint}
+  database: ${database}
+  secret:
+    name: ${database_secret}
+    usernameKey: ${database_user_key}
+    passwordKey: ${database_password_key}
+
+
+  # Use the Postgres Helm chart to create a single node, stand alone postgres
+  #  instance.  See the "postgresql" top level key for additional configuration.
+  deployStandalone: false
+
+# requires cache: true in config file
+# either enable this or pass a secret for REDIS_HOST, REDIS_PORT, REDIS_PASSWORD or REDIS_URL
+# with cache: true to use existing redis instance
+redis:
+  enabled: true
+  architecture: standalone
+  master:
+    persistence:
+      storageClass: nfs-csi-redis
+
+# Prisma migration job settings
+migrationJob:
+  enabled: true # Enable or disable the schema migration Job
+  retries: 3 # Number of retries for the Job in case of failure
+  backoffLimit: 4 # Backoff limit for Job restarts
+  disableSchemaUpdate: false # Skip schema migrations for specific environments. When True, the job will exit with code 0.
+  annotations: {}
+  ttlSecondsAfterFinished: 120
+
+# Additional environment variables to be added to the deployment
+envVars: {
+    # USE_DDTRACE: "true"
+}

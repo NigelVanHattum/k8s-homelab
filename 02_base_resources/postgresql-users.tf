@@ -45,3 +45,11 @@ resource "postgresql_role" "prowlarr" {
 
   depends_on = [kubectl_manifest.postgres_ingress]
 }
+
+resource "postgresql_role" "litellm" {
+  name     = data.onepassword_item.database_litellm.username
+  login    = true
+  password = data.onepassword_item.database_litellm.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}

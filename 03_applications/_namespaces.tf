@@ -51,3 +51,12 @@ resource "kubernetes_namespace" "ollama" {
     name   = "ollama"
   }
 }
+
+resource "kubernetes_namespace" "litellm" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "lite-llm"
+  }
+}
