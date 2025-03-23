@@ -5,6 +5,7 @@ locals {
     db_secret_name = "postgres-credentials"
     db_user_key = "username"
     db_password_key = "password"
+    lite_llm_api_keys = "lite-llm-api-key"
   }
 }
 
@@ -46,6 +47,7 @@ resource "argocd_application" "lite_llm" {
         {
           masterkey_secret    = local.litellm.masterKey_secret_name
           masterkey_secret_key = local.litellm.masterKey_key_name
+          lite_llm_api_keys_secret = local.litellm.lite_llm_api_keys
           database_endpoint    = data.onepassword_item.database_litellm.hostname
           database = data.onepassword_item.database_litellm.database
           database_secret    = local.litellm.db_secret_name

@@ -204,6 +204,11 @@ data "onepassword_item" "litellm_masterkey" {
   title    = "Lite-LLM master key"
 }
 
+data "onepassword_item" "litellm_claude_ai" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "Claude.ai"
+}
+
 resource "kubernetes_secret" "litellm_masterkey" {
   metadata {
     name = local.litellm.masterKey_secret_name
@@ -212,6 +217,17 @@ resource "kubernetes_secret" "litellm_masterkey" {
 
   data = {
     (local.litellm.masterKey_key_name) = data.onepassword_item.litellm_masterkey.password
+  }
+}
+
+resource "kubernetes_secret" "litellm_claude_ai" {
+  metadata {
+    name = local.litellm.lite_llm_api_keys
+    namespace = kubernetes_namespace.litellm.metadata.0.name
+  }
+
+  data = {
+    ANTHROPIC_API_KEY = data.onepassword_item.litellm_claude_ai.credential
   }
 }
 

@@ -15,16 +15,21 @@ masterkeySecretName: ${masterkey_secret}
 # if set, use this secret key for the master key; otherwise, use the default key
 masterkeySecretKey: ${masterkey_secret_key}
 
+environmentSecrets:
+  - ${lite_llm_api_keys_secret}
 # The elements within proxy_config are rendered as config.yaml for the proxy
 #  Examples: https://github.com/BerriAI/litellm/tree/main/litellm/proxy/example_config_yaml
 #  Reference: https://docs.litellm.ai/docs/proxy/configs
 proxy_config:
-  model_list: []
-    # - model_name: fake-openai-endpoint
-    #   litellm_params:
-    #     model: openai/fake
-    #     api_key: fake-key
-    #     api_base: https://exampleopenaiendpoint-production.up.railway.app/
+  model_list:
+    - model_name: claude-3.7
+      litellm_params: 
+        model: claude-3-7-sonnet-latest
+        api_key: "os.environ/ANTHROPIC_API_KEY"
+    - model_name: claude-3.5
+      litellm_params: 
+        model: claude-3-5-haiku-latest
+        api_key: "os.environ/ANTHROPIC_API_KEY" 
   general_settings:
     master_key: os.environ/PROXY_MASTER_KEY
 
