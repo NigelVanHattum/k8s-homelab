@@ -30,10 +30,10 @@ variable "mealie_chart_version" {
   default = "0.2.2"
 }
 
-# https://github.com/otwld/ollama-helm
-variable "ollama_chart_version" {
+# https://github.com/open-webui/helm-charts/releases
+variable "open_webui_chart_version" {
   type = string
-  default = "1.9.0"
+  default = "5.25.0"
 }
 
 # https://github.com/BerriAI/litellm/pkgs/container/litellm-helm

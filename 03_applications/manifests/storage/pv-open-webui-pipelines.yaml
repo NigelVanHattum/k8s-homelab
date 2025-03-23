@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ${pv_name}
+  labels:
+    type: configdata
+    application: open-webui-pipelines
+spec:
+  storageClassName: nfs-csi-applications
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    server: ${ip_address}
+    path: ${k8s_rootmount}/applications/openwebui/pipelines

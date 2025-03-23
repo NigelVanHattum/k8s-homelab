@@ -43,12 +43,12 @@ resource "kubernetes_namespace" "mealie" {
   }
 }
 
-resource "kubernetes_namespace" "ollama" {
+resource "kubernetes_namespace" "open_webui" {
   metadata {
     annotations = {
       "linkerd.io/inject" = "enabled"
     }
-    name   = "ollama"
+    name   = "open-webui"
   }
 }
 

@@ -35,6 +35,8 @@ locals {
             heimdall_config = "pv-heimdall-config"
             mealie = "pv-mealie"
             ollama = "pv-ollama"
+            open_webui = "pv-open-webui"
+            open_webui-pipelines = "pv-open-webui-pipelines"
         }
     }
     database = {

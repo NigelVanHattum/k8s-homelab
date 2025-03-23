@@ -183,6 +183,21 @@ resource "kubernetes_secret" "mealie_oidc" {
   }
 }
 
+### Open-WebUI
+resource "kubernetes_secret" "open_webui_oidc" {
+  metadata {
+    name = "open-webui-oidc"
+    namespace = kubernetes_namespace.open_webui.metadata.0.name
+  }
+
+  data = {
+    name         = "authentik"
+    config_url   = data.authentik_provider_oauth2_config.open_webui.provider_info_url
+    client_id    = authentik_provider_oauth2.open_webui.client_id
+    client_secret    = authentik_provider_oauth2.open_webui.client_secret
+  }
+}
+
 ### Lite LLM
 data "onepassword_item" "litellm_masterkey" {
   vault = data.onepassword_vault.homelab_vault.uuid

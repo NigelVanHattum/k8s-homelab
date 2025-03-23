@@ -28,7 +28,7 @@ resource "argocd_project" "argo_cd_apps_project" {
     destination {
       server = "*"
       name = "*"
-      namespace = "ollama"
+      namespace = kubernetes_namespace.open_webui.metadata.0.name
     }
 
     destination {

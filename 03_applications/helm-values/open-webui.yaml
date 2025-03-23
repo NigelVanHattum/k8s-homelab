@@ -1,0 +1,280 @@
+ollama:
+  # -- Automatically install Ollama Helm chart from https://otwld.github.io/ollama-helm/. Use [Helm Values](https://github.com/otwld/ollama-helm/#helm-values) to configure
+  enabled: true
+  # -- If enabling embedded Ollama, update fullnameOverride to your desired Ollama name value, or else it will use the default ollama.name value from the Ollama chart
+  fullnameOverride: "open-webui-ollama"
+  image:
+  # -- Docker pull policy
+  pullPolicy: Always
+  # -- Docker image tag, overrides the image tag whose default is the chart appVersion.
+  # tag: ""
+
+  # Ollama parameters
+  ollama:
+    
+    # -- List of models to pull at container startup
+    # The more you add, the longer the container will take to start if models are not present
+    # models:
+    #  - llama2
+    #  - mistral
+    models:
+      pull: 
+        - llama3.2:1b
+        - deepseek-r1:7b
+        # - llama3.1:8b #4,7GB
+        # - llama3.1:70b # 40GB
+        # - llama3.1:405b # 229GB
+        # - gemma:7b
+      run: []
+
+    # -- Add insecure flag for pulling at container startup
+    insecure: false
+
+    # -- Override ollama-data volume mount path, default: "/root/.ollama"
+    mountPath: ""
+
+  # Service account
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+  serviceAccount:
+    # -- Specifies whether a service account should be created
+    create: true
+
+    # -- Automatically mount a ServiceAccount's API credentials?
+    automount: true
+
+  # Configure the ingress resource that allows you to access the
+  ingress:
+    # -- Enable ingress controller resource
+    enabled: false
+
+    # -- Additional annotations for the Ingress resource.
+    annotations: {}
+      # kubernetes.io/ingress.class: traefik
+
+    # The list of hostnames to be covered with this ingress record.
+    # hosts:
+    #   - host: ollama.local.nigelvanhattum.nl
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+
+  # Configure resource requests and limits
+  # ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  resources:
+    # -- Pod requests
+    requests:
+      # Memory request
+      memory: 5Gi
+
+      # CPU request
+      cpu: 200m
+
+    # -- Pod limit
+    limits:
+      # Memory limit
+      memory: 6Gi
+
+      # CPU limit
+      cpu: 4000m
+
+  # Enable persistence using Persistent Volume Claims
+  # ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+  persistentVolume:
+    # -- Enable persistence using PVC
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    storageClass: "nfs-csi-applications"
+    volumeName: ${ollama_pv_name}
+
+tika:
+  # -- Automatically install Apache Tika to extend Open WebUI
+  enabled: false
+
+websocket:
+  # -- Enables websocket support in Open WebUI with env `ENABLE_WEBSOCKET_SUPPORT`
+  enabled: false
+  # -- Specifies the websocket manager to use with env `WEBSOCKET_MANAGER`: redis (default)
+  manager: redis
+  # -- Specifies the URL of the Redis instance for websocket communication. Template with `redis://[:<password>@]<hostname>:<port>/<db>`
+  url: redis://open-webui-redis:6379/0
+  # -- Deploys a redis
+  redis:
+    # -- Enable redis installation
+    enabled: true
+    # -- Redis name
+    name: open-webui-redis
+    # -- Redis labels
+    labels: {}
+    # -- Redis annotations
+    annotations: {}
+    # -- Redis pod
+    pods:
+      # -- Redis pod annotations
+      annotations: {}
+    # -- Redis image
+    image:
+      repository: redis
+      tag: 7.4.2-alpine3.21
+      pullPolicy: IfNotPresent
+    # -- Redis command (overrides default)
+    command: []
+    # -- Redis arguments (overrides default)
+    args: []
+    # -- Redis resources
+    resources: {}
+    # -- Redis service
+    service:
+      # -- Redis container/target port
+      containerPort: 6379
+      # -- Redis service type
+      type: ClusterIP
+      # -- Redis service labels
+      labels: {}
+      # -- Redis service annotations
+      annotations: {}
+      # -- Redis service port
+      port: 6379
+      # -- Redis service node port. Valid only when type is `NodePort`
+      nodePort: ""
+    # -- Redis tolerations for pod assignment
+    tolerations: []
+
+    # -- Redis affinity for pod assignment
+    affinity: {}
+
+    # -- Redis security context
+    securityContext:
+      {}
+      # runAsUser: 999
+      # runAsGroup: 1000
+
+replicaCount: 1
+
+pipelines:
+  # -- Automatically install Pipelines chart to extend Open WebUI functionality using Pipelines: https://github.com/open-webui/pipelines
+  enabled: true
+  persistence: 
+    enabled: false
+    selector: 
+      matchLabels:
+        application: open-webui-pipelines
+
+
+# -- Open WebUI image tags can be found here: https://github.com/open-webui/open-webui
+image:
+  # tag: ""
+  pullPolicy: "Always"
+
+# -- Probe for liveness of the Open WebUI container
+# ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
+livenessProbe: {}
+# livenessProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   failureThreshold: 1
+#   periodSeconds: 10
+
+# -- Probe for readiness of the Open WebUI container
+# ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
+readinessProbe: {}
+# readinessProbe:
+#   httpGet:
+#     path: /health/db
+#     port: http
+#   failureThreshold: 1
+#   periodSeconds: 10
+
+# -- Probe for startup of the Open WebUI container
+# ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
+startupProbe: {}
+# startupProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   initialDelaySeconds: 30
+#   periodSeconds: 5
+#   failureThreshold: 20
+
+ingress:
+  enabled: true
+  class: "traefik"
+  # -- Use appropriate annotations for your Ingress controller, e.g., for NGINX:  
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure, internet
+  host: "ai.nigelvanhattum.nl"
+  additionalHosts:
+    - "ai.local.nigelvanhattum.nl"
+persistence:
+  enabled: true
+  size: 2Gi
+  storageClass: ${storageClass}
+  selector: 
+    matchLabels:
+      application: open-webui-app
+
+# -- Service values to expose Open WebUI pods to cluster
+service:
+  type: ClusterIP
+  annotations: {}
+  port: 80
+  containerPort: 8080
+  nodePort: ""
+  labels: {}
+  loadBalancerClass: ""
+
+# -- Enables the use of OpenAI APIs
+enableOpenaiApi: true
+
+# -- OpenAI base API URL to use. Defaults to the Pipelines service endpoint when Pipelines are enabled, and "https://api.openai.com/v1" if Pipelines are not enabled and this value is blank
+openaiBaseApiUrl: "https://api.openai.com/v1"
+
+# -- OpenAI base API URLs to use. Overwrites the value in openaiBaseApiUrl if set
+openaiBaseApiUrls: []
+  # - "https://api.openai.com/v1"
+  # - "https://api.company.openai.com/v1"
+
+# -- Env vars added to the Open WebUI deployment. Most up-to-date environment variables can be found here: https://docs.openwebui.com/getting-started/env-configuration/
+extraEnvVars:
+  # -- Default API key value for Pipelines. Should be updated in a production deployment, or be changed to the required API key if not using Pipelines
+  - name: ENABLE_LOGIN_FORM
+    value: "False"
+  - name: DEFAULT_USER_ROLE
+    value: "user"
+  - name: JWT_EXPIRES_IN
+    value: "1w"
+  - name: K8S_FLAG
+    value: "True"
+  - name: ENABLE_OAUTH_SIGNUP
+    value: "True"
+  - name: OAUTH_PROVIDER_NAME
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_secret_name}
+        key: name
+  - name: OAUTH_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_secret_name}
+        key: client_id
+  - name: OAUTH_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_secret_name}
+        key: client_secret
+  - name: OPENID_PROVIDER_URL
+    valueFrom:
+      secretKeyRef:
+        name: ${oidc_secret_name}
+        key: config_url
+  - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
+    value: "false"
+  - name: OAUTH_SCOPES
+    value: "openid email profile"
+  - name: RESET_CONFIG_ON_START
+    value: "True"
+  - name: ENABLE_OAUTH_GROUP_MANAGEMENT
+    value: "True"
+  # - name: OLLAMA_DEBUG
+  #   value: "1"
