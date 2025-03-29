@@ -38,7 +38,7 @@ resource "authentik_policy_binding" "open_webui_admin" {
 
 resource "authentik_policy_binding" "open_webui_household" {
   target = authentik_application.open_webui.uuid
-  group  = data.authentik_group.houshold.id
+  group  = data.authentik_group.household.id
   order  = 1
 }
 

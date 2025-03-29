@@ -68,6 +68,8 @@ mealie:
     value: "true"
   - name: OIDC_ADMIN_GROUP
     value: ${authentik_admin_group}
+  - name: OIDC_SIGNING_ALGORITHM
+    value: "HS256"
   - name: OIDC_CONFIGURATION_URL
     valueFrom:
       secretKeyRef:

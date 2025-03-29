@@ -18,7 +18,7 @@ data "authentik_group" "admin" {
   name = local.authentik.group_admin
 }
 
-data "authentik_group" "houshold" {
+data "authentik_group" "household" {
   name = local.authentik.group_household
 }
 

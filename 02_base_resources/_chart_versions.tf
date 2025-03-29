@@ -67,5 +67,5 @@ variable "influxdb_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2025.2.1"
+  default = "2025.2.3"
 }
