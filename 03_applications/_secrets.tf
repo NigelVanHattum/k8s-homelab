@@ -177,9 +177,9 @@ resource "kubernetes_secret" "mealie_oidc" {
   }
 
   data = {
-    config_url   = data.authentik_provider_oauth2_config.mealie.provider_info_url
-    client_id    = authentik_provider_oauth2.mealie.client_id
-    client_secret    = authentik_provider_oauth2.mealie.client_secret
+    config_url   = module.mealie.oauth_well_known_url
+    client_id    = module.mealie.oauth_client_id
+    client_secret    = module.mealie.oauth_client_secret
   }
 }
 
@@ -192,9 +192,9 @@ resource "kubernetes_secret" "open_webui_oidc" {
 
   data = {
     name         = "authentik"
-    config_url   = data.authentik_provider_oauth2_config.open_webui.provider_info_url
-    client_id    = authentik_provider_oauth2.open_webui.client_id
-    client_secret    = authentik_provider_oauth2.open_webui.client_secret
+    config_url   = module.open_webui.oauth_well_known_url
+    client_id    = module.open_webui.oauth_client_id
+    client_secret    = module.open_webui.oauth_client_secret
   }
 }
 

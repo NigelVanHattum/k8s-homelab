@@ -1,47 +1,28 @@
 ### Authentik config
-resource "random_uuid" "authentik_open_webui_oauth_client_id" {
-}
+module "open_webui" {
+  source = "../modules/authentik-oauth-app"
 
-resource "authentik_provider_oauth2" "open_webui" {
-  name                        = "open-webui"
-  client_id                   = random_uuid.authentik_open_webui_oauth_client_id.result
-  authorization_flow          = data.authentik_flow.default_authorization_flow.id
-  allowed_redirect_uris       = [
+  app_name              = "open-webui"
+  authorization_flow_id = data.authentik_flow.default_authorization_flow.id
+  invalidation_flow_id  = data.authentik_flow.default_provider_invalidation_flow.id
+  property_mappings     = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
+  
+  redirect_uris = [
+    "https://ai.nigelvanhattum.nl/oauth/oidc/callback*",
+    "https://ai.local.nigelvanhattum.nl/oauth/oidc/callback*"
+  ]
+  
+  group_bindings = [
     {
-      matching_mode = "regex",
-      url           = "https://ai.nigelvanhattum.nl/oauth/oidc/callback*",
+      group_id = data.authentik_group.admin.id
+      order    = 0
     },
     {
-      matching_mode = "regex",
-      url           = "https://ai.local.nigelvanhattum.nl/oauth/oidc/callback*",
+      group_id = data.authentik_group.household.id
+      order    = 1
     }
   ]
-  invalidation_flow           = data.authentik_flow.default_provider_invalidation_flow.id
-  property_mappings           = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
 }
-
-data "authentik_provider_oauth2_config" "open_webui" {
-  provider_id = authentik_provider_oauth2.open_webui.id
-}
-
-resource "authentik_application" "open_webui" {
-  name              = "open-webui"
-  slug              = "openwebui"
-  protocol_provider = authentik_provider_oauth2.open_webui.id
-}
-
-resource "authentik_policy_binding" "open_webui_admin" {
-  target = authentik_application.open_webui.uuid
-  group  = data.authentik_group.admin.id
-  order  = 0
-}
-
-resource "authentik_policy_binding" "open_webui_household" {
-  target = authentik_application.open_webui.uuid
-  group  = data.authentik_group.household.id
-  order  = 1
-}
-
 ### Open-WebUI deployment
 
 resource "argocd_repository" "open_webui" {

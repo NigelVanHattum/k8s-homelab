@@ -1,44 +1,26 @@
-resource "random_uuid" "authentik_mealie_oauth_client_id" {
-}
+module "mealie" {
+  source = "../modules/authentik-oauth-app"
 
-resource "authentik_provider_oauth2" "mealie" {
-  name                        = "mealie"
-  client_id                   = random_uuid.authentik_mealie_oauth_client_id.result
-  authorization_flow          = data.authentik_flow.default_authorization_flow.id
-  allowed_redirect_uris       = [
+  app_name              = "mealie"
+  authorization_flow_id = data.authentik_flow.default_authorization_flow.id
+  invalidation_flow_id  = data.authentik_flow.default_provider_invalidation_flow.id
+  property_mappings     = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
+  
+  redirect_uris = [
+    "https://mealie.nigelvanhattum.nl/login*",
+    "https://mealie.local.nigelvanhattum.nl/login*"
+  ]
+  
+  group_bindings = [
     {
-      matching_mode = "regex",
-      url           = "https://mealie.nigelvanhattum.nl/login*",
+      group_id = data.authentik_group.admin.id
+      order    = 0
     },
     {
-      matching_mode = "regex",
-      url           = "https://mealie.local.nigelvanhattum.nl/login*",
+      group_id = data.authentik_group.household.id
+      order    = 1
     }
   ]
-  invalidation_flow           = data.authentik_flow.default_provider_invalidation_flow.id
-  property_mappings           = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
-}
-
-data "authentik_provider_oauth2_config" "mealie" {
-  provider_id = authentik_provider_oauth2.mealie.id
-}
-
-resource "authentik_application" "mealie" {
-  name              = "mealie"
-  slug              = "mealie"
-  protocol_provider = authentik_provider_oauth2.mealie.id
-}
-
-resource "authentik_policy_binding" "mealie_admin" {
-  target = authentik_application.mealie.uuid
-  group  = data.authentik_group.admin.id
-  order  = 0
-}
-
-resource "authentik_policy_binding" "mealie_household" {
-  target = authentik_application.mealie.uuid
-  group  = data.authentik_group.houshold.id
-  order  = 1
 }
 
 resource "kubectl_manifest" "pv_mealie" {
