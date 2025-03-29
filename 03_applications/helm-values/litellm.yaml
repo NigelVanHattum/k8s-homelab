@@ -5,8 +5,15 @@ global:
   defaultStorageClass: nfs-csi-redis
 
 ingress:
-# Ingress is in the manifest folder.
-  enabled: false
+  enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  hosts:
+    - host: litellm.local.nigelvanhattum.nl
+      paths:
+        - path: /
+          pathType: Prefix
 
 # masterkey: changeit
 
