@@ -21,5 +21,5 @@ terraform {
 }
 
 locals {
-   talos_version = "v1.9.3"
+   talos_version = "v1.9.5"
 }
