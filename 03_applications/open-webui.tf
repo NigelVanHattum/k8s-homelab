@@ -23,6 +23,19 @@ module "open_webui" {
     }
   ]
 }
+
+resource "litellm_key" "api_key" {
+  # models               = [ "All Team Models" ]
+  max_budget           = 20.0
+  budget_duration      = "30d"
+  allowed_cache_controls = ["no-cache", "max-age=3600"]
+  soft_budget          = 10.0
+  key_alias            = "open-webui"
+  aliases              = {
+    "gpt-3.5-turbo" = "chatgpt"
+  }
+}
+
 ### Open-WebUI deployment
 
 resource "argocd_repository" "open_webui" {
@@ -76,6 +89,7 @@ resource "argocd_application" "open_webui" {
             storageClass = "nfs-csi-applications"
             ollama_pv_name = local.file_share.pv_names.ollama
             oidc_secret_name = kubernetes_secret.open_webui_oidc.metadata.0.name
+            litellm_secret_name = kubernetes_secret.open_webui_litellm.metadata.0.name
         })
       }
     }

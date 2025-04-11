@@ -198,6 +198,17 @@ resource "kubernetes_secret" "open_webui_oidc" {
   }
 }
 
+resource "kubernetes_secret" "open_webui_litellm" {
+  metadata {
+    name = "open-webui-litellm"
+    namespace = kubernetes_namespace.open_webui.metadata.0.name
+  }
+
+  data = {
+    api_key   = "${litellm_key.api_key.key}"
+  }
+}
+
 ### Lite LLM
 data "onepassword_item" "litellm_masterkey" {
   vault = data.onepassword_vault.homelab_vault.uuid

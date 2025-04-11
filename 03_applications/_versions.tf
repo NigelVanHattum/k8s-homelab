@@ -25,6 +25,10 @@ terraform {
       source = "goauthentik/authentik"
       version = ">= 2025.0.0, < 2026.0.0"
     }
+    litellm = {
+      source = "ncecere/litellm"
+      version = ">= 0.2.6, < 1.0.0"
+    }
   }
 }
 

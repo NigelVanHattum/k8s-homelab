@@ -11,12 +11,6 @@ ollama:
 
   # Ollama parameters
   ollama:
-    
-    # -- List of models to pull at container startup
-    # The more you add, the longer the container will take to start if models are not present
-    # models:
-    #  - llama2
-    #  - mistral
     models:
       pull: 
         - llama3.2:1b
@@ -153,7 +147,7 @@ replicaCount: 1
 
 pipelines:
   # -- Automatically install Pipelines chart to extend Open WebUI functionality using Pipelines: https://github.com/open-webui/pipelines
-  enabled: true
+  enabled: false
   persistence: 
     enabled: false
     selector: 
@@ -168,34 +162,32 @@ image:
 
 # -- Probe for liveness of the Open WebUI container
 # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
-livenessProbe: {}
-# livenessProbe:
-#   httpGet:
-#     path: /health
-#     port: http
-#   failureThreshold: 1
-#   periodSeconds: 10
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  failureThreshold: 5
+  periodSeconds: 10
 
 # -- Probe for readiness of the Open WebUI container
 # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
-readinessProbe: {}
-# readinessProbe:
-#   httpGet:
-#     path: /health/db
-#     port: http
-#   failureThreshold: 1
-#   periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /health/db
+    port: http
+  failureThreshold: 5
+  periodSeconds: 10
 
 # -- Probe for startup of the Open WebUI container
 # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes>
-startupProbe: {}
-# startupProbe:
-#   httpGet:
-#     path: /health
-#     port: http
-#   initialDelaySeconds: 30
-#   periodSeconds: 5
-#   failureThreshold: 20
+startupProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  failureThreshold: 20
 
 ingress:
   enabled: true
@@ -228,7 +220,7 @@ service:
 enableOpenaiApi: true
 
 # -- OpenAI base API URL to use. Defaults to the Pipelines service endpoint when Pipelines are enabled, and "https://api.openai.com/v1" if Pipelines are not enabled and this value is blank
-openaiBaseApiUrl: "https://api.openai.com/v1"
+openaiBaseApiUrl: "http://lite-llm-litellm.lite-llm.svc.cluster.local:4000"
 
 # -- OpenAI base API URLs to use. Overwrites the value in openaiBaseApiUrl if set
 openaiBaseApiUrls: []
@@ -237,6 +229,8 @@ openaiBaseApiUrls: []
 
 # -- Env vars added to the Open WebUI deployment. Most up-to-date environment variables can be found here: https://docs.openwebui.com/getting-started/env-configuration/
 extraEnvVars:
+  - name: RESET_CONFIG_ON_START
+    value: "True"
   # -- Default API key value for Pipelines. Should be updated in a production deployment, or be changed to the required API key if not using Pipelines
   - name: ENABLE_LOGIN_FORM
     value: "False"
@@ -272,9 +266,12 @@ extraEnvVars:
     value: "false"
   - name: OAUTH_SCOPES
     value: "openid email profile"
-  - name: RESET_CONFIG_ON_START
-    value: "True"
   - name: ENABLE_OAUTH_GROUP_MANAGEMENT
     value: "True"
+  - name: OPENAI_API_KEYS
+    valueFrom:
+      secretKeyRef:
+        name: ${litellm_secret_name}
+        key: api_key
   # - name: OLLAMA_DEBUG
   #   value: "1"

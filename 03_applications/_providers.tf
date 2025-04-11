@@ -45,3 +45,8 @@ provider "authentik" {
   url   = "https://authentik.nigelvanhattum.nl"
   token = data.onepassword_item.authentik_admin_token.password
 }
+
+provider "litellm" {
+  api_base  = "https://litellm.local.nigelvanhattum.nl"
+  api_key   = data.onepassword_item.litellm_masterkey.password
+}
