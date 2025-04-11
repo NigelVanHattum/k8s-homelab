@@ -28,8 +28,19 @@ output "kubeconfig" {
   sensitive = true
 }
 
+output "instructions" {
+  value = "Kubeconfig has been stored in ${var.kube_config_path}/${var.cluster_name}, you need to manually move it to your desired location"
+  sensitive = false
+}
+
 resource "local_sensitive_file" "talosconfig" {
   content         = data.talos_client_configuration.this.talos_config
   filename        = pathexpand("${var.talos_config_path}/${var.cluster_name}.yaml")
+  file_permission = "0644"
+}
+
+resource "local_sensitive_file" "kubeconfig" {
+  content         = talos_cluster_kubeconfig.this.kubeconfig_raw
+  filename        = pathexpand("${var.kube_config_path}/${var.cluster_name}")
   file_permission = "0644"
 }

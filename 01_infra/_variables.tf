@@ -21,6 +21,12 @@ variable "talos_config_path" {
   default     = "~/.talos"
 }
 
+variable "kube_config_path" {
+  description = "The path to output the kubeconfig file."
+  type        = string
+  default     = "~/.kube"
+}
+
 variable "all_vms" {
   type = map(object({
     mac_address  = string
