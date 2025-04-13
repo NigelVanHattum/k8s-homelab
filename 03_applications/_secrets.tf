@@ -220,6 +220,11 @@ data "onepassword_item" "litellm_claude_ai" {
   title    = "Claude.ai"
 }
 
+data "onepassword_item" "litellm_xai_ai" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "XAI - API key"
+}
+
 resource "kubernetes_secret" "litellm_masterkey" {
   metadata {
     name = local.litellm.masterKey_secret_name
@@ -239,6 +244,7 @@ resource "kubernetes_secret" "litellm_claude_ai" {
 
   data = {
     ANTHROPIC_API_KEY = data.onepassword_item.litellm_claude_ai.credential
+    XAI_API_KEY       = data.onepassword_item.litellm_xai_ai.credential
   }
 }
 
