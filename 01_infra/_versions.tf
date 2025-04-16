@@ -21,5 +21,6 @@ terraform {
 }
 
 locals {
+  # https://github.com/siderolabs/talos/releases
    talos_version = "v1.9.5"
 }

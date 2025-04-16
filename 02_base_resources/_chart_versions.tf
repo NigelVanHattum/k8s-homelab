@@ -9,20 +9,20 @@
 variable "argocd_chart_version" {
   type    = string
   description = "argocd chart version"
-  default = "7.8.11"
+  default = "7.8.26"
 }
 
 # https://github.com/grafana/k8s-monitoring-helm
 variable "k8s_monitoring_chart_version" {
   type    = string
   description = "grafana monitoring"
-  default = "2.0.18"
+  default = "2.0.24"
 }
 
 # https://github.com/kubernetes-csi/csi-driver-nfs
 variable "nfs_csi_driver_chart_version" {
   type    = string
-  default = "v4.10.0"
+  default = "v4.11.0"
 }
 
 # https://github.com/metallb/metallb/tree/main/charts/metallb/charts/crds
@@ -36,13 +36,13 @@ variable "metallb_chart_version" {
 variable "traefik_crd_chart_version" {
   type = string
   description = "Traefik CRD chart version (not traefik version)"
-  default = "1.5.0"
+  default = "1.6.0"
 }
 
 variable "traefik_chart_version" {
   type = string
   description = "Traefik chart version (not traefik version)"
-  default = "34.4.1"
+  default = "35.0.0"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
@@ -54,7 +54,7 @@ variable "cnpg_postgres_operator_chart_version" {
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cluster
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.2.1"
+  default = "0.3.0"
 }
 
 variable "influxdb_chart_version" {
@@ -67,5 +67,5 @@ variable "influxdb_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2025.2.3"
+  default = "2025.2.4"
 }
