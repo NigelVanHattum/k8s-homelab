@@ -96,6 +96,17 @@ resource "authentik_source_oauth" "azure_ad" {
   consumer_key          = data.onepassword_item.authentik_azure_credentials.note_value
   consumer_secret       = data.onepassword_item.authentik_azure_credentials.password
   oidc_well_known_url   = "https://login.microsoftonline.com/${data.onepassword_item.azure_tenant_id.password}/v2.0/.well-known/openid-configuration"
+
+  lifecycle {
+    ignore_changes = [
+      #  These are all managed by oidc_well_known_url
+      access_token_url,
+      additional_scopes,
+      authorization_url,
+      oidc_jwks_url,
+      profile_url
+    ]
+  }
 }
 
 resource "authentik_group" "admin" {
