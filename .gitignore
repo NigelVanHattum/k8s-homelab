@@ -58,4 +58,4 @@ Thumbs.db
 **/.helm
 
 
-*.upgrade-node.lock
+*.lock
