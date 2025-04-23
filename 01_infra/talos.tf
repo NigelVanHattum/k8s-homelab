@@ -64,10 +64,10 @@ resource "null_resource" "talos_upgrade_trigger" {
 
   # Should only upgrade if there's a schematic mismatch
   provisioner "local-exec" {
-    command = "flock $LOCK_FILE --command ${path.module}/upgrade-node.sh"
+    command = "flock $LOCK_FILE --command ${path.module}/upgrade-talos.sh"
 
     environment = {
-      LOCK_FILE = "${path.module}/.upgrade-node.lock"
+      LOCK_FILE = "${path.module}/.upgrade-talos.lock"
 
       DESIRED_TALOS_TAG       = self.triggers.desired_talos_tag
       DESIRED_TALOS_SCHEMATIC = self.triggers.desired_schematic_id
@@ -78,6 +78,32 @@ resource "null_resource" "talos_upgrade_trigger" {
     }
   }
   depends_on = [null_resource.talos_cluster_health]
+}
+
+####################################################
+#### K8s upgrade via Terraform
+####################################################
+resource "null_resource" "k8s_upgrade_trigger" {
+  triggers = {
+    desired_k8s_version   = local.k8s_version
+  }
+
+  # Should only upgrade if there's a schematic mismatch
+  provisioner "local-exec" {
+    command = "flock $LOCK_FILE --command ${path.module}/upgrade-k8s.sh"
+
+    environment = {
+      LOCK_FILE = "${path.module}/.upgrade-k8s.lock"
+
+      DESIRED_K8S_VERSION   = self.triggers.desired_k8s_version
+      KUBECONFIG            = pathexpand("${var.kube_config_path}/${var.cluster_name}")
+      CONTROL_NODE          = local.bootstrap_ip
+      TALOS_CONFIG_PATH     = local_sensitive_file.talosconfig.filename
+    }
+  }
+  depends_on = [
+    null_resource.talos_upgrade_trigger,
+    local_sensitive_file.kubeconfig]
 }
 
 ####################################################

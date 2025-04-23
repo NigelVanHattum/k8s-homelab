@@ -23,4 +23,6 @@ terraform {
 locals {
   # https://github.com/siderolabs/talos/releases
    talos_version = "v1.9.5"
+  # https://github.com/kubernetes/kubernetes/releases
+   k8s_version = "1.32.4"
 }
