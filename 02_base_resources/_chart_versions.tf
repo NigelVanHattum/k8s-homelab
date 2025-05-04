@@ -36,13 +36,13 @@ variable "metallb_chart_version" {
 variable "traefik_crd_chart_version" {
   type = string
   description = "Traefik CRD chart version (not traefik version)"
-  default = "1.6.0"
+  default = "1.7.0"
 }
 
 variable "traefik_chart_version" {
   type = string
   description = "Traefik chart version (not traefik version)"
-  default = "35.0.1"
+  default = "35.2.0"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
@@ -54,7 +54,7 @@ variable "cnpg_postgres_operator_chart_version" {
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cluster
 variable "cnpg_postgres_cluster_chart_version" {
   type    = string
-  default = "0.3.0"
+  default = "0.3.1"
 }
 
 variable "influxdb_chart_version" {
@@ -67,5 +67,5 @@ variable "influxdb_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2025.2.4"
+  default = "2025.4.0"
 }
