@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: cluster-restore
 spec:
-  imageName: "ghcr.io/cloudnative-pg/postgresql:15.2"
+  imageName: "ghcr.io/cloudnative-pg/postgresql:15"
   logLevel: debug
   superuserSecret:
     name: ${superuser_secret}
@@ -11,6 +11,13 @@ spec:
   bootstrap:
     recovery:
       source: clusterBackup
+      recoveryTarget:
+        # Time base target for the recovery (Just change the date, it will use the WAL archives)
+        targetTime: "2025-04-14T06:00:03+00:00"
+
+  replica: 
+    enabled: true
+    source: clusterBackup
 
   externalClusters:
     - name: clusterBackup
@@ -25,8 +32,6 @@ spec:
           secretAccessKey:
             name: ${synology_c2_secret}
             key: secret_key
-        wal:
-          maxParallel: 8
   storage:
     size: 10Gi
     storageClass: "nfs-csi-postgresql"

@@ -63,6 +63,18 @@ ports:
           sniStrict: true
     forwardedHeaders:
       insecure: true
+  postgresql-recovery:
+    port: 5433
+    expose:
+      default: true
+    exposedPort: 5433
+    tls:
+      enabled: false
+      options:
+        default:
+          sniStrict: true
+    forwardedHeaders:
+      insecure: true
   tdarr-server:
     port: 8266
     expose:
