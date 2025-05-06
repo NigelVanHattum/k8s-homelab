@@ -96,7 +96,7 @@ resource "argocd_application" "postgres_cluster" {
   }
 
   provisioner "local-exec" {
-    command     = "./wait_for_pods.sh postgresql-cluster-3 ${kubernetes_namespace.postgresql.metadata.0.name}"
+    command     = "./wait_for_pods.sh postgresql-cluster-postgresql-main-3 ${kubernetes_namespace.postgresql.metadata.0.name}"
     interpreter = ["/bin/sh", "-c"]
   }
 
@@ -115,9 +115,6 @@ resource "kubectl_manifest" "postgres_ingress" {
   # wait {
   #   rollout = true
   # }
-
-  depends_on = [argocd_application.postgres_cluster, 
-                argocd_application.traefik]
 }
 
 

@@ -1,7 +1,8 @@
 ### https://github.com/cloudnative-pg/charts/blob/main/charts/cluster/values.yaml
 type: postgresql
 version:
-  postgresql: "15"
+  postgresql: "17"
+nameOverride: "postgresql-main"
 mode: standalone
 
 cluster:

@@ -3,7 +3,7 @@ authentik:
         enabled: true
     secret_key: ${authentik_secret_key}
     postgresql:
-        host: postgresql-cluster-rw.postgresql.svc.cluster.local
+        host: postgresql-cluster-postgresql-main-rw.postgresql.svc.cluster.local
         password: ${authentik_postgresql_password}
     log_level: info
 

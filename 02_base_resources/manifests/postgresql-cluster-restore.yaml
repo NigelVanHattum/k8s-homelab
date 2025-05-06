@@ -13,7 +13,7 @@ spec:
       source: clusterBackup
       recoveryTarget:
         # Time base target for the recovery (Just change the date, it will use the WAL archives)
-        targetTime: "2025-04-14T06:00:03+00:00"
+        targetTime: "2025-05-05T06:00:03+00:00"
 
   replica: 
     enabled: true

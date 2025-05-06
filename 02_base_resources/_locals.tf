@@ -11,7 +11,7 @@ locals {
             cloudflare_api_token = "Cloudflare DNS token"
         }
         postgresql = {
-            synology_c2 = "Synology C2"
+            synology_c2 = "Synology C2 - postgresql 17"
             postgres_user = "postgresql-postgres"
             authentik_user = "postgresql-Authentik"
             firefly_user = "postgresql-Firefly"
@@ -44,7 +44,7 @@ locals {
     }
     database = {
         backup_c2_bucket = "postgresql-backup"
-        read_write_service_name = "postgresql-cluster-rw"
+        read_write_service_name = "postgresql-cluster-postgresql-main-rw"
     }
     authentik = {
         group_admin     = "Admin"
