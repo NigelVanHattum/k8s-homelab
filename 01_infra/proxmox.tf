@@ -18,6 +18,11 @@ resource "proxmox_vm_qemu" "talos_machines" {
   memory = each.value.memory
   skip_ipv6 = true
 
+  # cpu {
+  #   type = "host"
+  #   cores = each.value.cpu_cores
+  # }
+
   disks {
     ide {
       ide2 {
