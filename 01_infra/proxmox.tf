@@ -13,15 +13,13 @@ resource "proxmox_vm_qemu" "talos_machines" {
   vm_state = "running"
   qemu_os = "other"
   scsihw = "virtio-scsi-pci"
-  cpu_type = "host"
-  cores = each.value.cpu_cores
   memory = each.value.memory
   skip_ipv6 = true
 
-  # cpu {
-  #   type = "host"
-  #   cores = each.value.cpu_cores
-  # }
+  cpu {
+    type = "host"
+    cores = each.value.cpu_cores
+  }
 
   disks {
     ide {
