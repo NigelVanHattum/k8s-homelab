@@ -18,6 +18,19 @@ resource "authentik_application" "authentik_firefly_application" {
   protocol_provider = authentik_provider_proxy.authentik_firefly_provider.id
 }
 
+resource "kubernetes_config_map" "firefly_import_config" {
+  metadata {
+    name      = "import-config"
+    namespace = kubernetes_namespace.firefly.metadata.0.name 
+  }
+
+  data = {
+    "ING.json" = file("${path.module}/config-files/ING importer.json")
+    "Paypal-CC.json" = file("${path.module}/config-files/Paypal-CC importer.json")
+    "Rabobank.json"  = file("${path.module}/config-files/Rabobank importer.json")
+  }
+}
+
 resource "argocd_application" "firefly" {
   metadata {
     name = kubernetes_namespace.firefly.metadata.0.name
@@ -35,6 +48,8 @@ resource "argocd_application" "firefly" {
         {
           firefly_version    = local.firefly_version
           firefly_secret_env = kubernetes_secret.firefly_environment.metadata.0.name
+          importer_configmap = kubernetes_config_map.firefly_import_config.metadata.0.name
+          # ING_import_content = "${file("${path.module}/config-files/ING importer.json")}"
         })
       }
     }

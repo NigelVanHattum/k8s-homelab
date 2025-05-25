@@ -109,6 +109,22 @@ importer:
   # -- Set to false to not deploy the importer
   enabled: true
 
+  additionalVolumes:
+    - name: "config"
+      configMap:
+        name: "${importer_configmap}"
+
+  additionalVolumeMounts:
+    - name: "config"
+      mountPath: /var/www/html/storage/configurations/ING.json
+      subPath: "ING.json"
+    - name: "config"
+      mountPath: /var/www/html/storage/configurations/Rabobank.json
+      subPath: "Rabobank.json"
+    - name: "config"
+      mountPath: /var/www/html/storage/configurations/Paypal-CC.json
+      subPath: "Paypal-CC.json"
+
   image:
     repository: fireflyiii/data-importer
     pullPolicy: Always
@@ -132,34 +148,9 @@ importer:
   #     accessToken: ""
 
   # # -- Environment variables for the importer. See docs at: https://github.com/firefly-iii/data-importer/blob/main/.env.example
-  # config:
-  #   # -- Set this to the name of a secret to load environment variables from. If defined, values in the secret will override values in config.env
-  #   existingSecret: ""
+  config:
+    files: {}
 
-  #   # -- Set environment variables from configMaps or Secrets
-  #   envValueFrom: {}
-
-  #   # -- Directly defined environment variables. Use this for non-secret configuration values.
-  #   env:
-  #     IGNORE_DUPLICATE_ERRORS: "false"
-  #     TZ: "Europe/Amsterdam"
-
-  # imagePullSecrets: []
-  # nameOverride: ""
-  # fullnameOverride: ""
-
-  # podAnnotations: {}
-
-  # podSecurityContext: {}
-  #   # fsGroup: 2000
-
-  # securityContext: {}
-  #   # capabilities:
-  #   #   drop:
-  #   #   - ALL
-  #   # readOnlyRootFilesystem: true
-  #   # runAsNonRoot: true
-  #   # runAsUser: 1000
 
   service:
     type: ClusterIP
