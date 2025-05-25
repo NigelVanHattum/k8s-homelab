@@ -48,7 +48,7 @@ variable "traefik_chart_version" {
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
 variable "cnpg_postgres_operator_chart_version" {
   type    = string
-  default = "0.23.2"
+  default = "0.24.0"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cluster

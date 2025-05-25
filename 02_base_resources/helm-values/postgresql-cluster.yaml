@@ -18,7 +18,7 @@ cluster:
   imagePullPolicy: IfNotPresent
 
   storage:
-    size: 10Gi
+    size: 30Gi
     storageClass: "nfs-csi-postgresql"
 
   # -- The instances' log level, one of the following values: error, warning, info (default), debug, trace
@@ -58,7 +58,7 @@ backups:
       # -- Scheduled backup name
       name: daily-backup
       # -- Schedule in cron format
-      schedule: "0 0 4 * * *"
+      schedule: "0 15 4 * * *"
       # -- Backup owner reference
       backupOwnerReference: self
       method: barmanObjectStore

@@ -6,5 +6,5 @@ provisioning:
     # The disk selector expression.
     diskSelector:
         match: disk.transport == "virtio" # The Common Expression Language (CEL) expression to match the disk.
-    maxSize: 25GiB # The maximum size of the volume, if not specified the volume can grow to the size of the
+    maxSize: 30GiB # The maximum size of the volume, if not specified the volume can grow to the size of the
     grow: false
