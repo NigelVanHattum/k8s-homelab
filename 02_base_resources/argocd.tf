@@ -101,6 +101,12 @@ resource "argocd_project" "argo-cd-system-project" {
       namespace = "picture-of-the-day"
     }
 
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "adguard"
+    }
+
     cluster_resource_whitelist {
       group = "*"
       kind  = "*"

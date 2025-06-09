@@ -117,3 +117,12 @@ resource "kubernetes_namespace" "authentik" {
     name   = "authentik"
   }
 }
+
+resource "kubernetes_namespace" "adguard" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "adguard"
+  }
+}

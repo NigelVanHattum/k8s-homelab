@@ -62,6 +62,12 @@ variable "influxdb_chart_version" {
   default = "2.1.2"
 }
 
+# https://github.com/rm3l/helm-charts/blob/main/charts/adguard-home/README.md
+variable "adguard_home_chart_version" {
+  type    = string
+  default = "0.19.0"
+}
+
 # https://github.com/goauthentik/helm
 # https://docs.goauthentik.io/docs/releases
 variable "authentik_chart_version" {
