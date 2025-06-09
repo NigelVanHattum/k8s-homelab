@@ -43,7 +43,7 @@ locals {
         nas_plex_root = "/volume1/Plex-Media"
     }
     database = {
-        backup_c2_bucket = "postgresql-17-backup"
+        backup_c2_bucket = "postgresql"
         read_write_service_name = "postgresql-cluster-postgresql-main-rw"
     }
     authentik = {
