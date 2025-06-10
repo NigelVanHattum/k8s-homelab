@@ -3,7 +3,7 @@ ollama:
   enabled: true
   # -- If enabling embedded Ollama, update fullnameOverride to your desired Ollama name value, or else it will use the default ollama.name value from the Ollama chart
   fullnameOverride: "open-webui-ollama"
-  image:
+  # image:
   # -- Docker pull policy
   pullPolicy: Always
   # -- Docker image tag, overrides the image tag whose default is the chart appVersion.

@@ -10,7 +10,7 @@ terraform {
     # https://registry.terraform.io/providers/Telmate/proxmox/latest/docs
     proxmox = {
       source = "telmate/proxmox"
-      version = "3.0.1-rc9"
+      version = "3.0.2-rc01"
     }
     # https://registry.terraform.io/providers/siderolabs/talos/0.8.0
     talos = {
