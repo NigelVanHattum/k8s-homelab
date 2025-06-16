@@ -15,7 +15,6 @@ resource "talos_machine_secrets" "this" {
 data "talos_image_factory_extensions_versions" "this" {
   for_each = var.all_vms
 
-  # get the latest talos version
   talos_version = local.talos_version
   filters = {
     names = [
@@ -72,7 +71,7 @@ resource "null_resource" "talos_upgrade_trigger" {
       DESIRED_TALOS_TAG       = self.triggers.desired_talos_tag
       DESIRED_TALOS_SCHEMATIC = self.triggers.desired_schematic_id
       TALOS_CONFIG_PATH       = local_sensitive_file.talosconfig.filename
-      TALOS_NODE              = each.key
+      TALOS_NODE              = each.value.ip_address
       STAGE                   = self.triggers.stage_talos_upgrade
       TIMEOUT                 = "10m"
     }
