@@ -97,7 +97,7 @@ service:
     externalTrafficPolicy: Local
   # -- Additional annotations applied to both TCP and UDP services (e.g. for cloud provider specific config)
   annotations: {
-    metallb.universe.tf/address-pool: traefik-ip-pool
+    metallb.io/address-pool: traefik-ip-pool
   }
 
 persistence:
