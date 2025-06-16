@@ -1,24 +1,11 @@
-replicaCount: 2
+replicaCount: 1
 deploymentType: Deployment
 image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: ""
+  tag: "latest"
 
 services:
-  adminPanel:
-    type: ClusterIP
-    # -- Service annotations
-    annotations: {}
-    port: 3000
-    # -- Internal cluster service IP for the Admin Panel (when applicable)
-    clusterIP: ""
-    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
-    externalTrafficPolicy: "Local"
-    # -- Load balancer IP for the Admin Panel (when applicable)
-    loadBalancerIP:
-    # -- (int) Node port for the Admin Panel (when applicable)
-    nodePort:
   http:
     type: ClusterIP
     # -- Service annotations
@@ -37,181 +24,53 @@ services:
     # -- Dual-stack families for HTTP, for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
     ipFamilies:
   https:
-    enabled: true
-    type: ClusterIP
-    # -- Service annotations
-    annotations: {}
-    # -- Internal cluster service IP for HTTPS (when applicable)
-    clusterIP: ""
-    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
-    externalTrafficPolicy:
-    # -- Load balancer IP for HTTPS (when applicable)
-    loadBalancerIP:
-    # -- (int) Node port for HTTPS (when applicable)
-    nodePort:
-    port: 443
-    # -- Dual-stack policy for HTTPS
-    ipFamilyPolicy:
-    # -- Dual-stack families for HTTPS; for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-    ipFamilies:
+    enabled: false
   dns:
     enabled: true
-    type: NodePort
+    type: LoadBalancer
     # -- Service annotations
-    annotations: {}
-    # -- Internal cluster service IP for DNS (when applicable)
-    clusterIP: ""
-    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
-    externalTrafficPolicy:
-    # -- Load balancer IP for DNS (when applicable)
-    loadBalancerIP:
     tcp:
       port: 53
-      nodePort:
     udp:
       port: 53
-      nodePort:
-    # -- Dual-stack policy for DNS
-    ipFamilyPolicy:
-    # -- Dual-stack families for DNS; for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-    ipFamilies:
+    annotations:
+      "metallb.io/address-pool": "adguard-ip-pool"
+    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
+    externalTrafficPolicy: Local
   dnsOverTls:
-    enabled: true
-    type: NodePort
-    # -- Service annotations
-    annotations: {}
-    # -- Internal cluster service IP for DNS over TLS (when applicable)
-    clusterIP: ""
-    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
-    externalTrafficPolicy:
-    # -- Load balancer IP for DNS over TLS (when applicable)
-    loadBalancerIP:
-    # -- (int) Node port for DNS over TLS (when applicable)
-    port: 853
-    nodePort:
-    # -- Dual-stack policy for DNS over TLS
-    ipFamilyPolicy:
-    # -- Dual-stack families for DNS over TLS; for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-    ipFamilies:
+    enabled: false
   dnsOverQuic:
-    enabled: true
-    type: NodePort
-    # -- Service annotations
-    annotations: {}
-    port1:
-      port: 784
-      nodePort:
-    port2:
-      port: 8853
-      nodePort:
-    # -- Internal cluster service IP for DNS Over QUIC (when applicable)
-    clusterIP: ""
-    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
-    externalTrafficPolicy:
-    # -- Load balancer IP for DNS Over QUIC (when applicable)
-    loadBalancerIP:
-    # -- Dual-stack policy for DNS Over QUIC
-    ipFamilyPolicy:
-    # -- Dual-stack families for DNS Over QUIC; for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-    ipFamilies:
+    enabled: false
   dnscrypt:
-    enabled: true
-    type: NodePort
-    # -- Service annotations
-    annotations: {}
-    # -- Internal cluster service IP for DNSCrypt (when applicable)
-    clusterIP: ""
-    # -- Set traffic policy for external traffic. Set to "Local" to preserve client ip address in case of service type "LoadBalancer" or "NodePort"
-    externalTrafficPolicy:
-    # -- Load balancer IP for DNSCrypt (when applicable)
-    loadBalancerIP:
-    tcp:
-      port: 5443
-      nodePort:
-    udp:
-      port: 5443
-      nodePort:
-    # -- Dual-stack policy for DNSCrypt
-    ipFamilyPolicy:
-    # -- Dual-stack families for DNSCrypt; for dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
-    ipFamilies:
-
-# -- Additional services
-extraServices: []
-#  - name: "dns-extra"
-#    annotations: {}
-#    spec:
-#      type: LoadBalancer
-#      externalTrafficPolicy: Local
-#      internalTrafficPolicy: Cluster
-#      ports:
-#        - name: dns-tcp
-#          port: 53
-#          protocol: TCP
-#          targetPort: dns-tcp
-#        - name: dns-udp
-#          port: 53
-#          protocol: UDP
-#          targetPort: dns-udp
+    enabled: false
 
 ingresses:
   adminPanel:
     enabled: false
-    className: ""
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: admin.adguard-home-example.local
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.
   http:
-    enabled: false
-    className: ""
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
     hosts:
-      - host: adguard-home-example.local
+      - host: adguard.local.nigelvanhattum.nl
         paths:
           - path: /
-            pathType: ImplementationSpecific
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.
+            pathType: Prefix  
   https:
     enabled: false
-    className: ""
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: adguard-home-example.local
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.
 
-resources: {}
+resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 autoscaling:
   enabled: false
@@ -220,291 +79,16 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-# -- Strategy used to replace old Pods by new ones
-strategy: {}
-  # type: RollingUpdate
-  # rollingUpdate:
-  #   maxSurge: 1
-  #   maxUnavailable: 33%
-
-priorityClassName: ""
 livenessProbe: null
 readinessProbe: null
 startupProbe: null
 
 persistence:
   enabled: false
-  volumeClaimSpec:
-    storageClassName: nfs-csi-adguard # Optional: specify storage class
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 5Gi
-  volumeClaimTemplates: 
-    enabled: true  # Set to true to use volumeClaimTemplates, false to use existing PVC
 
 # -- Whether to enable bootstrapping the AdguardHome config file using the content in bootstrapConfig
 bootstrapEnabled: true
-
-bootstrapConfig:
-  http:
-  pprof:
-    port: 6060
-    enabled: false
-  address: 0.0.0.0:80
-  session_ttl: 720h
-  clients:
-    - name: Nigel-Adguard
-      password: $2a$10$F2uH5IXGUNy4oj2PvzWFMubWoX48uYt2z5tlTZFoYR..YLdF28upi
-  auth_attempts: 5
-  block_auth_min: 15
-  http_proxy: ""
-  language: en
-  theme: auto
-  dns:
-    bind_hosts:
-      - 0.0.0.0
-    port: 53
-    anonymize_client_ip: false
-    ratelimit: 20
-    ratelimit_subnet_len_ipv4: 24
-    ratelimit_subnet_len_ipv6: 56
-    ratelimit_whitelist: []
-    refuse_any: true
-    upstream_dns:
-      - tls://1dot1dot1dot1.cloudflare-dns.com
-      - https://dns.cloudflare.com/dns-query
-      - tls://dns.google
-      - https://dns.google/dns-query
-    upstream_dns_file: ""
-    bootstrap_dns:
-      - 1.1.1.1
-      - 8.8.8.8
-      - 2606:4700:4700::1111
-      - 2001:4860:4860::8888
-    fallback_dns: []
-    upstream_mode: parallel
-    fastest_timeout: 1s
-    allowed_clients: []
-    disallowed_clients: []
-    blocked_hosts:
-      - version.bind
-      - id.server
-      - hostname.bind
-    trusted_proxies:
-      - 127.0.0.0/8
-      - ::1/128
-    cache_size: 4194304
-    cache_ttl_min: 0
-    cache_ttl_max: 7200
-    cache_optimistic: false
-    bogus_nxdomain: []
-    aaaa_disabled: false
-    enable_dnssec: true
-    edns_client_subnet:
-      custom_ip: ""
-      enabled: false
-      use_custom: false
-    max_goroutines: 300
-    handle_ddr: true
-    ipset: []
-    ipset_file: ""
-    bootstrap_prefer_ipv6: false
-    upstream_timeout: 10s
-    private_networks: []
-    use_private_ptr_resolvers: true
-    local_ptr_upstreams:
-      - 192.168.1.1
-    use_dns64: false
-    dns64_prefixes: []
-    serve_http3: false
-    use_http3_upstreams: false
-    serve_plain_dns: true
-    hostsfile_enabled: true
-    pending_requests:
-      enabled: true
-  tls:
-    enabled: false
-    server_name: ""
-    force_https: false
-    port_https: 443
-    port_dns_over_tls: 853
-    port_dns_over_quic: 853
-    port_dnscrypt: 0
-    dnscrypt_config_file: ""
-    allow_unencrypted_doh: false
-    certificate_chain: ""
-    private_key: ""
-    certificate_path: ""
-    private_key_path: ""
-    strict_sni_check: false
-  querylog:
-    dir_path: ""
-    ignored: []
-    interval: 2160h
-    size_memory: 1000
-    enabled: true
-    file_enabled: true
-  statistics:
-    dir_path: ""
-    ignored: []
-    interval: 720h
-    enabled: true
-  filters:
-    - enabled: true
-      url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
-      name: AdGuard DNS filter
-      id: 1
-    - enabled: true
-      url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
-      name: AdAway Default Blocklist
-      id: 2
-  whitelist_filters: []
-  user_rules:
-    - '@@||stats.grafana.org^'
-  dhcp:
-    enabled: false
-    interface_name: ""
-    local_domain_name: lan
-    dhcpv4:
-      gateway_ip: ""
-      subnet_mask: ""
-      range_start: ""
-      range_end: ""
-      lease_duration: 86400
-      icmp_timeout_msec: 1000
-      options: []
-    dhcpv6:
-      range_start: ""
-      lease_duration: 86400
-      ra_slaac_only: false
-      ra_allow_slaac: false
-  filtering:
-    blocking_ipv4: ""
-    blocking_ipv6: ""
-    blocked_services:
-      schedule:
-        time_zone: Europe/Amsterdam
-      ids: []
-    protection_disabled_until: null
-    safe_search:
-      enabled: false
-      bing: true
-      duckduckgo: true
-      ecosia: true
-      google: true
-      pixabay: true
-      yandex: true
-      youtube: true
-    blocking_mode: default
-    parental_block_host: family-block.dns.adguard.com
-    safebrowsing_block_host: standard-block.dns.adguard.com
-    rewrites:
-      - domain: "*.local.nigelvanhattum.nl"
-        answer: 10.0.49.25
-    safe_fs_patterns:
-      - /opt/adguardhome/work/data/userfilters/*
-    safebrowsing_cache_size: 1048576
-    safesearch_cache_size: 1048576
-    parental_cache_size: 1048576
-    cache_time: 30
-    filters_update_interval: 24
-    blocked_response_ttl: 10
-    filtering_enabled: true
-    parental_enabled: false
-    safebrowsing_enabled: false
-    protection_enabled: true
-  clients:
-    runtime_sources:
-      whois: true
-      arp: true
-      rdns: true
-      dhcp: true
-      hosts: true
-    persistent: []
-  log:
-    enabled: true
-    file: ""
-    max_backups: 0
-    max_size: 100
-    max_age: 3
-    compress: false
-    local_time: false
-    verbose: false
-  os:
-    group: ""
-    user: ""
-    rlimit_nofile: 0
-  schema_version: 29
-  filters:
-  - enabled: true
-    url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
-    name: AdGuard DNS filter
-    id: 1
-  - enabled: false
-    url: https://adaway.org/hosts.txt
-    name: AdAway Default Blocklist
-    id: 2
-  - enabled: false
-    url: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
-    name: WindowsSpyBlocker - Hosts spy rules
-    id: 1641249001
-  - enabled: false
-    url: https://abp.oisd.nl/basic/
-    name: OISD Blocklist Basic
-    id: 1641249002
-  - enabled: false
-    url: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt
-    name: Perflyst and Dandelion Sprout's Smart-TV Blocklist
-    id: 1641249003
-  - enabled: false
-    url: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/GameConsoleAdblockList.txt
-    name: Game Console Adblock List
-    id: 1641249004
-  whitelist_filters: []
-  user_rules: []
-  dhcp:
-    enabled: false
-    interface_name: ""
-    dhcpv4:
-      gateway_ip: ""
-      subnet_mask: ""
-      range_start: ""
-      range_end: ""
-      lease_duration: 86400
-      icmp_timeout_msec: 1000
-      options: []
-    dhcpv6:
-      range_start: ""
-      lease_duration: 86400
-      ra_slaac_only: false
-      ra_allow_slaac: false
-  clients: []
-  log_compress: false
-  log_localtime: false
-  log_max_backups: 0
-  log_max_size: 100
-  log_max_age: 3
-  log_file: ""
-  verbose: false
-  os:
-    group: ""
-    user: ""
-    rlimit_nofile: 0
-  schema_version: 12
+bootstrapExistingSecret: bootstrap
 
 # -- Whether to add default volume mounts.
 defaultVolumeMountsEnabled: true
-
-# -- Additional Volume mounts
-extraVolumeMounts: []
-
-# -- Additional volumes
-extraVolumes: []

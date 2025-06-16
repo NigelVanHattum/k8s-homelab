@@ -1,0 +1,8 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: adguard-ip-pool
+  namespace: metal-lb
+spec:
+  addresses:
+    - ${adguard_ip}

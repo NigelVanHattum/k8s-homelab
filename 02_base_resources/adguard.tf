@@ -1,9 +1,25 @@
-# resource "argocd_repository" "m3l" {
-#   repo = "https://helm-charts.rm3l.org"
-#   name = "m3l"
-#   type = "helm"
-#   depends_on = [time_sleep.wait_for_argo]
-# }
+resource "argocd_repository" "m3l" {
+  repo = "https://helm-charts.rm3l.org"
+  name = "m3l"
+  type = "helm"
+  depends_on = [time_sleep.wait_for_argo]
+}
+
+
+
+resource "kubernetes_secret" "adguard_bootstrap" {
+  metadata {
+    name      = "bootstrap"
+    namespace = kubernetes_namespace.adguard.metadata.0.name 
+  }
+
+  data = {
+    "AdGuardHome.yaml" = templatefile("${path.module}/config-files/AdGuardHome.yaml", {
+            traefik_ip = local.ip_address.ingress
+            local_domain = "local.${local.domain}"
+        })
+  }
+}
 
 # resource "argocd_application" "adguard" {
 #   metadata {

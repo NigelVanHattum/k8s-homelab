@@ -35,6 +35,7 @@ locals {
     }
     ip_address = {
         ingress = "10.0.49.25"
+        adguard = "10.0.49.26/32"
         extra_pool = "10.0.49.40-10.0.49.50"
         nas_ip = "192.168.20.3"
     }
