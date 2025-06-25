@@ -31,7 +31,7 @@ services:
     ipFamilyPolicy: PreferDualStack #RequireDualStack
     ipFamilies:
       - IPv4
-      # - IPv6
+      - IPv6
     # -- Service annotations
     tcp:
       port: 53

@@ -142,7 +142,7 @@ resource "talos_machine_configuration_apply" "this" {
       hostname = each.key
     }),
     file("${path.module}/talos_config_patches/max-disk-size.yaml"),
-    # file("${path.module}/talos_config_patches/enable-ipv6.yaml")
+    file("${path.module}/talos_config_patches/enable-ipv6.yaml")
   ]
 }
 
