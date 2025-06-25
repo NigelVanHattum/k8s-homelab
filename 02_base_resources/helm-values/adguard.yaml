@@ -28,6 +28,10 @@ services:
   dns:
     enabled: true
     type: LoadBalancer
+    ipFamilyPolicy: PreferDualStack #RequireDualStack
+    ipFamilies:
+      - IPv4
+      # - IPv6
     # -- Service annotations
     tcp:
       port: 53

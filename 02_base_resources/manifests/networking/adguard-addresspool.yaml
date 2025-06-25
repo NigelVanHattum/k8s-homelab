@@ -5,4 +5,5 @@ metadata:
   namespace: metal-lb
 spec:
   addresses:
-    - ${adguard_ip}
+    - ${adguard_ipv4}
+    - ${adguard_ipv6}

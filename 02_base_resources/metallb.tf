@@ -56,7 +56,8 @@ resource "kubectl_manifest" "traefik_ip_address_pool" {
 
 resource "kubectl_manifest" "adguard_ip_address_pool" {
   yaml_body          = templatefile("manifests/networking/adguard-addresspool.yaml", {
-    adguard_ip = local.ip_address.adguard
+    adguard_ipv4 = local.ip_address.adguard_ipv4,
+    adguard_ipv6 = local.ip_address.adguard_ipv6
   })
   override_namespace = kubernetes_namespace.metallb.metadata.0.name
 
