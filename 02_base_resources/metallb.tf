@@ -50,7 +50,8 @@ resource "kubectl_manifest" "traefik_ip_address_pool" {
   override_namespace = kubernetes_namespace.metallb.metadata.0.name
 
   depends_on = [
-    argocd_application.metallb
+    argocd_application.metallb,
+    kubectl_manifest.metallb_ip_advertisement
   ]
 }
 
@@ -62,7 +63,8 @@ resource "kubectl_manifest" "adguard_ip_address_pool" {
   override_namespace = kubernetes_namespace.metallb.metadata.0.name
 
   depends_on = [
-    argocd_application.metallb
+    argocd_application.metallb,
+    kubectl_manifest.metallb_ip_advertisement
   ]
 }
 
@@ -73,7 +75,8 @@ resource "kubectl_manifest" "extra_ip_address_pool" {
   override_namespace = kubernetes_namespace.metallb.metadata.0.name
 
   depends_on = [
-    argocd_application.metallb
+    argocd_application.metallb,
+    kubectl_manifest.metallb_ip_advertisement
   ]
 }
 

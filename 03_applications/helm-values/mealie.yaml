@@ -15,7 +15,7 @@ mealie:
       storageClassName: nfs-csi-applications
   env: 
   - name: ALLOW_SIGNUP
-    value: "false"
+    value: "true"
   - name: PUID
     value: "${PUID}"
   - name: PGID

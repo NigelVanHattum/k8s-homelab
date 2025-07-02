@@ -24,6 +24,7 @@ module "open_webui" {
   ]
 }
 
+# Waiting for https://github.com/ncecere/terraform-provider-litellm/issues/3
 resource "litellm_key" "api_key" {
   # models               = [ "All Team Models" ]
   max_budget           = 20.0
@@ -34,6 +35,8 @@ resource "litellm_key" "api_key" {
   aliases              = {
     "gpt-3.5-turbo" = "chatgpt"
   }
+
+  depends_on = [ argocd_application.lite_llm ]
 }
 
 ### Open-WebUI deployment
