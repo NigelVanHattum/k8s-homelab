@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: cluster-restore
 spec:
-  imageName: "ghcr.io/cloudnative-pg/postgresql:15"
+  # imageName: "ghcr.io/cloudnative-pg/postgresql:17"
   logLevel: debug
   superuserSecret:
     name: ${superuser_secret}
@@ -13,7 +13,8 @@ spec:
       source: clusterBackup
       recoveryTarget:
         # Time base target for the recovery (Just change the date, it will use the WAL archives)
-        targetTime: "2025-05-05T06:00:03+00:00"
+        # targetTime: "2025-06-25T18:00:03+00:00"
+        targetTLI: "latest"
 
   replica: 
     enabled: true
@@ -24,7 +25,7 @@ spec:
       barmanObjectStore:
         endpointURL: ${synology_c2_endpoint}
         destinationPath: "s3://${bucket_name}/" 
-        serverName: postgresql-cluster
+        serverName: postgresql-cluster-postgresql-main
         s3Credentials:
           accessKeyId:
             name: ${synology_c2_secret}
