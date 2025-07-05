@@ -166,12 +166,11 @@ resource "kubectl_manifest" "postgres_ingress" {
 #   #   rollout = true
 #   # }
 
-#   depends_on = [kubectl_manifest.recovery_cluster, 
-#                 argocd_application.traefik]
+#   depends_on = [ argocd_application.traefik]
 # }
 
 # resource "kubectl_manifest" "recovery_cluster" {
-#   validate_schema = false
+#   # validate_schema = false
 #   override_namespace = kubernetes_namespace.postgresql_recovery.metadata.0.name
 #   yaml_body = templatefile("${path.module}/manifests/postgresql-cluster-restore.yaml", {
 #     superuser_secret = kubernetes_secret.postgres_admin_recovery.metadata.0.name
@@ -183,4 +182,7 @@ resource "kubectl_manifest" "postgres_ingress" {
 #   # wait {
 #   #   rollout = true
 #   # }
+
+#   depends_on = [ argocd_application.postgres_operator,
+#                   kubectl_manifest.postgres_recovery_ingress ]
 # }
