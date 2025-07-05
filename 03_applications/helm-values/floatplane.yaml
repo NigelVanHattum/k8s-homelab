@@ -14,8 +14,8 @@ floatplane:
     plexToken: ${plexToken}
   persistence:
     media:
-      volumeName: fp-downloader-media
+      existingVolume: fp-downloader-media
       storageClassName: nfs-csi-plex
     db: 
-      volumeName: fp-downloader-db
+      existingVolume: fp-downloader-db
       storageClassName: nfs-csi-applications
