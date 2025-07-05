@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 deploymentType: Deployment
 image:
   pullPolicy: Always
@@ -89,6 +89,7 @@ startupProbe: null
 
 persistence:
   enabled: false
+  existingClaim: true
 
 # -- Whether to enable bootstrapping the AdguardHome config file using the content in bootstrapConfig
 bootstrapEnabled: true
