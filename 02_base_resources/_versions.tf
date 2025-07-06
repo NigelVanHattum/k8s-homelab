@@ -15,7 +15,7 @@ terraform {
     # https://registry.terraform.io/providers/hashicorp/helm/latest
     helm = {
       source = "hashicorp/helm"
-      version = ">= 2.11.0, < 3.0.0"
+      version = ">= 3.0.0, < 4.0.0"
     }
     # https://registry.terraform.io/providers/argoproj-labs/argocd/latest
     argocd = {

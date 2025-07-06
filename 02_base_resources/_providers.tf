@@ -20,7 +20,7 @@ provider "kubectl" {
 provider "helm" {
   repository_config_path = "${path.module}/.helm/repositories.yaml" 
   repository_cache       = "${path.module}/.helm"
-  kubernetes {
+  kubernetes = {
     host                   = data.terraform_remote_state.infra.outputs.kube_host
     cluster_ca_certificate = base64decode(data.terraform_remote_state.infra.outputs.kube_cluster_ca)
     client_certificate     = base64decode(data.terraform_remote_state.infra.outputs.kube_client_cert)
