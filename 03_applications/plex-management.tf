@@ -128,7 +128,7 @@ resource "argocd_application" "plex-management" {
         values = templatefile("helm-values/plex-management.yaml",
         {
           ## database
-          postgres_host = local.ip_address.ingress
+          postgres_host = local.database.read_write_service
           postgres_port = "5432"
           ## file share permissions
           PUID = local.file_share.PUID

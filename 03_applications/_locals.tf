@@ -41,7 +41,7 @@ locals {
     }
     database = {
         backup_c2_bucket = "postgresql-backup"
-        read_write_service_name = "postgresql-cluster-rw"
+        read_write_service = "postgresql-cluster-postgresql-main-rw.postgresql.svc.cluster.local"
     }
     authentik = {
         group_admin     = "Admin"
