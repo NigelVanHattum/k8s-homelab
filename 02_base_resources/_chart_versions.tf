@@ -42,7 +42,7 @@ variable "traefik_crd_chart_version" {
 variable "traefik_chart_version" {
   type = string
   description = "Traefik chart version (not traefik version)"
-  default = "36.2.0"
+  default = "36.3.0"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
