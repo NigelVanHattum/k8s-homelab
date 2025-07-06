@@ -2,7 +2,7 @@
 variable "firefly_chart_version" {
   type = string
   description = "firefly-stack chart version"
-  default = "0.8.2"
+  default = "0.8.8"
 }
 
 # https://github.com/NigelVanHattum/Homelab-Helm-charts/tree/master/charts/floatplane-downloader
