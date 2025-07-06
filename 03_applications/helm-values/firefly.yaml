@@ -12,7 +12,7 @@ firefly-iii:
 
   persistence:
     # -- If you set this to false, uploaded attachments are not stored persistently and will be lost with every restart of the pod
-    enabled: true
+    enabled: false
     storageClassName: "nfs-csi-applications"
     accessModes: ReadWriteOnce
     storage: 10Gi
