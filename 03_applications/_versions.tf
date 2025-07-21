@@ -34,7 +34,7 @@ terraform {
 
 locals {
   # https://github.com/mealie-recipes/mealie/releases
-  mealie_version = "v2.8.0"
+  mealie_version = "v3.0.2"
 
   # https://github.com/firefly-iii/firefly-iii/releases
   # https://hub.docker.com/r/fireflyiii/core/tags
