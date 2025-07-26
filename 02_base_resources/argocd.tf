@@ -56,6 +56,12 @@ resource "argocd_project" "argo-cd-system-project" {
     destination {
       server = "*"
       name = "*"
+      namespace = "iscsi-csi-driver"
+    }
+
+    destination {
+      server = "*"
+      name = "*"
       namespace = "metal-lb"
     }
 

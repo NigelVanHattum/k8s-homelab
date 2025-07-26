@@ -3,6 +3,7 @@ locals {
     onepassword = {
         vault_name = "Homelab"
         azure_tenant = "Azure tenant"
+        dsm_iscsi_user = "talos-csi-driver"
         argo = {
             admin = "ArgoCD admin login"
             azure_secret = "ArgoCD Azure Secret"

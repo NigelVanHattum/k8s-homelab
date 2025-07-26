@@ -25,6 +25,12 @@ variable "nfs_csi_driver_chart_version" {
   default = "v4.11.0"
 }
 
+# https://github.com/zebernst/synology-csi-talos/releases
+variable "iscsi_csi_driver_chart_version" {
+  type    = string
+  default = "0.9.5-pre.4"
+}
+
 # https://github.com/metallb/metallb/releases
 variable "metallb_chart_version" {
   type = string

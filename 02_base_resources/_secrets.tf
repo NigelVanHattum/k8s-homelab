@@ -41,6 +41,12 @@ resource "onepassword_item" "argo_admin_password" {
   password = random_password.argocd_admin_password.result
 }
 
+### Synology DSM (ISCSI driver)
+data "onepassword_item" "iscsi_user" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.dsm_iscsi_user
+}
+
 ### Grafana
 data "onepassword_item" "grafana_token" {
   vault = data.onepassword_vault.homelab_vault.uuid

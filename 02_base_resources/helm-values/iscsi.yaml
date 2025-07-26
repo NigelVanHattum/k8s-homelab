@@ -1,0 +1,32 @@
+---
+clientInfoSecret:
+  # How to connect to your Synology Diskstation?
+  clients:
+    - host: ${nas_ip}   # the IP address of the Diskstation
+      username: ${iscsi_username}  # the name of the dedicated CSI user
+      password: ${iscsi_password}  # the password of the dedicated CSI user
+      port: 5000          # the port for connecting to the Diskstation Manager application
+      https: false        # whether the port expects HTTPS or not
+  create: true
+
+storageClasses: {}
+#  synology-iscsi-storage:
+    # One of true or false (default):
+    ##disabled: false
+    # One of true or false (default):
+    ##isDefault: false
+    # One of "Retain" or "Delete" (default):
+#    reclaimPolicy: Retain
+    # One of "WaitForFirstConsumer" or "Immediate" (default):
+    ##volumeBindingMode: Immediate
+
+    # If not present, some location will be chosen to create volumes with the filesystem type ext4.
+    # Note that these parameters cannot get updated once deployed - any subsequent changes get ignored!
+    ##parameters:
+    ##  dsm: "1.1.1.1"
+    ##  fsType: ext4
+    ##  location: /volume1
+  # synology-iscsi-storage-delete:
+  #   reclaimPolicy: Delete
+test:
+  enabled: false

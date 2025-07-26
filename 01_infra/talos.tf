@@ -20,7 +20,8 @@ data "talos_image_factory_extensions_versions" "this" {
     names = [
       "amd-ucode",
       "amdgpu-firmware",
-      "util-linux-tools"
+      "util-linux-tools",
+      "iscsi-tools"
     ]
   }
 }
