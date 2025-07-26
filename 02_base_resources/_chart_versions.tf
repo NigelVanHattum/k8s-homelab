@@ -9,14 +9,14 @@
 variable "argocd_chart_version" {
   type    = string
   description = "argocd chart version"
-  default = "8.1.2"
+  default = "8.1.4"
 }
 
 # https://github.com/grafana/k8s-monitoring-helm
 variable "k8s_monitoring_chart_version" {
   type    = string
   description = "grafana monitoring"
-  default = "3.1.0"
+  default = "3.1.5"
 }
 
 # https://github.com/kubernetes-csi/csi-driver-nfs
