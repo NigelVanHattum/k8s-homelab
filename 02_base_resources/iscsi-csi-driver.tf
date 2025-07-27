@@ -22,6 +22,7 @@ resource "argocd_application" "iscsi_csi_driver" {
           nas_ip = local.ip_address.nas_ip,
           iscsi_username = data.onepassword_item.iscsi_user.username
           iscsi_password = data.onepassword_item.iscsi_user.password
+          P2P_root       = local.file_share.P2P_root
         })
       }
     }

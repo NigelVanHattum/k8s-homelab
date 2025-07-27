@@ -1,4 +1,3 @@
----
 clientInfoSecret:
   # How to connect to your Synology Diskstation?
   clients:
@@ -9,24 +8,24 @@ clientInfoSecret:
       https: false        # whether the port expects HTTPS or not
   create: true
 
-storageClasses: {}
-#  synology-iscsi-storage:
+storageClasses:
+ synology-iscsi-p2p:
     # One of true or false (default):
-    ##disabled: false
-    # One of true or false (default):
-    ##isDefault: false
+    isDefault: false
     # One of "Retain" or "Delete" (default):
-#    reclaimPolicy: Retain
+    reclaimPolicy: Retain
     # One of "WaitForFirstConsumer" or "Immediate" (default):
-    ##volumeBindingMode: Immediate
-
+    volumeBindingMode: Immediate
+    allowVolumeExpansion: true
     # If not present, some location will be chosen to create volumes with the filesystem type ext4.
     # Note that these parameters cannot get updated once deployed - any subsequent changes get ignored!
-    ##parameters:
-    ##  dsm: "1.1.1.1"
-    ##  fsType: ext4
-    ##  location: /volume1
+    parameters:
+      dsm: ${nas_ip}
+      csi.storage.k8s.io/fstype: Btrfs
+      location: ${P2P_root}
+      protocol: iscsi
   # synology-iscsi-storage-delete:
   #   reclaimPolicy: Delete
 test:
   enabled: false
+  storageClass: synology-iscsi-storage
