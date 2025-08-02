@@ -50,20 +50,6 @@ resource "kubernetes_namespace" "nfs_csi_driver" {
   }
 }
 
-resource "kubernetes_namespace" "iscsi_csi_driver" {
-  metadata {
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-    name   = "iscsi-csi-driver"
-    labels = {
-      "pod-security.kubernetes.io/audit"   = "privileged"
-      "pod-security.kubernetes.io/enforce" = "privileged"
-      "pod-security.kubernetes.io/warn"    = "privileged"
-    }
-  }
-}
-
 resource "kubernetes_namespace" "metallb" {
   metadata {
     annotations = {

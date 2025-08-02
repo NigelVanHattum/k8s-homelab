@@ -1,0 +1,5 @@
+machine:
+    kubelet:
+        # Fat image needed for ISCSI to work. See https://github.com/siderolabs/talos/issues/9893
+        image: ghcr.io/siderolabs/kubelet:v${k8s_version} #-fat
+        # image: ghcr.io/nigelvanhattum/kubelet:4b38eff-dirty-fat

@@ -18,10 +18,8 @@ data "talos_image_factory_extensions_versions" "this" {
   talos_version = local.talos_version
   filters = {
     names = [
-      "amd-ucode",
-      "amdgpu-firmware",
-      "util-linux-tools",
-      "iscsi-tools"
+      "intel-ucode", # Intel CPU 
+      "intel-ice-firmware", # Network drivers
     ]
   }
 }
@@ -140,6 +138,9 @@ resource "talos_machine_configuration_apply" "this" {
     file("${path.module}/talos_config_patches/cert-rotate-patch.yaml"),
     templatefile("${path.module}/talos_config_patches/hostname-config.yaml", {
       hostname = each.key
+    }),
+    templatefile("${path.module}/talos_config_patches/change-kubelet-image.yaml", {
+      k8s_version = local.k8s_version
     }),
     file("${path.module}/talos_config_patches/max-disk-size.yaml"),
     file("${path.module}/talos_config_patches/enable-ipv6.yaml")
