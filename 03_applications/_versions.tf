@@ -55,7 +55,7 @@ locals {
 
   # https://github.com/Ombi-app/Ombi/releases
   # https://hub.docker.com/r/linuxserver/ombi/tags
-  ombi_version = "4.47.1"
+  ombi_version = "latest"
   # https://github.com/haveagitgat/Tdarr/pkgs/container/tdarr
   tdarr_version = "latest"
   

@@ -2,7 +2,7 @@
 variable "firefly_chart_version" {
   type = string
   description = "firefly-stack chart version"
-  default = "0.8.8"
+  default = "0.9.0"
 }
 
 # https://github.com/NigelVanHattum/Homelab-Helm-charts/tree/master/charts/floatplane-downloader
@@ -33,11 +33,11 @@ variable "mealie_chart_version" {
 # https://github.com/open-webui/helm-charts/releases
 variable "open_webui_chart_version" {
   type = string
-  default = "6.22.0"
+  default = "7.0.1"
 }
 
 # https://github.com/BerriAI/litellm/pkgs/container/litellm-helm
 variable "litellm_chart_version" {
   type = string
-  default = "0.1.713"
+  default = "0.1.750"
 }
