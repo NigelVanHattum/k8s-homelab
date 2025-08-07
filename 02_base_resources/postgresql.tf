@@ -25,7 +25,7 @@ resource "argocd_application" "postgres_operator" {
         allow_empty = true
       }
       # Only available from ArgoCD 1.5.0 onwards
-      sync_options = ["Validate=false"]#, "ServerSideApply=true"]
+      sync_options = ["Validate=false", "ServerSideApply=true"]
       retry {
         limit = "5"
         backoff {
