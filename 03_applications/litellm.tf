@@ -16,20 +16,6 @@ resource "argocd_repository" "litellm" {
   enable_oci = true
 }
 
-# resource "authentik_provider_proxy" "authentik_firefly_provider" {
-#   name               = "firefly"
-#   mode               = "forward_single"
-#   external_host      = "https://finance.nigelvanhattum.nl"
-#   invalidation_flow  = data.authentik_flow.default_provider_invalidation_flow.id
-#   authorization_flow = data.authentik_flow.default_authorization_flow.id
-# }
-
-# resource "authentik_application" "authentik_firefly_application" {
-#   name              = "firefly"
-#   slug              = "firefly"
-#   protocol_provider = authentik_provider_proxy.authentik_firefly_provider.id
-# }
-
 resource "argocd_application" "lite_llm" {
   metadata {
     name = kubernetes_namespace.litellm.metadata.0.name
@@ -82,18 +68,3 @@ resource "argocd_application" "lite_llm" {
   }
   depends_on = [ argocd_project.argo_cd_apps_project ]
 }
-
-# resource "kubectl_manifest" "firefly_ingress-local" {
-#   yaml_body          = file("manifests/ingress/firefly-ingress-local.yaml")
-#   override_namespace = kubernetes_namespace.firefly.metadata.0.name
-# }
-
-# resource "kubectl_manifest" "firefly_import-local" {
-#   yaml_body          = file("manifests/ingress/firefly-importer-local.yaml")
-#   override_namespace = kubernetes_namespace.firefly.metadata.0.name
-# }
-
-# resource "kubectl_manifest" "firefly_ingress-public" {
-#   yaml_body          = file("manifests/ingress/firefly-ingress-public.yaml")
-#   override_namespace = kubernetes_namespace.firefly.metadata.0.name
-# }
