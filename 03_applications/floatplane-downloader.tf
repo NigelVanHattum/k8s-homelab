@@ -1,54 +1,27 @@
-resource "argocd_application" "floatplane" {
+module "floatplane_downloader" {
+  source = "../modules/argocd-app"
+
   depends_on = [
     kubectl_manifest.pv_floatplane_db,
     kubectl_manifest.pv_floatplane_media
     ]
-    
-  metadata {
-    name = kubernetes_namespace.floatplane.metadata.0.name
+
+  app_name ="floatplane"
+  namespace = kubernetes_namespace.floatplane.metadata.0.name
+  chart   = {
+    repo_url  = argocd_repository.my_homelab.repo
+    repo_exists = true
+    chart     = "floatplane-downloader"
+    version   = var.floatplane_downloader_chart_version
   }
 
-  spec {
-    project = argocd_project.argo_cd_apps_project.metadata.0.name
-    source {
-      repo_url        = argocd_repository.my_homelab.repo
-      chart           = "floatplane-downloader"
-      target_revision = var.floatplane_downloader_chart_version
-
-      helm {
-        values = templatefile("helm-values/floatplane.yaml",
+  helm_values = templatefile("helm-values/floatplane.yaml",
         {
           username = data.onepassword_item.floatplane.username
           password = data.onepassword_item.floatplane.password
           plexToken = data.onepassword_item.plex_token.password
           mfaToken = var.floatplane_mfa_token
         })
-      }
-    }
-
-    sync_policy {
-      automated {
-        prune       = true
-        self_heal   = true
-        allow_empty = true
-      }
-      # Only available from ArgoCD 1.5.0 onwards
-      sync_options = ["Validate=false"]
-      retry {
-        limit = "5"
-        backoff {
-          duration     = "30s"
-          max_duration = "2m"
-          factor       = "2"
-        }
-      }
-    }
-
-    destination {
-      namespace = kubernetes_namespace.floatplane.metadata.0.name
-      name = "in-cluster"
-    }
-  }
 }
 
 resource "kubectl_manifest" "pv_floatplane_db" {
