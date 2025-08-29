@@ -91,15 +91,6 @@ resource "kubernetes_namespace" "postgresql_recovery" {
   }
 }
 
-resource "kubernetes_namespace" "influxdb" {
-  metadata {
-    annotations = {
-      "linkerd.io/inject" = "enabled"
-    }
-    name   = "influxdb"
-  }
-}
-
 resource "kubernetes_namespace" "picture_of_the_day" {
   metadata {
     annotations = {

@@ -131,32 +131,6 @@ data "onepassword_item" "database_litellm" {
   title  = local.onepassword.postgresql.litellm
 }
 
-### InfluxDB
-data "onepassword_item" "influxdb_admin_user" {
-  vault = data.onepassword_vault.homelab_vault.uuid
-  title  = local.onepassword.postgresql.radarr
-}
-
-data "onepassword_item" "influxdb_token" {
-  vault = data.onepassword_vault.homelab_vault.uuid
-  title  = local.onepassword.postgresql.prowlarr
-}
-
-resource "kubernetes_secret" "influxdb_admin" {
-  metadata {
-    name = var.influxdb_secret_name
-    namespace = kubernetes_namespace.influxdb.metadata.0.name
-  }
-
-  immutable = false
-
-  data = {
-    username = "${data.onepassword_item.influxdb_admin_user.username}"
-    admin-password = "${data.onepassword_item.influxdb_admin_user.password}"
-    admin-token = "${data.onepassword_item.influxdb_token.password}"
-  }
-}
-
 ### Authentik
 data "onepassword_item" "authentik_admin_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
