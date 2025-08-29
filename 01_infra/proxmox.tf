@@ -16,6 +16,8 @@ resource "proxmox_vm_qemu" "talos_machines" {
   memory = each.value.memory
   skip_ipv6 = true
 
+  tags = "managed-by-terraform"
+
   cpu {
     type = "host"
     cores = each.value.cpu_cores
