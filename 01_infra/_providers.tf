@@ -11,6 +11,7 @@ provider "proxmox" {
   pm_log_enable = true
   pm_log_file   = "terraform-plugin-proxmox.log"
   pm_debug      = true
+  pm_minimum_permission_check	= false
 }
 
 provider "talos" {
