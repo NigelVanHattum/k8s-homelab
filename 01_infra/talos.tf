@@ -143,7 +143,10 @@ resource "talos_machine_configuration_apply" "this" {
       k8s_version = local.k8s_version
     }),
     file("${path.module}/talos_config_patches/max-disk-size.yaml"),
-    file("${path.module}/talos_config_patches/enable-ipv6.yaml")
+    file("${path.module}/talos_config_patches/enable-ipv6.yaml"),
+    templatefile("${path.module}/talos_config_patches/ai-node-label.yaml", {
+      ai_node = each.value.ai_node
+    })
   ]
 }
 

@@ -8,13 +8,16 @@ ollama:
   pullPolicy: Always
   # -- Docker image tag, overrides the image tag whose default is the chart appVersion.
   # tag: ""
-
+  nodeSelector:
+    ai-node: "true"
   # Ollama parameters
   ollama:
     models:
       pull: 
         - llama3.2:1b
         - deepseek-r1:7b
+        - gpt-oss:20b
+        - mistral
         # - llama3.1:8b #4,7GB
         # - llama3.1:70b # 40GB
         # - llama3.1:405b # 229GB

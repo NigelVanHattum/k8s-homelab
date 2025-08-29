@@ -1,0 +1,3 @@
+machine:
+  nodeLabels:
+    "ai-node": ${ai_node}  # The label you want to apply

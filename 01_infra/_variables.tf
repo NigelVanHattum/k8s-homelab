@@ -33,6 +33,7 @@ variable "all_vms" {
     ip_address   = string
     vm_id        = number
     type         = optional(string, "worker")
+    ai_node      = optional(bool, false)
     architecture = optional(string, "amd64")
     platform     = optional(string, "metal")
     cpu_cores    = optional(number, 6)

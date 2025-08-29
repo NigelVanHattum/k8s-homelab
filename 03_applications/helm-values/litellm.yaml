@@ -31,15 +31,19 @@ proxy_config:
   model_list:
     - model_name: claude-3.7
       litellm_params: 
-        model: claude-3-7-sonnet-latest
+        model: claude-3-7-sonnet-20250219
         api_key: "os.environ/ANTHROPIC_API_KEY"
     - model_name: claude-4
       litellm_params: 
-        model: claude-opus-4-20250514
+        model: claude-sonnet-4-20250514
         api_key: "os.environ/ANTHROPIC_API_KEY" 
-    - model_name: Grok-2
+    - model_name: Grok-3-mini
       litellm_params: 
-        model: xai/grok-2-1212
+        model: xai/grok-3-mini
+        api_key: "os.environ/XAI_API_KEY" 
+    - model_name: Grok-code-1
+      litellm_params: 
+        model: xai/grok-code-fast-1
         api_key: "os.environ/XAI_API_KEY" 
   general_settings:
     master_key: os.environ/PROXY_MASTER_KEY
