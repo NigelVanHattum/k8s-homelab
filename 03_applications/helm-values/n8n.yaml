@@ -26,15 +26,20 @@ ingress:
 main:
   # See https://docs.n8n.io/hosting/configuration/environment-variables/ for all values.
   config:
-  #    n8n:
+    n8n:
+      host: "n8n.local.nigelvanhattum.nl"
+      editor:
+        base:
+          url: "n8n.local.nigelvanhattum.nl"
+    
   #     license:
   #       activation:
   #         key: <N8N_LICENSE_ACTIVATION_KEY>
   #     log:
   #       level: info
-     db:
-       type: postgresdb
-       postgresdb:
+    db:
+      type: postgresdb
+      postgresdb:
         host: ${db_host}
         port: ${db_port}
         database: ${db_name}
