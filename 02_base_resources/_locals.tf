@@ -21,6 +21,7 @@ locals {
             radarr = "postgresql-Radarr"
             prowlarr = "postgresql-Prowlarr"
             litellm = "postgresql-LiteLLM"
+            n8n = "postgresql-N8N"
         }
         authentik = {
             api_token = "Authentik Token"

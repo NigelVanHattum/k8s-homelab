@@ -131,6 +131,11 @@ data "onepassword_item" "database_litellm" {
   title  = local.onepassword.postgresql.litellm
 }
 
+data "onepassword_item" "database_n8n" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.n8n
+}
+
 ### Authentik
 data "onepassword_item" "authentik_admin_token" {
   vault = data.onepassword_vault.homelab_vault.uuid

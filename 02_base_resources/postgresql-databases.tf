@@ -67,3 +67,10 @@ resource "postgresql_database" "litellm" {
   connection_limit  = -1
   allow_connections = true
 }
+
+resource "postgresql_database" "n8n" {
+  name              = postgresql_role.n8n.name
+  owner             = postgresql_role.n8n.name
+  connection_limit  = -1
+  allow_connections = true
+}

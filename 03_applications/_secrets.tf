@@ -50,6 +50,11 @@ data "onepassword_item" "database_litellm" {
   title  = "postgresql-LiteLLM"
 }
 
+data "onepassword_item" "database_n8n" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = "postgresql-N8N"
+}
+
 ### ArgoCD
 data "onepassword_item" "argo_admin" {
   vault = data.onepassword_vault.homelab_vault.uuid
@@ -258,4 +263,10 @@ resource "kubernetes_secret" "litellm_db_credentials" {
     (local.litellm.db_user_key) = data.onepassword_item.database_litellm.username
     (local.litellm.db_password_key) = data.onepassword_item.database_litellm.password
   }
+}
+
+### N8N
+data "onepassword_item" "n8n_encryption_key" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "N8N - Encryption key"
 }

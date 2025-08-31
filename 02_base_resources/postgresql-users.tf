@@ -53,3 +53,11 @@ resource "postgresql_role" "litellm" {
 
   depends_on = [kubectl_manifest.postgres_ingress]
 }
+
+resource "postgresql_role" "n8n" {
+  name     = data.onepassword_item.database_n8n.username
+  login    = true
+  password = data.onepassword_item.database_n8n.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}

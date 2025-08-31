@@ -60,3 +60,12 @@ resource "kubernetes_namespace" "litellm" {
     name   = "lite-llm"
   }
 }
+
+resource "kubernetes_namespace" "n8n" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "n8n"
+  }
+}

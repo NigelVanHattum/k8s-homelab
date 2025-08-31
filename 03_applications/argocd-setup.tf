@@ -54,6 +54,12 @@ resource "argocd_project" "argo_cd_apps_project" {
       name = "*"
       namespace = kubernetes_namespace.litellm.metadata.0.name
     }
+
+        destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.n8n.metadata.0.name
+    }
     
 destination {
       server = "*"
