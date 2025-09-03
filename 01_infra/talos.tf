@@ -20,6 +20,7 @@ data "talos_image_factory_extensions_versions" "this" {
     names = [
       "intel-ucode", # Intel CPU 
       "intel-ice-firmware", # Network drivers
+      "siderolabs/i915"
     ]
   }
 }
