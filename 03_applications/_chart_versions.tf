@@ -45,5 +45,5 @@ variable "litellm_chart_version" {
 # https://artifacthub.io/packages/helm/open-8gears/n8n
 variable "n8n_chart_version" {
   type = string
-  default = "1.0.13"
+  default = "1.0.14"
 }
