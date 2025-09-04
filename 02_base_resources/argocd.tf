@@ -44,6 +44,12 @@ resource "argocd_project" "argo-cd-system-project" {
     destination {
       server = "*"
       name = "*"
+      namespace = "kube-system"
+    }
+
+    destination {
+      server = "*"
+      name = "*"
       namespace = "nfs-csi-driver"
     }
     
@@ -93,6 +99,24 @@ resource "argocd_project" "argo-cd-system-project" {
       server = "*"
       name = "*"
       namespace = "influxdb"
+    }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.cert_manager.metadata.0.name
+    }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.intel_gpu.metadata.0.name
+    }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.nfd.metadata.0.name
     }
 
     destination {

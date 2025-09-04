@@ -12,6 +12,27 @@ variable "argocd_chart_version" {
   default = "8.3.1"
 }
 
+# https://github.com/cert-manager/cert-manager/releases
+variable "cert_manager_chart_version" {
+  type    = string
+  description = "Cert-manager chart version"
+  default = "v1.18.2"
+}
+
+# https://github.com/kubernetes-sigs/node-feature-discovery/releases
+variable "nfd_chart_version" {
+  type    = string
+  description = "NFD chart version"
+  default = "0.17.3"
+}
+
+# https://github.com/intel/helm-charts/releases
+variable "intel_operator_chart_version" {
+  type    = string
+  description = "NFD chart version"
+  default = "0.32.1"
+}
+
 # https://github.com/grafana/k8s-monitoring-helm
 variable "k8s_monitoring_chart_version" {
   type    = string

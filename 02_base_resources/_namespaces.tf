@@ -1,3 +1,36 @@
+resource "kubernetes_namespace" "intel_gpu" {
+  metadata {
+    name   = "intel-gpu"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}
+
+resource "kubernetes_namespace" "cert_manager" {
+  metadata {
+    name   = "cert-manager"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}
+
+resource "kubernetes_namespace" "nfd" {
+  metadata {
+    name   = "nfd"
+    labels = {
+      "pod-security.kubernetes.io/audit"   = "privileged"
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      "pod-security.kubernetes.io/warn"    = "privileged"
+    }
+  }
+}
+
 resource "kubernetes_namespace" "linkerd" {
   metadata {
     annotations = {
