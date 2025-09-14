@@ -10,8 +10,12 @@ ollama:
   # tag: ""
   nodeSelector:
     ai-node: "true"
+    intel.feature.node.kubernetes.io/gpu: "true"
   # Ollama parameters
   ollama:
+    # gpu:
+    #   enabled: true
+    #   type: "intel"
     models:
       pull: 
         - llama3.2:1b
@@ -62,7 +66,7 @@ ollama:
     requests:
       # Memory request
       memory: 5Gi
-
+      gpu.intel.com/i915: 1
       # CPU request
       cpu: 200m
 
@@ -70,7 +74,7 @@ ollama:
     limits:
       # Memory limit
       memory: 6Gi
-
+      gpu.intel.com/i915: 1
       # CPU limit
       cpu: 4000m
 
