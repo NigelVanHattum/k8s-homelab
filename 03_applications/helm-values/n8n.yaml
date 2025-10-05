@@ -27,10 +27,12 @@ main:
   # See https://docs.n8n.io/hosting/configuration/environment-variables/ for all values.
   config:
     n8n:
-      host: "n8n.local.nigelvanhattum.nl"
+      host: "https://n8n.local.nigelvanhattum.nl"
       editor:
         base:
-          url: "n8n.local.nigelvanhattum.nl"
+          url: "https://n8n.local.nigelvanhattum.nl"
+      # log:
+      #   level: debug
     
   #     license:
   #       activation:
