@@ -10,8 +10,9 @@ module "nfd" {
   argocd_project = argocd_project.argo-cd-system-project.metadata.0.name
   namespace = kubernetes_namespace.nfd.metadata.0.name
   chart   = {
-    repo_url  = "https://kubernetes-sigs.github.io/node-feature-discovery/charts"
+    repo_url  = "registry.k8s.io/nfd/charts"
     repo_exists = false
+    oci_repo  = true
     chart     = "node-feature-discovery"
     version   = var.nfd_chart_version
   }

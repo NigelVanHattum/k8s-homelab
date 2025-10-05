@@ -10,7 +10,7 @@ module "intel_operator" {
     module.nfd
     ]
 
-  app_name ="intel-operator"
+  app_name = "intel-operator"
   argocd_project = argocd_project.argo-cd-system-project.metadata.0.name
   namespace = kubernetes_namespace.intel_gpu.metadata.0.name
   chart   = {

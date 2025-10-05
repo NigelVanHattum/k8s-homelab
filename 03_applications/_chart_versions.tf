@@ -33,17 +33,17 @@ variable "mealie_chart_version" {
 # https://github.com/open-webui/helm-charts/releases
 variable "open_webui_chart_version" {
   type = string
-  default = "7.7.0"
+  default = "8.9.0"
 }
 
 # https://github.com/BerriAI/litellm/pkgs/container/litellm-helm
 variable "litellm_chart_version" {
   type = string
-  default = "0.1.763"
+  default = "0.1.789"
 }
 
 # https://artifacthub.io/packages/helm/open-8gears/n8n
 variable "n8n_chart_version" {
   type = string
-  default = "1.0.14"
+  default = "1.0.15"
 }
