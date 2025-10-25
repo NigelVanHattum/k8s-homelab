@@ -37,6 +37,10 @@ proxy_config:
       litellm_params: 
         model: claude-sonnet-4-20250514
         api_key: "os.environ/ANTHROPIC_API_KEY" 
+    - model_name: Grok-4-fast-reasoning
+      litellm_params: 
+        model: xai/grok-4-fast-reasoning
+        api_key: "os.environ/XAI_API_KEY" 
     - model_name: Grok-3-mini
       litellm_params: 
         model: xai/grok-3-mini
