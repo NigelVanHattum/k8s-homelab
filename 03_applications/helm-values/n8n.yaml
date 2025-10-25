@@ -8,7 +8,7 @@ image:
 ingress:
   enabled: true
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure #, internet
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure , internet
   # define a custom ingress class Name, like "traefik" or "nginx"
   className: "traefik"
   hosts:
@@ -16,10 +16,10 @@ ingress:
       paths:
         - /
           # pathType: Prefix
-    # - host: n8n.nigelvanhattum.nl
-    #   paths:
-    #     - path: /
-    #       pathType: Prefix
+    - host: n8n.nigelvanhattum.nl
+      paths:
+        - /
+          # pathType: Prefix
 
 # the main (n8n) application related configuration + Kubernetes specific settings
 # The config: {} dictionary is converted to environmental variables in the ConfigMap.
@@ -27,10 +27,10 @@ main:
   # See https://docs.n8n.io/hosting/configuration/environment-variables/ for all values.
   config:
     n8n:
-      host: "https://n8n.local.nigelvanhattum.nl"
+      host: "https://n8n.nigelvanhattum.nl"
       editor:
         base:
-          url: "https://n8n.local.nigelvanhattum.nl"
+          url: "https://n8n.nigelvanhattum.nl"
       # log:
       #   level: debug
     
@@ -61,7 +61,10 @@ main:
 
   # Extra environmental variables, so you can reference other configmaps and secrets into n8n as env vars.
   extraEnv:
-  #    N8N_DB_POSTGRESDB_NAME:
+     WEBHOOK_URL: 
+      value: "https://n8n.nigelvanhattum.nl/"
+     N8N_PROXY_HOPS: 
+      value: "1"
   #      valueFrom:
   #        secretKeyRef:
   #          name: db-app
