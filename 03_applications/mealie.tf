@@ -23,6 +23,18 @@ module "mealie" {
   ]
 }
 
+# Waiting for https://github.com/ncecere/terraform-provider-litellm/issues/3
+resource "litellm_key" "mealie_api_key" {
+  # models               = [ "All Team Models" ]
+  max_budget           = 20.0
+  budget_duration      = "30d"
+  allowed_cache_controls = ["no-cache", "max-age=3600"]
+  soft_budget          = 10.0
+  key_alias            = "mealie"
+
+  depends_on = [ argocd_application.lite_llm ]
+}
+
 resource "kubectl_manifest" "pv_mealie" {
   yaml_body = templatefile("manifests/storage/pv-mealie.yaml", {
     pv_name         = local.file_share.pv_names.mealie, 
@@ -58,6 +70,7 @@ resource "argocd_application" "mealie" {
           smtp_credentials          = kubernetes_secret.mealie_smtp.metadata.0.name
           oidc_config               = kubernetes_secret.mealie_oidc.metadata.0.name
           authentik_admin_group     = local.authentik.group_admin
+          lite_llm_api_key          = litellm_key.mealie_api_key.key
         })
       }
     }

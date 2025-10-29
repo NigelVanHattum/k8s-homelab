@@ -86,11 +86,11 @@ mealie:
         name: ${oidc_config}
         key: client_secret
   - name: OPENAI_BASE_URL
-    value: https://ollama.local.nigelvanhattum.nl/v1
+    value: http://lite-llm-litellm.lite-llm.svc.cluster.local:4000
   - name: OPENAI_API_KEY
-    value: "Dummy"
+    value: ${lite_llm_api_key}
   - name: OPENAI_MODEL
-    value: llama3.2:1b
+    value: Grok-4-fast-reasoning
 
 
 ingress:
