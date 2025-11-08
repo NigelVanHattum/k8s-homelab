@@ -41,6 +41,44 @@ resource "proxmox_vm_qemu" "talos_machines" {
     }
   }
 
+  dynamic "pcis" {
+    for_each = length(each.value.pcis) > 0 ? [1] : []  # Skip if no PCI configs
+    content {
+      # Dynamically include pci0 if "0" is in the pcis map, repeat for me pci devices as needed
+      dynamic "pci0" {
+        for_each = contains(keys(each.value.pcis), "0") ? [each.value.pcis["0"]] : []
+        content {
+          dynamic "mapping" {
+            for_each = pci0.value.type == "mapping" ? [pci0.value] : []
+            content {
+              mapping_id     = mapping.value.mapping_id
+              pcie           = mapping.value.pcie
+              primary_gpu    = mapping.value.primary_gpu
+              rombar         = mapping.value.rombar
+              device_id      = mapping.value.device_id
+              vendor_id      = mapping.value.vendor_id
+              sub_device_id  = mapping.value.sub_device_id
+              sub_vendor_id  = mapping.value.sub_vendor_id
+            }
+          }
+          dynamic "raw" {
+            for_each = pci0.value.type == "raw" ? [pci0.value] : []
+            content {
+              raw_id         = raw.value.raw_id
+              pcie           = raw.value.pcie
+              primary_gpu    = raw.value.primary_gpu
+              rombar         = raw.value.rombar
+              device_id      = raw.value.device_id
+              vendor_id      = raw.value.vendor_id
+              sub_device_id  = raw.value.sub_device_id
+              sub_vendor_id  = raw.value.sub_vendor_id
+            }
+          }
+        }
+      }
+    }
+  }
+
   network {
     id        = each.value.network_id
     model     = "virtio"

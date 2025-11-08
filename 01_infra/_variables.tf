@@ -42,5 +42,17 @@ variable "all_vms" {
     storage_name = optional(string, "local-lvm")
     network_id   = optional(number, 7)
     vlan_tag     = optional(number, -1)
+    pcis         = optional(map(object({
+      type           = string  # "mapping" or "raw"
+      mapping_id     = optional(string, "")  # Only required if type == "mapping"
+      raw_id         = optional(string, "")  # Only required if type == "raw"
+      pcie           = optional(bool, false)
+      primary_gpu    = optional(bool, false)
+      rombar         = optional(bool, true)
+      device_id      = optional(string, "")
+      vendor_id      = optional(string, "")
+      sub_device_id  = optional(string, "")
+      sub_vendor_id  = optional(string, "")
+    })), {})
   }))
 }
