@@ -69,3 +69,12 @@ resource "kubernetes_namespace" "n8n" {
     name   = "n8n"
   }
 }
+
+resource "kubernetes_namespace" "kasm" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "kasm"
+  }
+}

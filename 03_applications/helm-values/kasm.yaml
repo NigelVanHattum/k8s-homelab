@@ -1,0 +1,177 @@
+# yaml-language-server: $schema=values.schema.json
+# deploymentSize -- Define the estimated size of the Kasm deployment in expected session load.
+#  small  = Up to 10-15 sessions
+#  medium = Up to 25-30 sessions
+#  large  = Up to 50+ sessions
+#
+deploymentSize: "small"
+applyHealthChecks: false
+# publicAddr -- Set the access URL to be used for the Kasm deployment. This is the URL you will use to access
+# your Kasm deployment. This URL can be a private address, it just needs to be resolvable by systems you use
+# to interface with Kasm.
+# 
+# If you create a self-signed or custom certificate, this is the value you should assign as the Common Name
+# associated with the certificate. If `certificate.certManager.enabled` is set to true, this is the
+# name used to generate the certificate.
+#
+publicAddr: ${hostname}
+    
+# proxyService -- Configure the external-facing service type to use. 
+# Allowed service types: ClusterIP or LoadBalancer. 
+#
+# The service.annotations defined here only apply to the `proxy` service (`proxy-service-external.yaml` file).
+# If you wish to apply annotations to all services, use the annotations.service value at the bottom of this chart.
+#
+# NOTE: If ingress.enabled or route.enabled set to `true` service.type MUST be set to `ClusterIP`. Also, if you
+# wish to deploy a multi-zone Kasm (see [Deployment Zones](https://kasmweb.com/docs/latest/guide/zones/deployment_zones.html)
+# documentation for reference), you MUST use either a Route or an Ingress and set the `proxyService.type` to `ClusterIP`.
+#
+proxyService:
+  type: ClusterIP
+  annotations: {}
+  labels: {}
+
+# Configure an Ingress for your Kasm deployment. 
+# 
+ingress:
+  enabled: true
+  tls: false # Handled via Traefik Middleware
+  backendProtocol: http
+  ingressClassName: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure, internet
+
+# Configure certificate settings.
+# You can create your own certificate and upload it to the `secretName` supplied below, or if you have
+# an existing cert-manager configured and you wish to use that, set the `secretName` and configure the
+# associated cert-manager settings.
+#
+certificate:
+  # certificate.certManager -- For additional cert-manager configuration/deployment information refer to the online documentation
+  # [Cert Manager Docs](https://cert-manager.io/v1.1-docs/installation/kubernetes/). 
+  certManager:
+    enabled: true
+    addWildCard: true
+    issuerName: "selfsigned-issuer"
+  secretName: "kasm-tls-cert"
+
+
+# Kasm DB settings and configuration options
+#
+database:
+  # database.standalone -- Setting standalone to true will prevent the deployment of the Kasm DB StatefulSet and requires
+  # the user to have a self-hosted PostgreSQL Database v14 server already setup and awaiting connections. Use the below
+  # database configuration values to connect to your external DB.
+  #
+  standalone: false
+  image:
+    repository: kasmweb/postgres
+    tag: ${kasm_version}
+  # Configure the Storage for the Kasm DB StatefulSet
+  #
+  storage:
+    # database.storage.storageClassName -- Set the storage class to attach to the DB for storage.
+    # NOTE: Leaving this blank will use the cluster-default storage class.
+    #
+    storageClassName: "nfs-csi-kasm"
+    # database.storage.pvcSize -- Set the size of the PVC to attach to your Kubernetes-hosted Database server. The default
+    # size is 8Gi. Just supply the integer value of the PVC size in GB you wish to use.
+    #
+    pvcSize: 10
+
+  
+# Configure the Kasm Database management functions
+#
+dbManagement:
+  # dbManagement.initialize -- Initialize the DB. This is required for an initial deployment of Kasm to configure the DB for Kasm usage
+  #
+  initialize: false
+
+
+# Kasm component resources and associated settings
+#
+components:
+  # Configuration settings for the Kasm Nginx Proxy service
+  #
+  proxy:
+    # components.proxy.image -- Configure the image repository where the image is stored. Use this to point to an private hosted
+    # container registry instead of our public DockerHub hosted one.
+    #
+    image:
+      repository: kasmweb/proxy
+      tag: ${kasm_version}
+
+  api:
+    # components.api.image -- Configure the image repository where the image is stored. Use this to point to an private hosted
+    # container registry instead of our public DockerHub hosted one.
+    #
+    image:
+      repository: kasmweb/api
+      tag: ${kasm_version}
+
+  # Configuration settings for the Kasm Manager service
+  #
+  manager:
+    # components.manager.image -- Configure the image repository where the image is stored. Use this to point to an private hosted
+    # container registry instead of our public DockerHub hosted one.
+    #
+    image:
+      repository: kasmweb/manager
+      tag: ${kasm_version}
+
+  # Configuration settings for the Kasm Guac RDP service
+  #
+  guac:
+    # components.guac.image -- Configure the image repository where the image is stored. Use this to point to an private hosted
+    # container registry instead of our public DockerHub hosted one.
+    #
+    image:
+      repository: kasmweb/kasm-guac
+      tag: 1.18.0
+    # components.guac.enabled -- Use this setting to enable/disable deployment of the Kasm Guacamole web RDP service - 
+    # [Kasm Guac Service](https://kasmweb.com/docs/latest/guide/connection_proxies.html#guacamole-guac).
+    #
+    enabled: true
+
+  # Configuration settings for the Kasm RDP Gateway service
+  #
+  rdpGateway:
+    # components.rdpGateway.image -- Configure the image repository where the image is stored. Use this to point to an private hosted
+    # container registry instead of our public DockerHub hosted one.
+    #
+    image:
+      repository: kasmweb/rdp-gateway
+      tag: ${kasm_version}
+    # components.rdpGateway.enabled -- Use this setting to enable/disable deployment of the Kasm RDP Gateway service - 
+    # [Kasm RDP Gateway](https://kasmweb.com/docs/latest/guide/connection_proxies.html#rdp-gateway).
+    #
+    enabled: true
+
+  # Configuration settings for the Kasm RDP HTTPS Gateway service
+  #
+  rdpHttpsGateway:
+    # components.rdpHttpsGateway.image -- Configure the image repository where the image is stored. Use this to point to an private hosted
+    # container registry instead of our public DockerHub hosted one.
+    #
+    image:
+      repository: kasmweb/rdp-https-gateway
+      tag: ${kasm_version}
+    # components.rdpHttpsGateway.enabled -- Use this setting to enable/disable deployment of the Kasm RDP HTTPS Gateway service.
+    # This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 - 
+    # [Kasm RDP HTTPS Gateway](https://kasmweb.com/docs/latest/guide/connection_proxies.html#rdp-https-gateway).
+    #
+    enabled: true
+    # components.rdpHttpsGateway.annotations -- Custom annotations to add to the Kasm RDP HTTPS Gateway Deployment
+    annotations: {}
+    # components.rdpHttpsGateway.resources -- Manually configure the Kasm RDP HTTPS Gateway Deployment resources. This overrides the pre-defined `deploymentSize` values.
+    resources: {}
+    # components.rdpHttpsGateway.labels -- Custom labels to add to the Kasm RDP HTTPS Gateway Deployment
+    labels: {}
+
+####################################
+# Extra Kubernetes config settings #
+####################################
+
+# imagePullPolicy -- Configure global image pull policy
+#
+imagePullPolicy: "Always"

@@ -47,3 +47,9 @@ variable "n8n_chart_version" {
   type = string
   default = "1.0.15"
 }
+
+# https://github.com/kasmtech/kasm-helm
+variable "kasm_chart_version" {
+  type = string
+  default = "1.1180.0"
+}

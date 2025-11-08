@@ -55,16 +55,22 @@ resource "argocd_project" "argo_cd_apps_project" {
       namespace = kubernetes_namespace.litellm.metadata.0.name
     }
 
-        destination {
+    destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.mealie.metadata.0.name
+    }
+
+    destination {
       server = "*"
       name = "*"
       namespace = kubernetes_namespace.n8n.metadata.0.name
     }
     
-destination {
+    destination {
       server = "*"
       name = "*"
-      namespace = kubernetes_namespace.mealie.metadata.0.name
+      namespace = kubernetes_namespace.kasm.metadata.0.name
     }
 
     cluster_resource_whitelist {

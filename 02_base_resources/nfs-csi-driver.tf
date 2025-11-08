@@ -55,6 +55,18 @@ resource "kubectl_manifest" "nfs_storage_class_postgresql" {
   ]
 }
 
+resource "kubectl_manifest" "nfs_storage_class_kasm" {
+  yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-kasm.yaml", {
+    nas_ip = local.ip_address.nas_ip
+    root_path = local.file_share.nas_root_mount
+  })
+  override_namespace = kubernetes_namespace.nfs_csi_driver.metadata.0.name
+
+  depends_on = [
+    argocd_application.nfs_csi_driver
+  ]
+}
+
 resource "kubectl_manifest" "nfs_storage_class_traefik" {
   yaml_body          = templatefile("manifests/nfs-csi/nfs-storageClass-traefik.yaml", {
     nas_ip = local.ip_address.nas_ip
