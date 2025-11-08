@@ -54,6 +54,4 @@ geoip:
     secretName: ${geo_ip_secret}
 
 redis:
-  enabled: true
-  global:
-    storageClass: "nfs-csi-authentik"
+  enabled: false
