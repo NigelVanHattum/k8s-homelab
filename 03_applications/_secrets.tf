@@ -270,3 +270,39 @@ data "onepassword_item" "n8n_encryption_key" {
   vault = data.onepassword_vault.homelab_vault.uuid
   title    = "N8N - Encryption key"
 }
+
+### KASM
+data "onepassword_item" "kasm_admin" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "kasm - admin"
+}
+
+data "onepassword_item" "kasm_user" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "kasm - user"
+}
+
+data "onepassword_item" "database_kasm" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title    = "postgresql-Kasm"
+}
+
+resource "kubernetes_secret" "kasm_db_credentials" {
+  metadata {
+    name = "kasm-db"
+    namespace = kubernetes_namespace.kasm.metadata.0.name
+  }
+
+  data = {
+    db-password     = data.onepassword_item.database_kasm.password
+  }
+}
+
+resource "kubernetes_secret" "kasm_secrets" {
+  metadata {
+    name = "kasm-secrets"
+    namespace = kubernetes_namespace.kasm.metadata.0.name
+  }
+
+  data = local.kasm_secret_map
+}

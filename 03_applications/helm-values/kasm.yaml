@@ -5,7 +5,7 @@
 #  large  = Up to 50+ sessions
 #
 deploymentSize: "small"
-applyHealthChecks: false
+applyHealthChecks: true
 # publicAddr -- Set the access URL to be used for the Kasm deployment. This is the URL you will use to access
 # your Kasm deployment. This URL can be a private address, it just needs to be resolvable by systems you use
 # to interface with Kasm.
@@ -15,7 +15,7 @@ applyHealthChecks: false
 # name used to generate the certificate.
 #
 publicAddr: ${hostname}
-    
+
 # proxyService -- Configure the external-facing service type to use. 
 # Allowed service types: ClusterIP or LoadBalancer. 
 #
@@ -78,7 +78,10 @@ database:
     # size is 8Gi. Just supply the integer value of the PVC size in GB you wish to use.
     #
     pvcSize: 10
-
+  kasmDbSecret:
+  # Example Custom DB Secret configuration
+    name: ${kasm_db_secret_name}
+    key: db-password
   
 # Configure the Kasm Database management functions
 #
@@ -127,11 +130,11 @@ components:
     #
     image:
       repository: kasmweb/kasm-guac
-      tag: 1.18.0
+      tag: ${kasm_version}
     # components.guac.enabled -- Use this setting to enable/disable deployment of the Kasm Guacamole web RDP service - 
     # [Kasm Guac Service](https://kasmweb.com/docs/latest/guide/connection_proxies.html#guacamole-guac).
     #
-    enabled: true
+    enabled: false
 
   # Configuration settings for the Kasm RDP Gateway service
   #
@@ -145,7 +148,7 @@ components:
     # components.rdpGateway.enabled -- Use this setting to enable/disable deployment of the Kasm RDP Gateway service - 
     # [Kasm RDP Gateway](https://kasmweb.com/docs/latest/guide/connection_proxies.html#rdp-gateway).
     #
-    enabled: true
+    enabled: false
 
   # Configuration settings for the Kasm RDP HTTPS Gateway service
   #
@@ -160,7 +163,7 @@ components:
     # This service allows users to use native RDP clients via HTTPS connections rather than exposing 3389 - 
     # [Kasm RDP HTTPS Gateway](https://kasmweb.com/docs/latest/guide/connection_proxies.html#rdp-https-gateway).
     #
-    enabled: true
+    enabled: false
     # components.rdpHttpsGateway.annotations -- Custom annotations to add to the Kasm RDP HTTPS Gateway Deployment
     annotations: {}
     # components.rdpHttpsGateway.resources -- Manually configure the Kasm RDP HTTPS Gateway Deployment resources. This overrides the pre-defined `deploymentSize` values.
@@ -175,3 +178,8 @@ components:
 # imagePullPolicy -- Configure global image pull policy
 #
 imagePullPolicy: "Always"
+
+annotations:
+  secret:
+  # Prevent ArgoCD from creating the secrets
+    argocd.argoproj.io/hook: Skip

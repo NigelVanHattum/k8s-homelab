@@ -36,6 +36,11 @@ locals {
   # https://github.com/mealie-recipes/mealie/releases
   mealie_version = "v3.4.0"
 
+  # https://www.kasmweb.com/docs/latest/release_notes/1.17.0.html
+  # Make sure to also update agent pool (config-files/kasm-agent-pool.yaml). 
+  # https://github.com/kasmtech/workspaces-autoscale-startup-scripts/blob/release/1.18.0/docker_agents/ubuntu.sh
+  kasm_version = "1.18.0"
+
   # https://github.com/firefly-iii/firefly-iii/releases
   # https://hub.docker.com/r/fireflyiii/core/tags
   firefly_version = "version-6"

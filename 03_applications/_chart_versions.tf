@@ -49,7 +49,8 @@ variable "n8n_chart_version" {
 }
 
 # https://github.com/kasmtech/kasm-helm
+#  Copied to https://github.com/NigelVanHattum/Homelab-Helm-charts/releases
 variable "kasm_chart_version" {
   type = string
-  default = "1.1180.0"
+  default = "1.1180.1"
 }

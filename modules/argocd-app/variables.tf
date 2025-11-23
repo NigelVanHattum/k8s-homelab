@@ -32,3 +32,15 @@ variable "chart" {
     version     = string
   })
 }
+
+variable "ignore_differences" {
+  description = "List of ignoreDifferences rules for ArgoCD Application"
+  type = list(object({
+    group                 = string
+    kind                  = string
+    name                  = string
+    jq_path_expressions   = optional(list(string), null)
+    json_pointers         = optional(list(string), null)
+  }))
+  default = null
+}

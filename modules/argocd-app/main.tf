@@ -46,5 +46,17 @@ resource "argocd_application" "app" {
       namespace = var.namespace
       name = "in-cluster"
     }
+
+    dynamic "ignore_difference" {
+      for_each = var.ignore_differences != null ? var.ignore_differences : []
+      content {
+        group         = ignore_difference.value.group
+        kind          = ignore_difference.value.kind
+        name          = ignore_difference.value.name
+        namespace     = var.namespace
+        json_pointers = ignore_difference.value.json_pointers
+        jq_path_expressions = ignore_difference.value.jq_path_expressions
+      }
+    }
   }
 }
