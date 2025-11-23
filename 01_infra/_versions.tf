@@ -30,5 +30,5 @@ locals {
    talos_version = "v1.11.5"
   # https://github.com/kubernetes/kubernetes/releases
   # https://www.talos.dev/v1.11/introduction/support-matrix/
-   k8s_version = "1.34.1"
+   k8s_version = "1.34.2"
 }

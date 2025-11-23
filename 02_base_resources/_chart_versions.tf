@@ -9,7 +9,7 @@
 variable "argocd_chart_version" {
   type    = string
   description = "argocd chart version"
-  default = "9.1.0"
+  default = "9.1.3"
 }
 
 # https://github.com/cert-manager/cert-manager/releases
@@ -37,7 +37,7 @@ variable "intel_operator_chart_version" {
 variable "k8s_monitoring_chart_version" {
   type    = string
   description = "grafana monitoring"
-  default = "3.5.6"
+  default = "3.6.0"
 }
 
 # https://github.com/kubernetes-csi/csi-driver-nfs
@@ -57,13 +57,13 @@ variable "metallb_chart_version" {
 variable "traefik_crd_chart_version" {
   type = string
   description = "Traefik CRD chart version (not traefik version)"
-  default = "1.11.1"
+  default = "1.12.0"
 }
 
 variable "traefik_chart_version" {
   type = string
   description = "Traefik chart version (not traefik version)"
-  default = "37.2.0"
+  default = "37.4.0"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
@@ -89,5 +89,5 @@ variable "adguard_home_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2025.10.1"
+  default = "2025.10.2"
 }

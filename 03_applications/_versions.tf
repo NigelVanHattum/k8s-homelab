@@ -34,7 +34,7 @@ terraform {
 
 locals {
   # https://github.com/mealie-recipes/mealie/releases
-  mealie_version = "v3.4.0"
+  mealie_version = "v3.5.0"
 
   # https://www.kasmweb.com/docs/latest/release_notes/1.17.0.html
   # Make sure to also update agent pool (config-files/kasm-agent-pool.yaml). 
