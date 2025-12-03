@@ -14,12 +14,12 @@ ingress:
   hosts:
     - host: n8n.local.nigelvanhattum.nl
       paths:
-        - /
-          # pathType: Prefix
+        - path: "/"
+          pathType: Prefix
     - host: n8n.nigelvanhattum.nl
       paths:
-        - /
-          # pathType: Prefix
+        - path: "/"
+          pathType: Prefix
 
 # the main (n8n) application related configuration + Kubernetes specific settings
 # The config: {} dictionary is converted to environmental variables in the ConfigMap.
@@ -61,10 +61,13 @@ main:
 
   # Extra environmental variables, so you can reference other configmaps and secrets into n8n as env vars.
   extraEnv:
-     WEBHOOK_URL: 
+    WEBHOOK_URL: 
       value: "https://n8n.nigelvanhattum.nl/"
-     N8N_PROXY_HOPS: 
+    N8N_PROXY_HOPS: 
       value: "1"
+    N8N_SKIP_AUTH_ON_OAUTH_CALLBACK:
+      value: "false"
+    
   #      valueFrom:
   #        secretKeyRef:
   #          name: db-app
