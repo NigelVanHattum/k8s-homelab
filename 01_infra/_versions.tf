@@ -5,12 +5,12 @@ terraform {
     # https://registry.terraform.io/providers/1Password/onepassword/latest
     onepassword = {
       source = "1Password/onepassword"
-      version = ">= 2.0.0, < 3.0.0"
+      version = ">= 3.0.0, < 4.0.0"
     }
     # https://registry.terraform.io/providers/Telmate/proxmox/latest/docs
     proxmox = {
       source = "telmate/proxmox"
-      version = "3.0.2-rc05"
+      version = "3.0.2-rc06"
     }
     # https://registry.terraform.io/providers/siderolabs/talos/0.8.0
     talos = {

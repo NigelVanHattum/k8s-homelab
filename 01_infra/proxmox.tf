@@ -9,7 +9,7 @@ resource "proxmox_vm_qemu" "talos_machines" {
   name = each.key
   target_node = local.target_node
 
-  onboot = true
+  start_at_node_boot = true
   vm_state = "running"
   qemu_os = "other"
   scsihw = "virtio-scsi-pci"

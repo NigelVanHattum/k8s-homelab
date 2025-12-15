@@ -5,7 +5,7 @@ terraform {
     # https://registry.terraform.io/providers/1Password/onepassword/latest
     onepassword = {
       source = "1Password/onepassword"
-      version = ">= 2.0.0, < 3.0.0"
+      version = ">= 3.0.0, < 4.0.0"
     }
     # https://registry.terraform.io/providers/alekc/kubectl/latest
     kubectl = {
@@ -36,6 +36,11 @@ terraform {
     authentik = {
       source = "goauthentik/authentik"
       version = ">= 2025.0.0, < 2026.0.0"
+    }
+    # https://registry.terraform.io/providers/aminueza/minio/latest
+    minio = {
+      source = "aminueza/minio"
+      version = "~> 3.11.0"
     }
   }
 }
