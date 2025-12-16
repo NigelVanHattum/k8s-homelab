@@ -1,9 +1,3 @@
-resource "argocd_repository" "my_homelab" {
-  repo = "https://nigelvanhattum.github.io/Homelab-Helm-charts/"
-  name = "my-homelab"
-  type = "helm"
-}
-
 resource "argocd_project" "argo_cd_apps_project" {
   metadata {
     name      = "apps"

@@ -1,8 +1,8 @@
 resource "kubectl_manifest" "pv_heimdall_config" {
   yaml_body = templatefile("manifests/storage/pv-prowlarr-config.yaml", {
-    pv_name         = local.file_share.pv_names.heimdall_config, 
-    ip_address      = local.ip_address.nas_ip,
-    k8s_rootmount   = local.file_share.nas_root_mount
+    pv_name       = local.file_share.pv_names.heimdall_config,
+    ip_address    = local.ip_address.nas_ip,
+    k8s_rootmount = local.file_share.nas_root_mount
   })
   override_namespace = kubernetes_namespace.heimdall.metadata.0.name
 }
@@ -19,16 +19,16 @@ resource "argocd_application" "heimdall" {
   spec {
     project = "apps"
     source {
-      repo_url        = argocd_repository.my_homelab.repo
+      repo_url        = data.terraform_remote_state.base_resources.outputs.homelab_helm_repo
       chart           = "heimdall"
       target_revision = var.heimdall_chart_version
 
       helm {
         values = templatefile("helm-values/heimdall.yaml",
-        {
-          PUID = local.file_share.PUID
-          PGID = local.file_share.PGID
-          pv_name = local.file_share.pv_names.heimdall_config
+          {
+            PUID    = local.file_share.PUID
+            PGID    = local.file_share.PGID
+            pv_name = local.file_share.pv_names.heimdall_config
         })
       }
     }
@@ -53,7 +53,7 @@ resource "argocd_application" "heimdall" {
 
     destination {
       namespace = kubernetes_namespace.heimdall.metadata.0.name
-      name = "in-cluster"
+      name      = "in-cluster"
     }
   }
 }

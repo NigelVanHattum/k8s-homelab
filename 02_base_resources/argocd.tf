@@ -21,6 +21,15 @@ resource "helm_release" "argocd" {
     ]
 }
 
+resource "argocd_repository" "my_homelab" {
+  repo = "https://nigelvanhattum.github.io/Homelab-Helm-charts/"
+  name = "my-homelab"
+  type = "helm"
+
+  depends_on = [ helm_release.argocd ]
+}
+
+
 resource "kubectl_manifest" "argo_public_ingress" {
   validate_schema = false
   yaml_body = file("${path.module}/manifests/ingress/argo.yaml")
@@ -33,6 +42,7 @@ resource "kubectl_manifest" "argo_public_ingress" {
 resource "argocd_project" "argo-cd-system-project" {
   metadata {
     name      = "system"
+    namespace = kubernetes_namespace.argocd.metadata.0.name
   }
 
   depends_on = [time_sleep.wait_for_argo]
@@ -117,6 +127,12 @@ resource "argocd_project" "argo-cd-system-project" {
       server = "*"
       name = "*"
       namespace = kubernetes_namespace.nfd.metadata.0.name
+    }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = kubernetes_namespace.mcp-servers.metadata.0.name
     }
 
     destination {

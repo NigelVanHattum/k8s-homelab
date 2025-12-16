@@ -8,6 +8,16 @@ data "terraform_remote_state" "infra" {
   }
 }
 
+data "terraform_remote_state" "base_resources" {
+  backend = "remote"
+  config = {
+    organization = "Nigel_dev"
+    workspaces = {
+      name = "02_base_resources"
+    }
+  }
+}
+
 ### 1Password
 data "onepassword_vault" "homelab_vault" {
   name = "Homelab"
@@ -16,87 +26,87 @@ data "onepassword_vault" "homelab_vault" {
 ### SMTP
 data "onepassword_item" "smtp" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Mailersend SMTP"
+  title = "Mailersend SMTP"
 }
 
 ### PostgreSQL
 data "onepassword_item" "database_firefly" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-Firefly"
+  title = "postgresql-Firefly"
 }
 
 data "onepassword_item" "database_mealie" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-Mealie"
+  title = "postgresql-Mealie"
 }
 
 data "onepassword_item" "database_sonarr" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-Sonarr"
+  title = "postgresql-Sonarr"
 }
 
 data "onepassword_item" "database_radarr" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-Radarr"
+  title = "postgresql-Radarr"
 }
 
 data "onepassword_item" "database_prowlarr" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-Prowlarr"
+  title = "postgresql-Prowlarr"
 }
 
 data "onepassword_item" "database_litellm" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-LiteLLM"
+  title = "postgresql-LiteLLM"
 }
 
 data "onepassword_item" "database_n8n" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "postgresql-N8N"
+  title = "postgresql-N8N"
 }
 
 ### ArgoCD
 data "onepassword_item" "argo_admin" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "ArgoCD admin login"
+  title = "ArgoCD admin login"
 }
 
 ### Authentik
 data "onepassword_item" "authentik_admin_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "Authentik Token"
+  title = "Authentik Token"
 }
 
 
 ### Firefly
 data "onepassword_item" "firefly_app_key" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Firefly App Key"
+  title = "Firefly App Key"
 }
 
 data "onepassword_item" "firefly_cron_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title  = "Firefly Cron Token"
+  title = "Firefly Cron Token"
 }
 
 resource "kubernetes_secret" "firefly_environment" {
   metadata {
-    name = "firefly-env"
+    name      = "firefly-env"
     namespace = kubernetes_namespace.firefly.metadata.0.name
   }
 
   data = {
-    APP_ENV   = "production"
-    APP_DEBUG = false
-    APP_KEY   = data.onepassword_item.firefly_app_key.password
-    TZ        = "Europe/Amsterdam"
-    TRUSTED_PROXIES = "**"
-    DB_CONNECTION = "pgsql"
-    DB_HOST = data.onepassword_item.database_firefly.hostname
-    DB_PORT = data.onepassword_item.database_firefly.port
-    DB_DATABASE = data.onepassword_item.database_firefly.database
-    DB_USERNAME = data.onepassword_item.database_firefly.username
-    DB_PASSWORD = data.onepassword_item.database_firefly.password
+    APP_ENV           = "production"
+    APP_DEBUG         = false
+    APP_KEY           = data.onepassword_item.firefly_app_key.password
+    TZ                = "Europe/Amsterdam"
+    TRUSTED_PROXIES   = "**"
+    DB_CONNECTION     = "pgsql"
+    DB_HOST           = data.onepassword_item.database_firefly.hostname
+    DB_PORT           = data.onepassword_item.database_firefly.port
+    DB_DATABASE       = data.onepassword_item.database_firefly.database
+    DB_USERNAME       = data.onepassword_item.database_firefly.username
+    DB_PASSWORD       = data.onepassword_item.database_firefly.password
     STATIC_CRON_TOKEN = data.onepassword_item.firefly_cron_token.password
   }
 }
@@ -104,12 +114,12 @@ resource "kubernetes_secret" "firefly_environment" {
 ### Plex
 data "onepassword_item" "plex_token" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "Plex Token"
+  title = "Plex Token"
 }
 
 resource "kubernetes_secret" "sonarr_postgres" {
   metadata {
-    name = "sonarr-postgres"
+    name      = "sonarr-postgres"
     namespace = kubernetes_namespace.plex_management.metadata.0.name
   }
 
@@ -121,7 +131,7 @@ resource "kubernetes_secret" "sonarr_postgres" {
 
 resource "kubernetes_secret" "radarr_postgres" {
   metadata {
-    name = "radarr-postgres"
+    name      = "radarr-postgres"
     namespace = kubernetes_namespace.plex_management.metadata.0.name
   }
 
@@ -133,7 +143,7 @@ resource "kubernetes_secret" "radarr_postgres" {
 
 resource "kubernetes_secret" "prowlarr_postgres" {
   metadata {
-    name = "prowlarr-postgres"
+    name      = "prowlarr-postgres"
     namespace = kubernetes_namespace.plex_management.metadata.0.name
   }
 
@@ -146,93 +156,93 @@ resource "kubernetes_secret" "prowlarr_postgres" {
 ### Floatplane
 data "onepassword_item" "floatplane" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "floatplane.com"
+  title = "floatplane.com"
 }
 
 ### Mealie
 resource "kubernetes_secret" "mealie" {
   metadata {
-    name = "mealie-db"
+    name      = "mealie-db"
     namespace = kubernetes_namespace.mealie.metadata.0.name
   }
 
   data = {
-    username    = data.onepassword_item.database_mealie.username
-    password    = data.onepassword_item.database_mealie.password
+    username = data.onepassword_item.database_mealie.username
+    password = data.onepassword_item.database_mealie.password
   }
 }
 
 resource "kubernetes_secret" "mealie_smtp" {
   metadata {
-    name = "mealie-smtp"
+    name      = "mealie-smtp"
     namespace = kubernetes_namespace.mealie.metadata.0.name
   }
 
   data = {
-    username    = data.onepassword_item.smtp.username
-    password    = data.onepassword_item.smtp.password
-    host        = data.onepassword_item.smtp.url
+    username = data.onepassword_item.smtp.username
+    password = data.onepassword_item.smtp.password
+    host     = data.onepassword_item.smtp.url
   }
 }
 
 resource "kubernetes_secret" "mealie_oidc" {
   metadata {
-    name = "mealie-oidc"
+    name      = "mealie-oidc"
     namespace = kubernetes_namespace.mealie.metadata.0.name
   }
 
   data = {
-    config_url   = module.mealie.oauth_well_known_url
-    client_id    = module.mealie.oauth_client_id
-    client_secret    = module.mealie.oauth_client_secret
+    config_url    = module.mealie.oauth_well_known_url
+    client_id     = module.mealie.oauth_client_id
+    client_secret = module.mealie.oauth_client_secret
   }
 }
 
 ### Open-WebUI
 resource "kubernetes_secret" "open_webui_oidc" {
   metadata {
-    name = "open-webui-oidc"
+    name      = "open-webui-oidc"
     namespace = kubernetes_namespace.open_webui.metadata.0.name
   }
 
   data = {
-    name         = "authentik"
-    config_url   = module.open_webui.oauth_well_known_url
-    client_id    = module.open_webui.oauth_client_id
-    client_secret    = module.open_webui.oauth_client_secret
+    name          = "authentik"
+    config_url    = module.open_webui.oauth_well_known_url
+    client_id     = module.open_webui.oauth_client_id
+    client_secret = module.open_webui.oauth_client_secret
   }
 }
 
 resource "kubernetes_secret" "open_webui_litellm" {
   metadata {
-    name = "open-webui-litellm"
+    name      = "open-webui-litellm"
     namespace = kubernetes_namespace.open_webui.metadata.0.name
   }
 
   data = {
-    api_key   = "${litellm_key.api_key.key}"
+    api_key = "${litellm_key.api_key.key}"
   }
 }
 
 ### Lite LLM
 data "onepassword_item" "litellm_masterkey" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "Lite-LLM master key"
+  title = "Lite-LLM master key"
 }
 
 data "onepassword_item" "litellm_claude_ai" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "Claude.ai"
+  title = "Claude.ai"
 }
 
 data "onepassword_item" "litellm_xai_ai" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "XAI - API key"
+  title = "XAI - API key"
 }
 
 resource "kubernetes_secret" "litellm_masterkey" {
   metadata {
-    name = local.litellm.masterKey_secret_name
+    name      = local.litellm.masterKey_secret_name
     namespace = kubernetes_namespace.litellm.metadata.0.name
   }
 
@@ -243,7 +253,7 @@ resource "kubernetes_secret" "litellm_masterkey" {
 
 resource "kubernetes_secret" "litellm_claude_ai" {
   metadata {
-    name = local.litellm.lite_llm_api_keys
+    name      = local.litellm.lite_llm_api_keys
     namespace = kubernetes_namespace.litellm.metadata.0.name
   }
 
@@ -255,12 +265,12 @@ resource "kubernetes_secret" "litellm_claude_ai" {
 
 resource "kubernetes_secret" "litellm_db_credentials" {
   metadata {
-    name = local.litellm.db_secret_name
+    name      = local.litellm.db_secret_name
     namespace = kubernetes_namespace.litellm.metadata.0.name
   }
 
   data = {
-    (local.litellm.db_user_key) = data.onepassword_item.database_litellm.username
+    (local.litellm.db_user_key)     = data.onepassword_item.database_litellm.username
     (local.litellm.db_password_key) = data.onepassword_item.database_litellm.password
   }
 }
@@ -268,39 +278,39 @@ resource "kubernetes_secret" "litellm_db_credentials" {
 ### N8N
 data "onepassword_item" "n8n_encryption_key" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "N8N - Encryption key"
+  title = "N8N - Encryption key"
 }
 
 ### KASM
 data "onepassword_item" "kasm_admin" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "kasm - admin"
+  title = "kasm - admin"
 }
 
 data "onepassword_item" "kasm_user" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "kasm - user"
+  title = "kasm - user"
 }
 
 data "onepassword_item" "database_kasm" {
   vault = data.onepassword_vault.homelab_vault.uuid
-  title    = "postgresql-Kasm"
+  title = "postgresql-Kasm"
 }
 
 resource "kubernetes_secret" "kasm_db_credentials" {
   metadata {
-    name = "kasm-db"
+    name      = "kasm-db"
     namespace = kubernetes_namespace.kasm.metadata.0.name
   }
 
   data = {
-    db-password     = data.onepassword_item.database_kasm.password
+    db-password = data.onepassword_item.database_kasm.password
   }
 }
 
 resource "kubernetes_secret" "kasm_secrets" {
   metadata {
-    name = "kasm-secrets"
+    name      = "kasm-secrets"
     namespace = kubernetes_namespace.kasm.metadata.0.name
   }
 

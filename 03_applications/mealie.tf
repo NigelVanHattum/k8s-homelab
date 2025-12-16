@@ -5,12 +5,12 @@ module "mealie" {
   authorization_flow_id = data.authentik_flow.default_authorization_flow.id
   invalidation_flow_id  = data.authentik_flow.default_provider_invalidation_flow.id
   property_mappings     = data.authentik_property_mapping_provider_scope.oidc_mapping.ids
-  
+
   redirect_uris = [
     "https://mealie.nigelvanhattum.nl/login*",
     "https://mealie.local.nigelvanhattum.nl/login*"
   ]
-  
+
   group_bindings = [
     {
       group_id = data.authentik_group.admin.id
@@ -26,20 +26,20 @@ module "mealie" {
 # Waiting for https://github.com/ncecere/terraform-provider-litellm/issues/3
 resource "litellm_key" "mealie_api_key" {
   # models               = [ "All Team Models" ]
-  max_budget           = 20.0
-  budget_duration      = "30d"
+  max_budget             = 20.0
+  budget_duration        = "30d"
   allowed_cache_controls = ["no-cache", "max-age=3600"]
-  soft_budget          = 10.0
-  key_alias            = "mealie"
+  soft_budget            = 10.0
+  key_alias              = "mealie"
 
-  depends_on = [ argocd_application.lite_llm ]
+  depends_on = [argocd_application.lite_llm]
 }
 
 resource "kubectl_manifest" "pv_mealie" {
   yaml_body = templatefile("manifests/storage/pv-mealie.yaml", {
-    pv_name         = local.file_share.pv_names.mealie, 
-    ip_address      = local.ip_address.nas_ip,
-    k8s_rootmount        = local.file_share.nas_root_mount
+    pv_name       = local.file_share.pv_names.mealie,
+    ip_address    = local.ip_address.nas_ip,
+    k8s_rootmount = local.file_share.nas_root_mount
   })
   override_namespace = kubernetes_namespace.mealie.metadata.0.name
 }
@@ -52,25 +52,25 @@ resource "argocd_application" "mealie" {
   spec {
     project = "apps"
     source {
-      repo_url        = argocd_repository.my_homelab.repo
+      repo_url        = data.terraform_remote_state.base_resources.outputs.homelab_helm_repo
       chart           = "mealie"
       target_revision = var.mealie_chart_version
 
       helm {
         values = templatefile("helm-values/mealie.yaml",
-        {
-          mealie_version            = local.mealie_version
-          pv_name                   = local.file_share.pv_names.mealie
-          PUID                      = local.file_share.PUID
-          PGID                      = local.file_share.PGID
-          postgres_secret           = kubernetes_secret.mealie.metadata.0.name
-          postgres_host             = data.onepassword_item.database_mealie.hostname
-          postgres_port             = data.onepassword_item.database_mealie.port
-          postgres_database_name    = data.onepassword_item.database_mealie.database
-          smtp_credentials          = kubernetes_secret.mealie_smtp.metadata.0.name
-          oidc_config               = kubernetes_secret.mealie_oidc.metadata.0.name
-          authentik_admin_group     = local.authentik.group_admin
-          lite_llm_api_key          = litellm_key.mealie_api_key.key
+          {
+            mealie_version         = local.mealie_version
+            pv_name                = local.file_share.pv_names.mealie
+            PUID                   = local.file_share.PUID
+            PGID                   = local.file_share.PGID
+            postgres_secret        = kubernetes_secret.mealie.metadata.0.name
+            postgres_host          = data.onepassword_item.database_mealie.hostname
+            postgres_port          = data.onepassword_item.database_mealie.port
+            postgres_database_name = data.onepassword_item.database_mealie.database
+            smtp_credentials       = kubernetes_secret.mealie_smtp.metadata.0.name
+            oidc_config            = kubernetes_secret.mealie_oidc.metadata.0.name
+            authentik_admin_group  = local.authentik.group_admin
+            lite_llm_api_key       = litellm_key.mealie_api_key.key
         })
       }
     }
@@ -95,7 +95,7 @@ resource "argocd_application" "mealie" {
 
     destination {
       namespace = kubernetes_namespace.mealie.metadata.0.name
-      name = "in-cluster"
+      name      = "in-cluster"
     }
   }
 }

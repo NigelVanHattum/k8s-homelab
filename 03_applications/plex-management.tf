@@ -120,7 +120,7 @@ resource "argocd_application" "plex-management" {
   spec {
     project = argocd_project.argo_cd_apps_project.metadata.0.name
     source {
-      repo_url        = argocd_repository.my_homelab.repo
+      repo_url        = data.terraform_remote_state.base_resources.outputs.homelab_helm_repo
       chart           = "plex-management"
       target_revision = var.plex_management_chart_version
 
