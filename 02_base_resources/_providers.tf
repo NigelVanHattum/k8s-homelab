@@ -54,3 +54,9 @@ provider "authentik" {
   url   = "https://authentik.nigelvanhattum.nl"
   token = data.onepassword_item.authentik_admin_token.password
 }
+
+provider "minio" {
+  minio_server    = "192.168.20.3:9000"
+  minio_user      = data.onepassword_item.minio_admin.username
+  minio_password  = data.onepassword_item.minio_admin.password
+}

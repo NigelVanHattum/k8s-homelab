@@ -34,6 +34,9 @@ locals {
         grafana = {
             api_token = "Grafana Cloud token"
         }
+        minio = {
+            admin = "MinIo - admin"
+        }
     }
     ip_address = {
         ingress = "10.0.49.25"

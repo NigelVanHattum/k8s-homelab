@@ -190,3 +190,9 @@ resource "kubernetes_secret" "authentik_geo_ip_credentials" {
     license_key = data.onepassword_item.geoip_authentik.password
   }
 }
+
+# MinIO
+data "onepassword_item" "minio_admin" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.minio.admin
+}
