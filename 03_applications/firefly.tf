@@ -46,9 +46,10 @@ resource "argocd_application" "firefly" {
       helm {
         values = templatefile("helm-values/firefly.yaml",
         {
-          firefly_version    = local.firefly_version
-          firefly_secret_env = kubernetes_secret.firefly_environment.metadata.0.name
-          importer_configmap = kubernetes_config_map.firefly_import_config.metadata.0.name
+          firefly_version     = local.firefly_version
+          firefly_secret_env  = kubernetes_secret.firefly_environment.metadata.0.name
+          database_host       = local.database.read_write_service
+          importer_configmap  = kubernetes_config_map.firefly_import_config.metadata.0.name
           # ING_import_content = "${file("${path.module}/config-files/ING importer.json")}"
         })
       }

@@ -96,13 +96,9 @@ resource "kubernetes_secret" "firefly_environment" {
   }
 
   data = {
-    APP_ENV           = "production"
-    APP_DEBUG         = false
     APP_KEY           = data.onepassword_item.firefly_app_key.password
-    TZ                = "Europe/Amsterdam"
     TRUSTED_PROXIES   = "**"
     DB_CONNECTION     = "pgsql"
-    DB_HOST           = data.onepassword_item.database_firefly.hostname
     DB_PORT           = data.onepassword_item.database_firefly.port
     DB_DATABASE       = data.onepassword_item.database_firefly.database
     DB_USERNAME       = data.onepassword_item.database_firefly.username

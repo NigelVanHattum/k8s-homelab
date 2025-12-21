@@ -39,7 +39,11 @@ proxy_config:
         api_key: "os.environ/ANTHROPIC_API_KEY" 
     - model_name: Grok-4-fast-reasoning
       litellm_params: 
-        model: xai/grok-4-fast-reasoning
+        model: xai/grok-4-1-fast-reasoning-latest
+        api_key: "os.environ/XAI_API_KEY" 
+    - model_name: Grok-4-fast-non-reasoning
+      litellm_params: 
+        model: xai/grok-4-1-fast-non-reasoning-latest
         api_key: "os.environ/XAI_API_KEY" 
     - model_name: Grok-3-mini
       litellm_params: 

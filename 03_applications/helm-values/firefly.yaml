@@ -28,7 +28,10 @@ firefly-iii:
       # APP_DEBUG: true
       # APP_LOG_LEVEL: "debug"
       # LOG_CHANNEL: "stack"
-      QUERY_PARSER_IMPLEMENTATION: "new"
+      TZ                            : "Europe/Amsterdam"
+      QUERY_PARSER_IMPLEMENTATION   : "new"
+      DB_HOST                       : "${database_host}"
+      APP_ENV                       :  "production"
 
   # -- A cronjob for [recurring Firefly III tasks](https://docs.firefly-iii.org/firefly-iii/advanced-installation/cron/).
   cronjob:
