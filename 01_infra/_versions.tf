@@ -14,8 +14,8 @@ terraform {
     }
     # https://registry.terraform.io/providers/siderolabs/talos/0.8.0
     talos = {
-      source = "siderolabs/talos"
-      version = ">= 0.8.0, < 0.9.0"
+      source  = "siderolabs/talos"
+      version = ">= 0.10.0, < 0.11.0"
     }
     # https://registry.terraform.io/providers/alekc/kubectl/latest
     kubectl = {
@@ -27,8 +27,8 @@ terraform {
 
 locals {
   # https://github.com/siderolabs/talos/releases
-   talos_version = "v1.11.5"
+  talos_version = "v1.12.0"
   # https://github.com/kubernetes/kubernetes/releases
-  # https://www.talos.dev/v1.11/introduction/support-matrix/
-   k8s_version = "1.34.2"
+  # https://www.talos.dev/v1.12/introduction/support-matrix/
+  k8s_version = "1.35.0"
 }

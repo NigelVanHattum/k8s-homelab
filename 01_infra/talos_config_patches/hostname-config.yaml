@@ -1,5 +1,5 @@
-# Configures the machine hostname.
-# https://www.talos.dev/v1.9/reference/configuration/v1alpha1/config/#Config.machine.network
-machine:
-  network:
-    hostname: ${hostname}
+# https://docs.siderolabs.com/talos/v1.12/reference/configuration/network/hostnameconfig
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: ${hostname}
+auto: off
