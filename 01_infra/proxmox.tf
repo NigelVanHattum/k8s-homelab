@@ -79,6 +79,12 @@ resource "proxmox_vm_qemu" "talos_machines" {
     }
   }
 
+  startup_shutdown {
+    order            = -1 
+    shutdown_timeout = -1 
+    startup_delay    = -1
+  }
+
   network {
     id        = each.value.network_id
     model     = "virtio"

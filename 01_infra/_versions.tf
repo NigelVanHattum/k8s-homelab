@@ -4,13 +4,13 @@ terraform {
   required_providers {
     # https://registry.terraform.io/providers/1Password/onepassword/latest
     onepassword = {
-      source = "1Password/onepassword"
+      source  = "1Password/onepassword"
       version = ">= 3.0.0, < 4.0.0"
     }
     # https://registry.terraform.io/providers/Telmate/proxmox/latest/docs
     proxmox = {
-      source = "telmate/proxmox"
-      version = "3.0.2-rc06"
+      source  = "telmate/proxmox"
+      version = "3.0.2-rc07"
     }
     # https://registry.terraform.io/providers/siderolabs/talos/0.8.0
     talos = {
@@ -19,7 +19,7 @@ terraform {
     }
     # https://registry.terraform.io/providers/alekc/kubectl/latest
     kubectl = {
-      source = "alekc/kubectl"
+      source  = "alekc/kubectl"
       version = ">= 2.0.0, < 3.0.0"
     }
   }
