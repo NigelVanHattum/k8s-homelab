@@ -150,3 +150,12 @@ resource "kubernetes_namespace" "adguard" {
     name   = "adguard"
   }
 }
+
+resource "kubernetes_namespace" "obot" {
+  metadata {
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
+    name   = "obot"
+  }
+}

@@ -132,7 +132,13 @@ resource "argocd_project" "argo-cd-system-project" {
     destination {
       server = "*"
       name = "*"
-      namespace = kubernetes_namespace.mcp-servers.metadata.0.name
+      namespace = kubernetes_namespace.obot.metadata.0.name
+    }
+
+    destination {
+      server = "*"
+      name = "*"
+      namespace = "${kubernetes_namespace.obot.metadata.0.name}-mcp"
     }
 
     destination {

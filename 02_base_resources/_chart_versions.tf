@@ -91,3 +91,10 @@ variable "authentik_chart_version" {
   description = "authentik chart version"
   default = "2025.10.2"
 }
+
+# https://github.com/obot-platform/obot/releases
+variable "obot_chart_version" {
+  type = string
+  description = "obot chart version"
+  default = "v0.15.1"
+}

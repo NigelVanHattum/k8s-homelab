@@ -136,6 +136,11 @@ data "onepassword_item" "database_n8n" {
   title  = local.onepassword.postgresql.n8n
 }
 
+data "onepassword_item" "database_obot" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title  = local.onepassword.postgresql.obot
+}
+
 ### Authentik
 data "onepassword_item" "authentik_admin_token" {
   vault = data.onepassword_vault.homelab_vault.uuid

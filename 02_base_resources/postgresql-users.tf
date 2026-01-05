@@ -61,3 +61,11 @@ resource "postgresql_role" "n8n" {
 
   depends_on = [kubectl_manifest.postgres_ingress]
 }
+
+resource "postgresql_role" "obot" {
+  name     = data.onepassword_item.database_obot.username
+  login    = true
+  password = data.onepassword_item.database_obot.password
+
+  depends_on = [kubectl_manifest.postgres_ingress]
+}

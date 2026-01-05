@@ -74,3 +74,10 @@ resource "postgresql_database" "n8n" {
   connection_limit  = -1
   allow_connections = true
 }
+
+resource "postgresql_database" "obot" {
+  name              = postgresql_role.obot.name
+  owner             = postgresql_role.obot.name
+  connection_limit  = -1
+  allow_connections = true
+}
