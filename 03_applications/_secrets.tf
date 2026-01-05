@@ -236,6 +236,11 @@ data "onepassword_item" "litellm_xai_ai" {
   title = "XAI - API key"
 }
 
+data "onepassword_item" "litellm_ollama_cloud" {
+  vault = data.onepassword_vault.homelab_vault.uuid
+  title = "Ollama Cloud - API key"
+}
+
 resource "kubernetes_secret" "litellm_masterkey" {
   metadata {
     name      = local.litellm.masterKey_secret_name
@@ -256,6 +261,7 @@ resource "kubernetes_secret" "litellm_claude_ai" {
   data = {
     ANTHROPIC_API_KEY = data.onepassword_item.litellm_claude_ai.credential
     XAI_API_KEY       = data.onepassword_item.litellm_xai_ai.credential
+    OLLAMA_CLOUD_KEY  = data.onepassword_item.litellm_ollama_cloud.credential
   }
 }
 

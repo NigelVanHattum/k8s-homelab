@@ -53,6 +53,12 @@ proxy_config:
       litellm_params: 
         model: xai/grok-code-fast-1
         api_key: "os.environ/XAI_API_KEY" 
+    - model_name: devstral-small-2
+      litellm_params: # all params accepted by litellm.completion() - https://docs.litellm.ai/docs/completion/input
+        model: ollama/devstral-small-2:24b-cloud
+        api_base: https://ollama.com/ # of v1?
+        api_key: "os.environ/OLLAMA_CLOUD_KEY"
+        rpm: 6    
   general_settings:
     master_key: os.environ/PROXY_MASTER_KEY
 
