@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.0, < 2.0.0"
+  required_version = ">= 1.8.0, < 2.0.0"
   required_providers {
     onepassword = {
       source  = "1Password/onepassword"
@@ -10,8 +10,8 @@ terraform {
       version = ">= 2.23.0, < 4.0.0"
     }
     kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14.0, < 2.0.0"
+      source  = "alekc/kubectl"
+      version = ">= 2.0.0, < 3.0.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -34,7 +34,7 @@ terraform {
 
 locals {
   # https://github.com/mealie-recipes/mealie/releases
-  mealie_version = "v3.5.0"
+  mealie_version = "v3.9.2"
 
   # https://www.kasmweb.com/docs/latest/release_notes/1.17.0.html
   # Make sure to also update agent pool (config-files/kasm-agent-pool.yaml). 

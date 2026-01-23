@@ -9,14 +9,14 @@
 variable "argocd_chart_version" {
   type    = string
   description = "argocd chart version"
-  default = "9.1.3"
+  default = "9.1.5"
 }
 
 # https://github.com/cert-manager/cert-manager/releases
 variable "cert_manager_chart_version" {
   type    = string
   description = "Cert-manager chart version"
-  default = "v1.19.1"
+  default = "v1.19.2"
 }
 
 # https://github.com/kubernetes-sigs/node-feature-discovery/releases
@@ -37,7 +37,7 @@ variable "intel_operator_chart_version" {
 variable "k8s_monitoring_chart_version" {
   type    = string
   description = "grafana monitoring"
-  default = "3.6.0"
+  default = "3.7.2"
 }
 
 # https://github.com/kubernetes-csi/csi-driver-nfs
@@ -50,7 +50,7 @@ variable "nfs_csi_driver_chart_version" {
 variable "metallb_chart_version" {
   type = string
   description = "MetalLB version"
-  default = "0.15.2"
+  default = "0.15.3"
 }
 
 # https://github.com/traefik/traefik-helm-chart
@@ -81,7 +81,7 @@ variable "cnpg_postgres_cluster_chart_version" {
 # https://github.com/rm3l/helm-charts/blob/main/charts/adguard-home/README.md
 variable "adguard_home_chart_version" {
   type    = string
-  default = "0.21.0"
+  default = "0.24.0"
 }
 
 # https://github.com/goauthentik/helm
@@ -89,12 +89,12 @@ variable "adguard_home_chart_version" {
 variable "authentik_chart_version" {
   type = string
   description = "authentik chart version"
-  default = "2025.10.2"
+  default = "2025.12.1"
 }
 
 # https://github.com/obot-platform/obot/releases
 variable "obot_chart_version" {
   type = string
   description = "obot chart version"
-  default = "v0.15.1"
+  default = "v0.16.0"
 }
