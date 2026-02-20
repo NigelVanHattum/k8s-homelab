@@ -7,37 +7,37 @@
 
 # https://github.com/argoproj/argo-helm
 variable "argocd_chart_version" {
-  type    = string
+  type        = string
   description = "argocd chart version"
-  default = "9.1.5"
+  default     = "9.4.2"
 }
 
 # https://github.com/cert-manager/cert-manager/releases
 variable "cert_manager_chart_version" {
-  type    = string
+  type        = string
   description = "Cert-manager chart version"
-  default = "v1.19.2"
+  default     = "v1.19.3"
 }
 
 # https://github.com/kubernetes-sigs/node-feature-discovery/releases
 variable "nfd_chart_version" {
-  type    = string
+  type        = string
   description = "NFD chart version"
-  default = "0.18.3"
+  default     = "0.18.3"
 }
 
 # https://github.com/intel/helm-charts/releases
 variable "intel_operator_chart_version" {
-  type    = string
+  type        = string
   description = "NFD chart version"
-  default = "0.34.0"
+  default     = "0.34.1"
 }
 
 # https://github.com/grafana/k8s-monitoring-helm
 variable "k8s_monitoring_chart_version" {
-  type    = string
+  type        = string
   description = "grafana monitoring"
-  default = "3.7.2"
+  default     = "3.7.5"
 }
 
 # https://github.com/kubernetes-csi/csi-driver-nfs
@@ -48,22 +48,22 @@ variable "nfs_csi_driver_chart_version" {
 
 # https://github.com/metallb/metallb/releases
 variable "metallb_chart_version" {
-  type = string
+  type        = string
   description = "MetalLB version"
-  default = "0.15.3"
+  default     = "0.15.3"
 }
 
 # https://github.com/traefik/traefik-helm-chart
 variable "traefik_crd_chart_version" {
-  type = string
+  type        = string
   description = "Traefik CRD chart version (not traefik version)"
-  default = "1.12.0"
+  default     = "1.12.0"
 }
-
+# 37.4.0
 variable "traefik_chart_version" {
-  type = string
+  type        = string
   description = "Traefik chart version (not traefik version)"
-  default = "37.4.0"
+  default     = "39.0.0"
 }
 
 # https://github.com/cloudnative-pg/charts/tree/main/charts/cloudnative-pg
@@ -87,14 +87,14 @@ variable "adguard_home_chart_version" {
 # https://github.com/goauthentik/helm
 # https://docs.goauthentik.io/docs/releases
 variable "authentik_chart_version" {
-  type = string
+  type        = string
   description = "authentik chart version"
-  default = "2025.12.1"
+  default     = "2025.12.2"
 }
 
 # https://github.com/obot-platform/obot/releases
 variable "obot_chart_version" {
-  type = string
+  type        = string
   description = "obot chart version"
-  default = "v0.16.0"
+  default     = "v0.16.4"
 }

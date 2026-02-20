@@ -26,13 +26,13 @@ ports:
     protocol: TCP
     http3:
       enabled: true
-    tls:
-      enabled: true
-      options: ""
-      certResolver: "letsencrypt"
-      domains:
-        - main: "*.${domain}"
-    middlewares: []
+    http:
+      tls:
+        enabled: true
+        options: ""
+        certResolver: "letsencrypt"
+        domains:
+          - main: "*.${domain}"
     forwardedHeaders:
       insecure: true
   websecure:
@@ -42,13 +42,13 @@ ports:
     exposedPort: 443
     http3:
       enabled: true
-    tls:
-      enabled: true
-      options: ""
-      certResolver: "letsencrypt"
-      domains:
-        - main: "*.local.${domain}"
-    middlewares: []
+    http:
+      tls:
+        enabled: true
+        options: ""
+        certResolver: "letsencrypt"
+        domains:
+          - main: "*.local.${domain}"
     forwardedHeaders:
       insecure: true
   postgresql:
@@ -56,11 +56,10 @@ ports:
     expose:
       default: true
     exposedPort: 5432
-    tls:
-      enabled: false
-      options:
-        default:
-          sniStrict: true
+    http:
+      tls:
+        enabled: false
+        options: "sniStrict=true"
     forwardedHeaders:
       insecure: true
   postgresql-recovery:
@@ -68,11 +67,10 @@ ports:
     expose:
       default: true
     exposedPort: 5433
-    tls:
-      enabled: false
-      options:
-        default:
-          sniStrict: true
+    http:
+      tls:
+        enabled: false
+        options: "sniStrict=true"
     forwardedHeaders:
       insecure: true
   tdarr-server:
@@ -80,11 +78,10 @@ ports:
     expose:
       default: true
     exposedPort: 8266
-    tls:
-      enabled: false
-      options:
-        default:
-          sniStrict: true
+    http:
+      tls:
+        enabled: false
+        options: "sniStrict=true"
     forwardedHeaders:
       insecure: true
 
