@@ -33,6 +33,9 @@ terraform {
 }
 
 locals {
+  # https://github.com/n8n-io/n8n/releases
+  n8n_version = "1.123.12"
+
   # https://github.com/mealie-recipes/mealie/releases
   mealie_version = "v3.9.2"
 

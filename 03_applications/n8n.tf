@@ -13,6 +13,7 @@ module "n8n_argo" {
 
   helm_values = templatefile("helm-values/n8n.yaml",
         {
+          n8n_version        = local.n8n_version,
           encryption_key      = data.onepassword_item.n8n_encryption_key.password
           db_host             = data.onepassword_item.database_n8n.hostname
           db_port             = data.onepassword_item.database_n8n.port

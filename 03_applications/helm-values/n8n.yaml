@@ -1,6 +1,7 @@
 image:
   repository: n8nio/n8n
-  # tag: ""
+  tag: ${n8n_version}
+  pullPolicy: IfNotPresent
 
 #
 # Ingress
@@ -26,6 +27,8 @@ ingress:
 main:
   # See https://docs.n8n.io/hosting/configuration/environment-variables/ for all values.
   config:
+    generic:
+      timezone: "Etc/UTC"
     n8n:
       host: "https://n8n.nigelvanhattum.nl"
       editor:
