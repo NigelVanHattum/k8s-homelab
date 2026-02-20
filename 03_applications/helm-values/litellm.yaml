@@ -29,13 +29,13 @@ environmentSecrets:
 #  Reference: https://docs.litellm.ai/docs/proxy/configs
 proxy_config:
   model_list:
-    - model_name: claude-3.7
+    - model_name: claude-3-haiku
       litellm_params: 
-        model: claude-3-7-sonnet-20250219
+        model: claude-3-haiku-20240307
         api_key: "os.environ/ANTHROPIC_API_KEY"
-    - model_name: claude-4
+    - model_name: claude-4-5-sonnet
       litellm_params: 
-        model: claude-sonnet-4-20250514
+        model: claude-sonnet-4-5
         api_key: "os.environ/ANTHROPIC_API_KEY" 
     - model_name: Grok-4-fast-reasoning
       litellm_params: 
@@ -49,6 +49,10 @@ proxy_config:
       litellm_params: 
         model: xai/grok-3-mini
         api_key: "os.environ/XAI_API_KEY" 
+    - model_name: Grok-2-vision
+      litellm_params: 
+        model: xai/grok-2-vision-latest
+        api_key: "os.environ/XAI_API_KEY" 
     - model_name: Grok-code-1
       litellm_params: 
         model: xai/grok-code-fast-1
@@ -59,6 +63,18 @@ proxy_config:
         api_base: https://ollama.com/ # of v1?
         api_key: "os.environ/OLLAMA_CLOUD_KEY"
         rpm: 6    
+    - model_name: kimi-k2-thinking
+      litellm_params: # all params accepted by litellm.completion() - https://docs.litellm.ai/docs/completion/input
+        model: ollama/kimi-k2-thinking:cloud
+        api_base: https://ollama.com/ # of v1?
+        api_key: "os.environ/OLLAMA_CLOUD_KEY"
+        rpm: 6  
+    - model_name: kimi-k2.5
+      litellm_params: # all params accepted by litellm.completion() - https://docs.litellm.ai/docs/completion/input
+        model: ollama/kimi-k2.5:cloud
+        api_base: https://ollama.com/ # of v1?
+        api_key: "os.environ/OLLAMA_CLOUD_KEY"
+        rpm: 6  
   general_settings:
     master_key: os.environ/PROXY_MASTER_KEY
 
